@@ -1,30 +1,26 @@
-# React + TypeScript + Vite
+# Ingenious
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Introduction
 
-Currently, two official plugins are available:
+A notion alternative multipurpose productive app
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## Expanding the ESLint configuration
+- Markdown based note taking
+- ...
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Main technologies
 
-- Configure the top-level `parserOptions` property like this:
+- React + TypeScript + Vite
+- UI library: [shadcn/ui](https://ui.shadcn.com/)
+- Backend: [NestJS](https://docs.nestjs.com/)
+- Testing:
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+  - Unit Test: [JestJS](https://jestjs.io/docs/getting-started) + [React Testing library](https://jestjs.io/docs/tutorial-react)
+  - E2E Test: Playwright or Cypress
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+- State management: [Redux toolkit](https://redux-toolkit.js.org/introduction/getting-started)
+- PWA [Progressive Web App](https://web.dev/explore/progressive-web-apps)
+- [Validate commit message convention using Commitlint and Husky](https://dev.to/omarzi/how-to-validate-commit-message-convention-using-commitlint-and-husky-aaa)
+- Use Github Action to run test before release
+- Deployment: Vercel
