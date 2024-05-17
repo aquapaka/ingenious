@@ -21,6 +21,6 @@ A notion alternative multipurpose productive app
 
 - State management: [Redux toolkit](https://redux-toolkit.js.org/introduction/getting-started)
 - PWA [Progressive Web App](https://web.dev/explore/progressive-web-apps)
-- [Validate commit message convention using Commitlint and Husky](https://dev.to/omarzi/how-to-validate-commit-message-convention-using-commitlint-and-husky-aaa)
+- [Validate commit message convention using Commitlint and Husky](https://dev.to/omarzi/how-to-validate-commit-message-convention-using-commitlint-and-husky-aaa) (This use old version of Husky, [Migrate guide](https://typicode.github.io/husky/migrate-from-v4.html))
 - Use Github Action to run test before release
 - Deployment: Vercel
