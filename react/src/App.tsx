@@ -3,7 +3,7 @@ import MainPage from './components/pages/mainpage';
 
 function App() {
   return (
-    <div className="min-h-screen bg-green-900">
+    <div className="min-h-screen">
       <MainPage />
     </div>
   );

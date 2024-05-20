@@ -1,5 +1,5 @@
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '../ui/resizable';
-import CategoriesPanel from './components/categories-panel';
+import CategoriesPanel from './components/directories-panel';
 import NotesPanel from './components/notes-panel';
 
 export default function MainPage() {
