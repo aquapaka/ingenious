@@ -4,7 +4,7 @@ import Preview from './preview';
 
 function NoteEdit() {
   return (
-    <ResizablePanelGroup direction="horizontal" className="bg-green-100">
+    <ResizablePanelGroup direction="horizontal">
       <ResizablePanel>
         <Editor />
       </ResizablePanel>

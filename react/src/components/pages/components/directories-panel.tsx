@@ -48,7 +48,7 @@ function NoteList({ notes }: { notes: Note[] }) {
   return (
     <ul className="flex flex-col gap-1">
       {notes.map((note) => (
-        <li>
+        <li key={note.id}>
           <Button asChild variant="ghost" className="w-full justify-start">
             <NavLink
               to={`/note/${note.id}`}
