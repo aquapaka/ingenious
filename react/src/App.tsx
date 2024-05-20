@@ -1,17 +1,11 @@
-import { useState } from 'react';
 import './App.css';
-import { Calendar } from './components/ui/calendar';
+import MainPage from './components/pages/mainpage';
 
 function App() {
-  const [date, setDate] = useState<Date | undefined>(new Date())
-
   return (
-    <>
-      <h1 className="text-4xl">{date?.toDateString()}</h1>
-      <div className='flex'>
-        <Calendar mode="single" selected={date} onSelect={setDate} className="rounded-md border" />
-      </div>
-    </>
+    <div className="min-h-screen bg-green-900">
+      <MainPage />
+    </div>
   );
 }
 

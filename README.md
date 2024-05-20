@@ -24,3 +24,7 @@ A notion alternative multipurpose productive app
 - [Validate commit message convention using Commitlint and Husky](https://dev.to/omarzi/how-to-validate-commit-message-convention-using-commitlint-and-husky-aaa) (This use old version of Husky, [Migrate guide](https://typicode.github.io/husky/migrate-from-v4.html))
 - Use Github Action to run test before release
 - Deployment: Vercel
+
+## Resources
+
+- [modern-full-stack-development-with-nestjs-react-typescript-and-mongodb-part-1](https://auth0.com/blog/modern-full-stack-development-with-nestjs-react-typescript-and-mongodb-part-1/)
