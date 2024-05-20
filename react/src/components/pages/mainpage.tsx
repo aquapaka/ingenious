@@ -1,6 +1,6 @@
+import { Outlet } from 'react-router-dom';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '../ui/resizable';
 import CategoriesPanel from './components/directories-panel';
-import NotesPanel from './components/notes-panel';
 
 export default function MainPage() {
   return (
@@ -11,7 +11,7 @@ export default function MainPage() {
         </ResizablePanel>
         <ResizableHandle />
         <ResizablePanel>
-          <NotesPanel />
+          <Outlet />
         </ResizablePanel>
       </ResizablePanelGroup>
     </div>

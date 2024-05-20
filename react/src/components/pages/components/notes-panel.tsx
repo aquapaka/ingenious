@@ -1,3 +1,8 @@
+import { useParams } from 'react-router-dom';
+import NoteEdit from './note-edit';
+
 export default function NotesPanel() {
-  return <div className="flex h-full items-center justify-center p-6"></div>;
+  const { id } = useParams();
+
+  return <div className="h-full">{id ? <NoteEdit /> : <p>Open a note to edit</p>}</div>;
 }

@@ -1,6 +1,7 @@
 import { Accordion, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
 import { AccordionContent } from '@radix-ui/react-accordion';
+import { NavLink } from 'react-router-dom';
 
 type Note = {
   id: string;
@@ -48,8 +49,15 @@ function NoteList({ notes }: { notes: Note[] }) {
     <ul className="flex flex-col gap-1">
       {notes.map((note) => (
         <li>
-          <Button variant="ghost" className="w-full justify-start">
-            {note.icon} {note.title}
+          <Button asChild variant="ghost" className="w-full justify-start">
+            <NavLink
+              to={`/note/${note.id}`}
+              className={({ isActive, isPending, isTransitioning }) =>
+                [isPending ? 'pending' : '', isActive ? 'active' : '', isTransitioning ? 'transitioning' : ''].join(' ')
+              }
+            >
+              {note.icon} {note.title}
+            </NavLink>
           </Button>
         </li>
       ))}
