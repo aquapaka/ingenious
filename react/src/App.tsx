@@ -2,6 +2,7 @@ import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } 
 import './App.css';
 import MainPage from './components/pages/mainpage';
 import NotesPanel from './components/pages/components/notes-panel';
+import { ThemeProvider } from './components/theme-provider';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -14,9 +15,11 @@ const router = createBrowserRouter(
 
 function App() {
   return (
-    <div className="min-h-screen">
-      <RouterProvider router={router} />
-    </div>
+    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+      <div className="min-h-screen">
+        <RouterProvider router={router} />
+      </div>
+    </ThemeProvider>
   );
 }
 
