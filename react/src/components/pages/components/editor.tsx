@@ -1,6 +1,10 @@
+import { RootState } from '@/app/store';
+import { updateContent } from '@/features/markdown-editor/markdownEditorSlice';
 import {
+  BlockTypeSelect,
   BoldItalicUnderlineToggles,
   MDXEditor,
+  MDXEditorMethods,
   UndoRedo,
   diffSourcePlugin,
   headingsPlugin,
@@ -10,18 +14,26 @@ import {
   toolbarPlugin,
 } from '@mdxeditor/editor';
 import '@mdxeditor/editor/style.css';
-import { useState } from 'react';
-
-const markdownMock = `# This is a H1  \n## This is a H2  \n###### This is a H6`;
+import { useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function Editor() {
-  const [value, setValue] = useState(markdownMock);
+  const content = useSelector((state: RootState) => state.markdownEditorReducer.content);
+  const dispatch = useDispatch();
+  const editorRef = useRef<MDXEditorMethods>(null);
+
+  useEffect(() => {
+    editorRef.current?.setMarkdown(content);
+    console.log('editor content: ', content);
+  }, [content]);
 
   return (
     <MDXEditor
-      className="rounded-none"
-      markdown={value}
-      onChange={setValue}
+      ref={editorRef}
+      markdown={''}
+      onChange={(value) => {
+        dispatch(updateContent(value));
+      }}
       plugins={[
         headingsPlugin(),
         quotePlugin(),
@@ -34,6 +46,7 @@ export default function Editor() {
           toolbarContents: () => (
             <>
               {' '}
+              <BlockTypeSelect />
               <UndoRedo />
               <BoldItalicUnderlineToggles />
             </>

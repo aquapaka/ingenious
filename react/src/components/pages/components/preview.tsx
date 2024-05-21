@@ -1,6 +1,10 @@
+import { RootState } from '@/app/store';
+import { updateContent } from '@/features/markdown-editor/markdownEditorSlice';
 import {
+  BlockTypeSelect,
   BoldItalicUnderlineToggles,
   MDXEditor,
+  MDXEditorMethods,
   UndoRedo,
   diffSourcePlugin,
   headingsPlugin,
@@ -9,17 +13,26 @@ import {
   thematicBreakPlugin,
   toolbarPlugin,
 } from '@mdxeditor/editor';
-import { useState } from 'react';
-
-const markdownMock = `# This is a H1  \n## This is a H2  \n###### This is a H6`;
+import { useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function Preview() {
-  const [value, setValue] = useState(markdownMock);
+  const content = useSelector((state: RootState) => state.markdownEditorReducer.content);
+  const dispatch = useDispatch();
+  const previewRef = useRef<MDXEditorMethods>(null);
+
+  useEffect(() => {
+    previewRef.current?.setMarkdown(content);
+    console.log('preview content: ', content);
+  }, [content]);
 
   return (
     <MDXEditor
-      markdown={value}
-      onChange={setValue}
+      ref={previewRef}
+      markdown={''}
+      onChange={(value) => {
+        dispatch(updateContent(value));
+      }}
       contentEditableClassName="prose"
       plugins={[
         headingsPlugin(),
@@ -33,6 +46,7 @@ export default function Preview() {
           toolbarContents: () => (
             <>
               {' '}
+              <BlockTypeSelect />
               <UndoRedo />
               <BoldItalicUnderlineToggles />
             </>

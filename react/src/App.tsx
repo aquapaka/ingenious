@@ -3,6 +3,8 @@ import './App.css';
 import MainPage from './components/pages/mainpage';
 import NotesPanel from './components/pages/components/notes-panel';
 import { ThemeProvider } from './components/theme-provider';
+import { Provider } from 'react-redux';
+import { store } from './app/store';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -15,11 +17,13 @@ const router = createBrowserRouter(
 
 function App() {
   return (
-    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <div className="min-h-screen">
-        <RouterProvider router={router} />
-      </div>
-    </ThemeProvider>
+    <Provider store={store}>
+      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+        <div className="min-h-screen">
+          <RouterProvider router={router} />
+        </div>
+      </ThemeProvider>
+    </Provider>
   );
 }
 
