@@ -11,8 +11,8 @@ A notion alternative multipurpose productive app
 
 ## Main technologies
 
-- React + TypeScript + Vite
-- UI library: [shadcn/ui](https://ui.shadcn.com/)
+- React + TypeScript + Vite ☑️
+- UI library: [shadcn/ui](https://ui.shadcn.com/) ☑️
 - Backend: [NestJS](https://docs.nestjs.com/)
 - Testing:
 
@@ -21,6 +21,11 @@ A notion alternative multipurpose productive app
 
 - State management: [Redux toolkit](https://redux-toolkit.js.org/introduction/getting-started)
 - PWA [Progressive Web App](https://web.dev/explore/progressive-web-apps)
-- [Validate commit message convention using Commitlint and Husky](https://dev.to/omarzi/how-to-validate-commit-message-convention-using-commitlint-and-husky-aaa) (This use old version of Husky, [Migrate guide](https://typicode.github.io/husky/migrate-from-v4.html))
+- [Validate commit message convention using Commitlint and Husky](https://dev.to/omarzi/how-to-validate-commit-message-convention-using-commitlint-and-husky-aaa) (This post use old version of Husky, we can use this [Migrate guide](https://typicode.github.io/husky/migrate-from-v4.html)) ☑️
 - Use Github Action to run test before release
 - Deployment: Vercel
+- Markdown Editor Library [MDXEditor](https://mdxeditor.dev/) ☑️
+
+## Resources
+
+- [modern-full-stack-development-with-nestjs-react-typescript-and-mongodb-part-1](https://auth0.com/blog/modern-full-stack-development-with-nestjs-react-typescript-and-mongodb-part-1/)

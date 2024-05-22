@@ -1,17 +1,29 @@
-import { useState } from 'react';
+import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom';
 import './App.css';
-import { Calendar } from './components/ui/calendar';
+import MainPage from './components/pages/mainpage';
+import NotesPanel from './components/pages/components/notes-panel';
+import { ThemeProvider } from './components/theme-provider';
+import { Provider } from 'react-redux';
+import { store } from './app/store';
+
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <Route path="/" element={<MainPage />}>
+      <Route path="" element={<NotesPanel />} />
+      <Route path="note/:id" element={<NotesPanel />} />
+    </Route>,
+  ),
+);
 
 function App() {
-  const [date, setDate] = useState<Date | undefined>(new Date())
-
   return (
-    <>
-      <h1 className="text-4xl">{date?.toDateString()}</h1>
-      <div className='flex'>
-        <Calendar mode="single" selected={date} onSelect={setDate} className="rounded-md border" />
-      </div>
-    </>
+    <Provider store={store}>
+      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+        <div className="min-h-screen">
+          <RouterProvider router={router} />
+        </div>
+      </ThemeProvider>
+    </Provider>
   );
 }
 
