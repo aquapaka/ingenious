@@ -1,6 +1,6 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
-import { FilePlus } from 'lucide-react';
+import { FilePen, Folder, FolderPen, StickyNote } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 
 type Note = {
@@ -53,7 +53,8 @@ function NoteButton({ note }: { note: Note }) {
           [isPending ? 'pending' : '', isActive ? 'active' : '', isTransitioning ? 'transitioning' : ''].join(' ')
         }
       >
-        {note.icon} {note.title}
+        {note.icon ? note.icon : <StickyNote size={16} />}
+        <span className="pl-2">{note.title}</span>
       </NavLink>
     </Button>
   );
@@ -73,13 +74,18 @@ function NoteList({ notes }: { notes: Note[] }) {
 
 function DirectoriesList({ directories, nonDirectoryNotes }: { directories: Directory[]; nonDirectoryNotes: Note[] }) {
   return (
-    <Accordion type="multiple" className="flex flex-col w-full p-4 gap-2">
+    <Accordion type="multiple" className="flex flex-col w-full p-4 gap-1">
       <div className="flex justify-between items-center">
         <h1 className="font-bold">Notes</h1>
-        <div>
-          <Button asChild variant="outline" size="icon">
+        <div className="flex">
+          <Button asChild variant="ghost" size="icon">
             <NavLink to="/note/new">
-              <FilePlus size={16} strokeWidth={2} className="text-primary" />
+              <FilePen size={16} strokeWidth={2} className="text-primary" />
+            </NavLink>
+          </Button>
+          <Button asChild variant="ghost" size="icon">
+            <NavLink to="/note/new">
+              <FolderPen size={16} strokeWidth={2} className="text-primary" />
             </NavLink>
           </Button>
         </div>
@@ -87,7 +93,8 @@ function DirectoriesList({ directories, nonDirectoryNotes }: { directories: Dire
       {directories.map((directory) => (
         <AccordionItem key={directory.id} value={directory.id}>
           <AccordionTrigger>
-            {directory.icon} {directory.title}
+            {directory.icon ? directory.icon : <Folder size={16} />}
+            <span className="pl-2">{directory.title}</span>
           </AccordionTrigger>
           <AccordionContent>
             <NoteList notes={directory.notes} />
