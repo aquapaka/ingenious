@@ -1,6 +1,6 @@
-import { Accordion, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
-import { AccordionContent } from '@radix-ui/react-accordion';
+import { FilePlus } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 
 type Note = {
@@ -44,31 +44,46 @@ const directoriesMock: Directory[] = [
   },
 ];
 
+function NoteButton({ note }: { note: Note }) {
+  return (
+    <Button asChild variant="ghost" className="w-full justify-start">
+      <NavLink
+        to={`/note/${note.id}`}
+        className={({ isActive, isPending, isTransitioning }) =>
+          [isPending ? 'pending' : '', isActive ? 'active' : '', isTransitioning ? 'transitioning' : ''].join(' ')
+        }
+      >
+        {note.icon} {note.title}
+      </NavLink>
+    </Button>
+  );
+}
+
 function NoteList({ notes }: { notes: Note[] }) {
   return (
-    <ul className="flex flex-col gap-1">
+    <ul className="flex flex-col gap-1 pl-4">
       {notes.map((note) => (
         <li key={note.id}>
-          <Button asChild variant="ghost" className="w-full justify-start">
-            <NavLink
-              to={`/note/${note.id}`}
-              className={({ isActive, isPending, isTransitioning }) =>
-                [isPending ? 'pending' : '', isActive ? 'active' : '', isTransitioning ? 'transitioning' : ''].join(' ')
-              }
-            >
-              {note.icon} {note.title}
-            </NavLink>
-          </Button>
+          <NoteButton note={note} />
         </li>
       ))}
     </ul>
   );
 }
 
-function DirectoriesList({ directories }: { directories: Directory[] }) {
+function DirectoriesList({ directories, nonDirectoryNotes }: { directories: Directory[]; nonDirectoryNotes: Note[] }) {
   return (
     <Accordion type="multiple" className="flex flex-col w-full p-4 gap-2">
-      <h1 className="font-bold">Notes</h1>
+      <div className="flex justify-between items-center">
+        <h1 className="font-bold">Notes</h1>
+        <div>
+          <Button asChild variant="outline" size="icon">
+            <NavLink to="/note/new">
+              <FilePlus size={16} strokeWidth={2} className="text-primary" />
+            </NavLink>
+          </Button>
+        </div>
+      </div>
       {directories.map((directory) => (
         <AccordionItem key={directory.id} value={directory.id}>
           <AccordionTrigger>
@@ -79,6 +94,9 @@ function DirectoriesList({ directories }: { directories: Directory[] }) {
           </AccordionContent>
         </AccordionItem>
       ))}
+      {nonDirectoryNotes.map((note) => (
+        <NoteButton note={note} />
+      ))}
     </Accordion>
   );
 }
@@ -86,7 +104,7 @@ function DirectoriesList({ directories }: { directories: Directory[] }) {
 export default function DirectoriesPanel() {
   return (
     <div className="min-h-screen">
-      <DirectoriesList directories={directoriesMock} />
+      <DirectoriesList directories={directoriesMock} nonDirectoryNotes={notesMock} />
     </div>
   );
 }

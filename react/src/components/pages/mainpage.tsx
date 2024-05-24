@@ -5,17 +5,15 @@ import TopBar from './components/top-bar';
 
 export default function MainPage() {
   return (
-    <div className="flex">
-      <ResizablePanelGroup direction="horizontal">
-        <ResizablePanel defaultSize={12}>
-          <CategoriesPanel />
-        </ResizablePanel>
-        <ResizableHandle />
-        <ResizablePanel>
-          <TopBar />
-          <Outlet />
-        </ResizablePanel>
-      </ResizablePanelGroup>
-    </div>
+    <ResizablePanelGroup direction="horizontal">
+      <ResizablePanel defaultSize={12}>
+        <CategoriesPanel />
+      </ResizablePanel>
+      <ResizableHandle withHandle />
+      <ResizablePanel>
+        <TopBar />
+        <Outlet />
+      </ResizablePanel>
+    </ResizablePanelGroup>
   );
 }
