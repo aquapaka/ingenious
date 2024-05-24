@@ -3,10 +3,6 @@
 @tailwind utilities;
 
 @layer base {
-  body {
-    zoom: 1.15;
-  }
-
   :root {
     --background: 0 0% 100%;
     --foreground: 0 0% 3.9%;
@@ -69,8 +65,6 @@
     --ring: 0 0% 83.1%;
   }
 }
-
-
 
 @layer base {
   * {
