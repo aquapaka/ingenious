@@ -1,9 +1,8 @@
-import { RootState } from '@/app/store';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
 import { Directory, Note } from '@/lib/types';
-import { FilePen, Folder, FolderPen, StickyNote } from 'lucide-react';
-import { useSelector } from 'react-redux';
+import { useGetMainDirectoryQuery } from '@/services/main-service';
+import { FilePen, Folder, FolderPen, Ghost, Loader2, StickyNote } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 
 function NoteButton({ note }: { note: Note }) {
@@ -34,36 +33,29 @@ function NoteList({ notes }: { notes: Note[] }) {
   );
 }
 
-function DirectoriesList({ directories, nonDirectoryNotes }: { directories: Directory[]; nonDirectoryNotes: Note[] }) {
-  if (!directories.length && !nonDirectoryNotes.length)
-    return (
-      <div className="h-[80%] flex justify-center items-center grow">
-        <p>No notes were found</p>
-      </div>
-    );
-
+function DirectoryList({ directory }: { directory: Directory }) {
   return (
     <Accordion type="multiple" className="flex flex-col w-full gap-1">
-      {directories.map((directory) => (
+      {/* Display all child directory */}
+      {directory.directories.map((directory) => (
         <AccordionItem key={directory.id} value={directory.id}>
           <AccordionTrigger>
             {directory.icon ? directory.icon : <Folder size={16} />}
             <span className="pl-2">{directory.title}</span>
           </AccordionTrigger>
           <AccordionContent>
-            <NoteList notes={directory.notes} />
+            <DirectoryList directory={directory} />
           </AccordionContent>
         </AccordionItem>
       ))}
-      {nonDirectoryNotes.map((note) => (
-        <NoteButton note={note} />
-      ))}
+      {/* Display all child notes in this directory*/}
+      <NoteList notes={directory.notes} />
     </Accordion>
   );
 }
 
 export default function DirectoriesPanel() {
-  const { directories, nonDirectoryNotes } = useSelector((state: RootState) => state.notesReducer);
+  const { data, error, isLoading } = useGetMainDirectoryQuery(undefined);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -82,7 +74,21 @@ export default function DirectoriesPanel() {
           </Button>
         </div>
       </div>
-      <DirectoriesList directories={directories} nonDirectoryNotes={nonDirectoryNotes} />
+      {!data || !data.directories.length || !data.notes.length ? (
+        <div className="h-[80%] flex justify-center items-center grow">
+          {isLoading ? (
+            <>
+              <Loader2 className="inline animate-spin mr-2" size={16} /> Loading...
+            </>
+          ) : (
+            <>
+              <Ghost className="inline mr-2" size={16} /> {error ? 'Error while loading notes' : 'No notes were found'}
+            </>
+          )}
+        </div>
+      ) : (
+        <DirectoryList directory={data} />
+      )}
     </div>
   );
 }

@@ -8,5 +8,6 @@ export type Directory = {
   id: string;
   icon: string;
   title: string;
+  directories: Directory[];
   notes: Note[];
 };
