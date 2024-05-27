@@ -7,18 +7,18 @@ export const mainApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: API_BASE_URL }),
   endpoints: (builder) => ({
     getMainDirectory: builder.query<Directory, undefined>({
-      query: () => '/main-directory',
+      query: () => '/directories/main',
     }),
     addNoteToDirectory: builder.mutation<Note, { note: Omit<Note, 'id'>; directoryId?: string }>({
       query: ({ ...body }) => ({
-        url: `note`,
+        url: `notes`,
         method: 'POST',
         body,
       }),
     }),
     updateNote: builder.mutation<Note, { note: Partial<Note>; id: string }>({
       query: ({ id, ...body }) => ({
-        url: `note/${id}`,
+        url: `notes/${id}`,
         method: 'PATCH',
         body,
       }),
