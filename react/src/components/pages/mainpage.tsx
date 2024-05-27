@@ -6,7 +6,7 @@ import TopBar from './components/top-bar';
 export default function MainPage() {
   return (
     <ResizablePanelGroup direction="horizontal">
-      <ResizablePanel defaultSize={12}>
+      <ResizablePanel defaultSize={18}>
         <CategoriesPanel />
       </ResizablePanel>
       <ResizableHandle withHandle />

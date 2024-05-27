@@ -6,8 +6,8 @@ export const mainApi = createApi({
   reducerPath: 'mainApi',
   baseQuery: fetchBaseQuery({ baseUrl: API_BASE_URL }),
   endpoints: (builder) => ({
-    getNoteById: builder.query<Note, string>({
-      query: (id: string) => `/note/${id}`,
+    getMainDirectory: builder.query<Directory, undefined>({
+      query: () => '/main-directory',
     }),
     addNoteToDirectory: builder.mutation<Note, { note: Omit<Note, 'id'>; directoryId?: string }>({
       query: ({ ...body }) => ({
@@ -16,13 +16,14 @@ export const mainApi = createApi({
         body,
       }),
     }),
-    getAllNotes: builder.query<Note[], undefined>({
-      query: () => '/notes',
-    }),
-    getMainDirectory: builder.query<Directory, undefined>({
-      query: () => '/main-directory',
+    updateNote: builder.mutation<Note, { note: Partial<Note>; id: string }>({
+      query: ({ id, ...body }) => ({
+        url: `note/${id}`,
+        method: 'PATCH',
+        body,
+      }),
     }),
   }),
 });
 
-export const { useGetNoteByIdQuery, useGetMainDirectoryQuery, useAddNoteToDirectoryMutation } = mainApi;
+export const { useGetMainDirectoryQuery, useAddNoteToDirectoryMutation, useUpdateNoteMutation } = mainApi;
