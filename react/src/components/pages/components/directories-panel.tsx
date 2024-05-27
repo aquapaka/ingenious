@@ -1,9 +1,9 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
 import { Directory, Note } from '@/lib/types';
-import { useGetMainDirectoryQuery } from '@/services/main-service';
+import { useAddNoteToDirectoryMutation, useGetMainDirectoryQuery } from '@/services/main-service';
 import { FilePen, Folder, FolderPen, Ghost, Loader2, StickyNote } from 'lucide-react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 function NoteButton({ note }: { note: Note }) {
   return (
@@ -56,21 +56,32 @@ function DirectoryList({ directory }: { directory: Directory }) {
 
 export default function DirectoriesPanel() {
   const { data, error, isLoading } = useGetMainDirectoryQuery(undefined);
+  const [addNewNote, { isLoading: isAdding }] = useAddNoteToDirectoryMutation();
+  const navigate = useNavigate();
+
+  function handleCreateNewDirectory() {}
+
+  function handleCreateNewNote() {
+    const note: Omit<Note, 'id'> = {
+      icon: '⭐',
+      title: 'New Note',
+      content: 'content',
+    };
+    addNewNote({ note }).then(({ data }) => {
+      if (data) navigate(`/note/${data.id}`);
+    });
+  }
 
   return (
     <div className="min-h-screen flex flex-col">
       <div className="flex justify-between items-center p-4 gap-1">
         <h1 className="font-bold">Notes</h1>
         <div className="flex">
-          <Button asChild variant="ghost" size="icon">
-            <NavLink to="/note/new">
-              <FilePen size={16} strokeWidth={2} className="text-primary" />
-            </NavLink>
+          <Button variant="ghost" size="icon" onClick={handleCreateNewDirectory}>
+            <FilePen size={16} strokeWidth={2} className="text-primary" />
           </Button>
-          <Button asChild variant="ghost" size="icon">
-            <NavLink to="/note/new">
-              <FolderPen size={16} strokeWidth={2} className="text-primary" />
-            </NavLink>
+          <Button variant="ghost" size="icon" onClick={handleCreateNewNote} disabled={isAdding}>
+            <FolderPen size={16} strokeWidth={2} className="text-primary" />
           </Button>
         </div>
       </div>

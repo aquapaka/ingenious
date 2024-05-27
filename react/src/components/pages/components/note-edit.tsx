@@ -1,19 +1,25 @@
 import { RootState } from '@/app/store';
-import { updateContent } from '@/features/markdown-editor/markdownEditorSlice';
+import { updateCurrentNoteContent } from '@/features/notes/notesSlice';
+import { findNoteInDirectory } from '@/lib/utils';
 import MarkdownEditor from '@uiw/react-markdown-editor';
 import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 
 function NoteEdit() {
-  const content = useSelector((state: RootState) => state.markdownEditorReducer.content);
+  const { id } = useParams();
+  const currentNote = useSelector((state: RootState) => {
+    if (state.notesReducer.mainDirectory && id) return findNoteInDirectory(state.notesReducer.mainDirectory, id);
+    return null;
+  });
   const dispatch = useDispatch();
 
   return (
     <MarkdownEditor
       className="h-full rounded-none"
       visible
-      value={content}
+      value={currentNote?.content}
       onChange={(value) => {
-        dispatch(updateContent(value));
+        dispatch(updateCurrentNoteContent(value));
       }}
       enableScroll
       previewProps={{

@@ -7,7 +7,14 @@ export const mainApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: API_BASE_URL }),
   endpoints: (builder) => ({
     getNoteById: builder.query<Note, string>({
-      query: (id: string) => `/notes/${id}`,
+      query: (id: string) => `/note/${id}`,
+    }),
+    addNoteToDirectory: builder.mutation<Note, { note: Omit<Note, 'id'>; directoryId?: string }>({
+      query: ({ ...body }) => ({
+        url: `note`,
+        method: 'POST',
+        body,
+      }),
     }),
     getAllNotes: builder.query<Note[], undefined>({
       query: () => '/notes',
@@ -18,4 +25,4 @@ export const mainApi = createApi({
   }),
 });
 
-export const { useGetNoteByIdQuery, useGetMainDirectoryQuery } = mainApi;
+export const { useGetNoteByIdQuery, useGetMainDirectoryQuery, useAddNoteToDirectoryMutation } = mainApi;

@@ -2,6 +2,7 @@ export type Note = {
   id: string;
   icon: string;
   title: string;
+  content: string;
 };
 
 export type Directory = {
