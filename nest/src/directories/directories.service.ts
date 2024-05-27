@@ -1,26 +1,23 @@
 import { Injectable } from '@nestjs/common';
-import { CreateDirectoryDto } from './dto/create-directory.dto';
-import { UpdateDirectoryDto } from './dto/update-directory.dto';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { Directory } from './schemas/directory.schema';
 
 @Injectable()
 export class DirectoriesService {
-  create(createDirectoryDto: CreateDirectoryDto) {
-    return 'This action adds a new directory';
-  }
+  constructor(
+    @InjectModel(Directory.name) private directoryModel: Model<Directory>,
+  ) {}
 
-  findAll() {
-    return `This action returns all directories`;
-  }
+  getMainDirectory(): Promise<Directory> {
+    const main = this.directoryModel.findOne();
+    if (main) return main;
 
-  findOne(id: number) {
-    return `This action returns a #${id} directory`;
-  }
-
-  update(id: number, updateDirectoryDto: UpdateDirectoryDto) {
-    return `This action updates a #${id} directory`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} directory`;
+    const createdDirectory = new this.directoryModel({
+      title: 'MainDirectory',
+      directories: [],
+      notes: [],
+    });
+    return createdDirectory.save();
   }
 }
