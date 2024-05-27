@@ -24,7 +24,8 @@ A notion alternative multipurpose productive app
 - [Validate commit message convention using Commitlint and Husky](https://dev.to/omarzi/how-to-validate-commit-message-convention-using-commitlint-and-husky-aaa) (This post use old version of Husky, we can use this [Migrate guide](https://typicode.github.io/husky/migrate-from-v4.html)) ☑️
 - Use Github Action to run test before release
 - Deployment: Vercel
-- Markdown Editor Library [MDXEditor](https://mdxeditor.dev/) ☑️
+- Markdown Editor Library: [React Markdown Editor](https://github.com/uiwjs/react-markdown-editor) ☑️
+  - An implement of [React MD Editor](https://github.com/uiwjs/react-md-editor) using [CodeMirror](https://codemirror.net/)
 
 ## Resources
 
