@@ -19,7 +19,7 @@ function App() {
   return (
     <Provider store={store}>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-        <div className="min-h-screen">
+        <div className="h-screen">
           <RouterProvider router={router} />
         </div>
       </ThemeProvider>

@@ -21,7 +21,7 @@ export class Note {
   updatedAt: Date;
 
   @Prop()
-  markdown: string;
+  content: string;
 }
 
 export const NoteSchema = SchemaFactory.createForClass(Note);

@@ -6,11 +6,6 @@ import { NotesService } from './notes.service';
 export class NotesController {
   constructor(private readonly notesService: NotesService) {}
 
-  @Post()
-  create(@Body() createNoteDto: CreateNoteDto) {
-    return this.notesService.create(createNoteDto);
-  }
-
   @Get()
   findAll() {
     return this.notesService.findAll();
@@ -19,6 +14,11 @@ export class NotesController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.notesService.findOne(id);
+  }
+
+  @Post()
+  create(@Body() createNoteDto: CreateNoteDto) {
+    return this.notesService.create(createNoteDto);
   }
 
   // @Patch(':id')
