@@ -29,6 +29,7 @@ export const mainApi = createApi({
         method: 'PATCH',
         body: note,
       }),
+      invalidatesTags: ['Note'],
     }),
   }),
 });

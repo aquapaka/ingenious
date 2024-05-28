@@ -7,6 +7,7 @@ import {
   Directory,
   DirectoryDocument,
 } from 'src/directories/schemas/directory.schema';
+import { UpdateNoteDto } from './dto/update-note.dto';
 
 @Injectable()
 export class NotesService {
@@ -32,8 +33,6 @@ export class NotesService {
     } else {
       parentDir = await this.directoryModel.findOne();
     }
-    console.log('parent', parentDir);
-    console.log('createdNote', createdNote);
     parentDir.notes.push(createdNote);
     parentDir.save();
 
@@ -48,9 +47,14 @@ export class NotesService {
     return this.noteModel.findById(id).exec();
   }
 
-  // update(id: number, updateNoteDto: UpdateNoteDto) {
-  //   return `This action updates a #${id} note`;
-  // }
+  update(id: string, updateNoteDto: UpdateNoteDto) {
+    return this.noteModel.updateOne(
+      { _id: id },
+      {
+        $set: updateNoteDto,
+      },
+    );
+  }
 
   // remove(id: number) {
   //   return `This action removes a #${id} note`;

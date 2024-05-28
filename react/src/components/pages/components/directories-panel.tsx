@@ -3,7 +3,6 @@ import { Button } from '@/components/ui/button';
 import { Directory, Note } from '@/lib/types';
 import { useAddNoteMutation, useGetMainDirectoryQuery } from '@/services/main-service';
 import { FilePen, Folder, FolderPen, Ghost, Loader2, StickyNote } from 'lucide-react';
-import { useEffect } from 'react';
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
 
 function NoteButton({ note }: { note: Note }) {
