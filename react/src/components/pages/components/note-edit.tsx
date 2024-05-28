@@ -13,7 +13,7 @@ function NoteEdit() {
 
   useEffect(() => {
     if (id && mainDirectory) {
-      const note = findNoteInDirectory(mainDirectory, id);
+      const note = findNoteInDirectory(id, mainDirectory);
       if (note) setContent(note.content);
     }
   }, [id, mainDirectory]);

@@ -6,13 +6,15 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function findNoteInDirectory(directory: Directory, id: string): Note | null {
+export function findNoteInDirectory(id?: string, directory?: Directory): Note | null {
+  if (!directory || !id) return null;
+
   for (const note of directory.notes) {
-    if (note.id === id) return note;
+    if (note._id === id) return note;
   }
 
   for (const dir of directory.directories) {
-    return findNoteInDirectory(dir, id);
+    return findNoteInDirectory(id, dir);
   }
 
   return null;

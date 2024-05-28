@@ -6,10 +6,14 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
-import { useLocation } from 'react-router-dom';
+import { findNoteInDirectory } from '@/lib/utils';
+import { useGetMainDirectoryQuery } from '@/services/main-service';
+import { useParams } from 'react-router-dom';
 
 export default function TopBar() {
-  const location = useLocation();
+  const { id } = useParams();
+  const { data: mainDirectory, isLoading } = useGetMainDirectoryQuery(undefined);
+  const note = findNoteInDirectory(id, mainDirectory);
 
   return (
     <div className="flex justify-between items-center p-2">
@@ -20,7 +24,7 @@ export default function TopBar() {
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbPage>{location.pathname}</BreadcrumbPage>
+            <BreadcrumbPage>{note && `${note.icon} ${note.title}`}</BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
