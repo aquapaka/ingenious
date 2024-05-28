@@ -1,20 +1,22 @@
 import { Note } from '@/lib/types';
 import { useUpdateNoteMutation } from '@/services/main-service';
 import MarkdownEditor from '@uiw/react-markdown-editor';
-import { CheckCheck, Loader2 } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { CheckCheck, Loader2, TextCursorInput } from 'lucide-react';
+import { useState } from 'react';
+import { useDebouncedCallback } from 'use-debounce';
 
 function Editor(props: { note: Note }) {
   const { note } = props;
   const [updateNote, { isLoading: isUpdating }] = useUpdateNoteMutation();
-  const [content, setContent] = useState(note.content);
-
-  useEffect(() => {
-    setContent(note.content);
-  }, [note]);
+  const debouncedUpdateNote = useDebouncedCallback((value) => {
+    updateNote({ ...note, content: value });
+    setIsTyping(false);
+  }, 1000);
+  const [isTyping, setIsTyping] = useState(false);
 
   function handleOnChange(value: string) {
-    updateNote({ ...note, content: value });
+    setIsTyping(true);
+    debouncedUpdateNote(value);
   }
 
   return (
@@ -22,7 +24,7 @@ function Editor(props: { note: Note }) {
       <MarkdownEditor
         className="h-[92%] rounded-none"
         visible
-        value={content}
+        value={note.content}
         onChange={handleOnChange}
         enableScroll
         autoFocus
@@ -31,9 +33,13 @@ function Editor(props: { note: Note }) {
         }}
       />
       <p className="m-2 flex items-center text-xs">
-        {isUpdating ? (
+        {isTyping ? (
           <>
-            <Loader2 className="mr-2" size={16} /> Saving...
+            <TextCursorInput className="mr-2 animate-pulse" size={16} /> Typing...
+          </>
+        ) : isUpdating ? (
+          <>
+            <Loader2 className="animate-spin mr-2" size={16} /> Saving...
           </>
         ) : (
           <>
