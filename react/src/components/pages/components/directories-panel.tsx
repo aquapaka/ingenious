@@ -16,7 +16,7 @@ function NoteButton({ note }: { note: Note }) {
           [isPending ? 'pending' : '', isActive ? 'active' : '', isTransitioning ? 'transitioning' : ''].join(' ')
         }
       >
-        {note.icon ? note.icon : <StickyNote size={16} />}
+        <span className="pl-4">{note.icon ? note.icon : <StickyNote size={16} />}</span>
         <span className="pl-2">{note.title}</span>
       </NavLink>
     </Button>
@@ -25,7 +25,7 @@ function NoteButton({ note }: { note: Note }) {
 
 function NoteList({ notes }: { notes: Note[] }) {
   return (
-    <div className="flex flex-col gap-1 pl-8">
+    <div className="flex flex-col gap-1 pl-4">
       {notes.map((note) => (
         <div key={note._id}>
           <NoteButton note={note} />
@@ -41,17 +41,19 @@ function DirectoryList({ directory }: { directory: Directory }) {
       {/* Display all child directory */}
       {directory.directories.map((directory) => (
         <div key={directory._id}>
-          <AccordionItem className="group pl-4 relative" value={directory._id}>
-            <div className="right-1 top-1 absolute items-center opacity-0 group-hover:opacity-100 duration-300 gap-2">
+          <AccordionItem className="pl-4 relative" value={directory._id}>
+            <div className="peer">
+              <AccordionTrigger className="hover:bg-secondary rounded-md yo">
+                <div className="flex items-center">
+                  {directory.icon ? directory.icon : <Folder size={16} />}
+                  <span className="pl-2">{directory.title}</span>
+                </div>
+              </AccordionTrigger>
+            </div>
+            <div className="right-2 top-[0.4rem] absolute items-center opacity-0 hover:opacity-100 peer-hover:opacity-100 duration-300 gap-2">
               <CreateNewNoteButton small parentDirectoryId={directory._id} />
               <CreateNewDirectoryButton small parentDirectoryId={directory._id} />
             </div>
-            <AccordionTrigger>
-              <div className="flex">
-                {directory.icon ? directory.icon : <Folder size={16} />}
-                <span className="pl-2">{directory.title}</span>
-              </div>
-            </AccordionTrigger>
             <AccordionContent>
               <DirectoryList directory={directory} />
               <div className="h-1"></div>
