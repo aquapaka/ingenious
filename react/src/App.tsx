@@ -10,7 +10,7 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<MainPage />}>
       <Route path="" element={<NotesPanel />} />
-      <Route path="note/:id" element={<NotesPanel />} />
+      <Route path="notes/:id" element={<NotesPanel />} />
     </Route>,
   ),
 );

@@ -1,12 +1,13 @@
 export type Note = {
-  id: string;
+  _id: string;
   icon: string;
+  tags: string[];
   title: string;
   content: string;
 };
 
 export type Directory = {
-  id: string;
+  _id: string;
   icon: string;
   title: string;
   directories: Directory[];

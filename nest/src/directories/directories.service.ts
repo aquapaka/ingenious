@@ -11,7 +11,7 @@ export class DirectoriesService {
 
   getMainDirectory(): Promise<Directory> {
     const main = this.directoryModel.findOne();
-    if (main) return main;
+    if (main) return main.populate(['directories', 'notes']);
 
     const createdDirectory = new this.directoryModel({
       title: 'MainDirectory',

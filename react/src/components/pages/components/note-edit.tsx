@@ -1,7 +1,7 @@
 import { findNoteInDirectory } from '@/lib/utils';
 import { useGetMainDirectoryQuery, useUpdateNoteMutation } from '@/services/main-service';
 import MarkdownEditor from '@uiw/react-markdown-editor';
-import { Frown, Loader2 } from 'lucide-react';
+import { CheckCheck, Frown, Loader2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -23,7 +23,7 @@ function NoteEdit() {
   }
 
   return (
-    <div className="h-[94%] flex justify-center items-center">
+    <div className="w-full h-full">
       {isLoading ? (
         <p className="flex items-center">
           <Loader2 className="animate-spin mr-2" /> Loading note...
@@ -35,7 +35,7 @@ function NoteEdit() {
       ) : (
         <>
           <MarkdownEditor
-            className="rounded-none"
+            className="h-[92%] rounded-none"
             visible
             value={content}
             onChange={handleOnChange}
@@ -44,7 +44,17 @@ function NoteEdit() {
               className: 'prose dark:prose-invert',
             }}
           />
-          Status: {isUpdating ? 'Updating' : 'Done'}
+          <p className="m-2 flex items-center text-xs">
+            {isUpdating ? (
+              <>
+                <Loader2 className="mr-2" size={16} /> Saving...
+              </>
+            ) : (
+              <>
+                <CheckCheck className="mr-2" size={16} /> Saved
+              </>
+            )}
+          </p>
         </>
       )}
     </div>

@@ -1,15 +1,18 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
 import { Directory, Note } from '@/lib/types';
-import { useAddNoteToDirectoryMutation, useGetMainDirectoryQuery } from '@/services/main-service';
+import { useAddNoteMutation, useGetMainDirectoryQuery } from '@/services/main-service';
 import { FilePen, Folder, FolderPen, Ghost, Loader2, StickyNote } from 'lucide-react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { NavLink, useNavigate, useParams } from 'react-router-dom';
 
 function NoteButton({ note }: { note: Note }) {
+  const { id } = useParams();
+
   return (
-    <Button asChild variant="ghost" className="w-full justify-start">
+    <Button asChild variant={id === note._id ? 'secondary' : 'ghost'} className="w-full justify-start">
       <NavLink
-        to={`/note/${note.id}`}
+        to={`/notes/${note._id}`}
         className={({ isActive, isPending, isTransitioning }) =>
           [isPending ? 'pending' : '', isActive ? 'active' : '', isTransitioning ? 'transitioning' : ''].join(' ')
         }
@@ -23,9 +26,9 @@ function NoteButton({ note }: { note: Note }) {
 
 function NoteList({ notes }: { notes: Note[] }) {
   return (
-    <ul className="flex flex-col gap-1 pl-4">
+    <ul className="flex flex-col gap-1 pl-2">
       {notes.map((note) => (
-        <li key={note.id}>
+        <li key={note._id}>
           <NoteButton note={note} />
         </li>
       ))}
@@ -38,7 +41,7 @@ function DirectoryList({ directory }: { directory: Directory }) {
     <Accordion type="multiple" className="flex flex-col w-full gap-1">
       {/* Display all child directory */}
       {directory.directories.map((directory) => (
-        <AccordionItem key={directory.id} value={directory.id}>
+        <AccordionItem key={directory._id} value={directory._id}>
           <AccordionTrigger>
             {directory.icon ? directory.icon : <Folder size={16} />}
             <span className="pl-2">{directory.title}</span>
@@ -56,25 +59,31 @@ function DirectoryList({ directory }: { directory: Directory }) {
 
 export default function DirectoriesPanel() {
   const { data, error, isLoading } = useGetMainDirectoryQuery(undefined);
-  const [addNewNote, { isLoading: isAdding }] = useAddNoteToDirectoryMutation();
+  const [addNewNote, { isLoading: isAdding }] = useAddNoteMutation();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log(data);
+  });
 
   function handleCreateNewDirectory() {}
 
   function handleCreateNewNote() {
-    const note: Omit<Note, 'id'> = {
+    const note: Omit<Note, '_id'> = {
       icon: '⭐',
+      tags: [],
       title: 'New Note',
-      content: 'content',
+      content: 'yo what supp',
     };
-    addNewNote({ note }).then(({ data }) => {
-      if (data) navigate(`/note/${data.id}`);
+    addNewNote(note).then(({ data }) => {
+      console.log(data);
+      if (data) navigate(`/notes/${data._id}`);
     });
   }
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <div className="flex justify-between items-center p-4 gap-1">
+    <div className="h-full flex flex-col p-4">
+      <div className="flex justify-between items-center gap-1 mb-2">
         <h1 className="font-bold">Notes</h1>
         <div className="flex">
           <Button variant="ghost" size="icon" onClick={handleCreateNewDirectory}>
@@ -85,7 +94,7 @@ export default function DirectoriesPanel() {
           </Button>
         </div>
       </div>
-      {!data || !data.directories.length || !data.notes.length ? (
+      {!data || (!data.directories.length && !data.notes.length) ? (
         <div className="h-[80%] flex justify-center items-center grow">
           {isLoading ? (
             <>

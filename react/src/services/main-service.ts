@@ -4,17 +4,20 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export const mainApi = createApi({
   reducerPath: 'mainApi',
+  tagTypes: ['Directory', 'Note'],
   baseQuery: fetchBaseQuery({ baseUrl: API_BASE_URL }),
   endpoints: (builder) => ({
     getMainDirectory: builder.query<Directory, undefined>({
       query: () => '/directories/main',
+      providesTags: ['Directory', 'Note'],
     }),
-    addNoteToDirectory: builder.mutation<Note, { note: Omit<Note, 'id'>; directoryId?: string }>({
+    addNote: builder.mutation<Note, Omit<Note, '_id'> & { parentDirectoryId?: string }>({
       query: ({ ...body }) => ({
         url: `notes`,
         method: 'POST',
         body,
       }),
+      invalidatesTags: ['Note'],
     }),
     updateNote: builder.mutation<Note, { note: Partial<Note>; id: string }>({
       query: ({ id, ...body }) => ({
@@ -26,4 +29,4 @@ export const mainApi = createApi({
   }),
 });
 
-export const { useGetMainDirectoryQuery, useAddNoteToDirectoryMutation, useUpdateNoteMutation } = mainApi;
+export const { useGetMainDirectoryQuery, useAddNoteMutation, useUpdateNoteMutation } = mainApi;
