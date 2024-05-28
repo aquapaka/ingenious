@@ -14,7 +14,6 @@ function Editor(props: { note: Note }) {
   }, [note]);
 
   function handleOnChange(value: string) {
-    console.log(value);
     updateNote({ ...note, content: value });
   }
 
