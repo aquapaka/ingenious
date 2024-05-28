@@ -25,7 +25,7 @@ function NoteButton({ note }: { note: Note }) {
 
 function NoteList({ notes }: { notes: Note[] }) {
   return (
-    <div className="flex flex-col gap-1 pl-4">
+    <div className="flex flex-col gap-1 pl-8">
       {notes.map((note) => (
         <div key={note._id}>
           <NoteButton note={note} />
@@ -41,21 +41,20 @@ function DirectoryList({ directory }: { directory: Directory }) {
       {/* Display all child directory */}
       {directory.directories.map((directory) => (
         <div key={directory._id}>
-          <AccordionItem className="group pl-4" value={directory._id}>
+          <AccordionItem className="group pl-4 relative" value={directory._id}>
+            <div className="right-1 top-1 absolute items-center opacity-0 group-hover:opacity-100 duration-300 gap-2">
+              <CreateNewNoteButton small parentDirectoryId={directory._id} />
+              <CreateNewDirectoryButton small parentDirectoryId={directory._id} />
+            </div>
             <AccordionTrigger>
-              <div className="w-full flex justify-between items-center">
-                <div className="flex items-center">
-                  {directory.icon ? directory.icon : <Folder size={16} />}
-                  <span className="pl-2">{directory.title}</span>
-                </div>
-                <div className="flex items-center opacity-0 group-hover:opacity-100 duration-300 gap-2">
-                  <CreateNewNoteButton small parentDirectoryId={directory._id} />
-                  <CreateNewDirectoryButton small parentDirectoryId={directory._id} />
-                </div>
+              <div className="flex">
+                {directory.icon ? directory.icon : <Folder size={16} />}
+                <span className="pl-2">{directory.title}</span>
               </div>
             </AccordionTrigger>
             <AccordionContent>
               <DirectoryList directory={directory} />
+              <div className="h-1"></div>
             </AccordionContent>
           </AccordionItem>
         </div>
