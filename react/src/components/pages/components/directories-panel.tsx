@@ -62,10 +62,6 @@ export default function DirectoriesPanel() {
   const [addNewNote, { isLoading: isAdding }] = useAddNoteMutation();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    console.log(data);
-  });
-
   function handleCreateNewDirectory() {}
 
   function handleCreateNewNote() {
@@ -76,7 +72,6 @@ export default function DirectoriesPanel() {
       content: 'yo what supp',
     };
     addNewNote(note).then(({ data }) => {
-      console.log(data);
       if (data) navigate(`/notes/${data._id}`);
     });
   }

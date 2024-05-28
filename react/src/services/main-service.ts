@@ -9,24 +9,28 @@ export const mainApi = createApi({
   endpoints: (builder) => ({
     getMainDirectory: builder.query<Directory, undefined>({
       query: () => '/directories/main',
-      providesTags: ['Directory', 'Note'],
+      providesTags: ['Directory'],
+    }),
+    getNote: builder.query<Note, { _id: string | undefined }>({
+      query: ({ _id }) => `/notes/${_id}`,
+      providesTags: ['Note'],
     }),
     addNote: builder.mutation<Note, Omit<Note, '_id'> & { parentDirectoryId?: string }>({
       query: ({ ...body }) => ({
-        url: `notes`,
+        url: `/notes`,
         method: 'POST',
         body,
       }),
-      invalidatesTags: ['Note'],
+      invalidatesTags: ['Directory'],
     }),
-    updateNote: builder.mutation<Note, { note: Partial<Note>; id: string }>({
-      query: ({ id, ...body }) => ({
-        url: `notes/${id}`,
+    updateNote: builder.mutation<Note, Note>({
+      query: ({ ...note }) => ({
+        url: `/notes/${note._id}`,
         method: 'PATCH',
-        body,
+        body: note,
       }),
     }),
   }),
 });
 
-export const { useGetMainDirectoryQuery, useAddNoteMutation, useUpdateNoteMutation } = mainApi;
+export const { useGetMainDirectoryQuery, useGetNoteQuery, useAddNoteMutation, useUpdateNoteMutation } = mainApi;
