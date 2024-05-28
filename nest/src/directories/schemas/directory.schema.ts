@@ -19,4 +19,12 @@ export class Directory {
 
 export type DirectoryDocument = HydratedDocument<Directory>;
 
-export const DirectorySchema = SchemaFactory.createForClass(Directory);
+const autoPopulateChildren = function (next) {
+  this.populate('notes');
+  this.populate('directories');
+  next();
+};
+
+export const DirectorySchema = SchemaFactory.createForClass(Directory)
+  .pre('findOne', autoPopulateChildren)
+  .pre('find', autoPopulateChildren);
