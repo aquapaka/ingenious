@@ -9,9 +9,7 @@ export default defineConfig({
     react(),
     VitePWA({
       injectRegister: 'auto',
-      workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
-      },
+      base: '/',
       manifest: {
         name: 'Ingenious',
         short_name: 'Ingenious',
@@ -29,6 +27,10 @@ export default defineConfig({
             type: 'image/png',
           },
         ],
+        display: 'standalone',
+        scope: '/',
+        start_url: '/',
+        orientation: 'portrait',
       },
       devOptions: {
         enabled: true,

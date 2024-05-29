@@ -34,13 +34,13 @@ export const mainApi = createApi({
       }),
       invalidatesTags: ['Directory'],
     }),
-    updateNote: builder.mutation<Note, Note>({
+    updateNote: builder.mutation<Note, Partial<Note>>({
       query: ({ ...note }) => ({
         url: `/notes/${note._id}`,
         method: 'PATCH',
         body: note,
       }),
-      invalidatesTags: ['Note'],
+      invalidatesTags: ['Note', 'Directory'],
     }),
   }),
 });

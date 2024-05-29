@@ -17,7 +17,7 @@ function NoteButton({ note }: { note: Note }) {
         }
       >
         <span className="pl-4">{note.icon ? note.icon : <StickyNote size={16} />}</span>
-        <span className="pl-2">{note.title}</span>
+        <span className="pl-2 overflow-hidden">{note.title}</span>
       </NavLink>
     </Button>
   );
@@ -50,7 +50,7 @@ function DirectoryList({ directory }: { directory: Directory }) {
                 </div>
               </AccordionTrigger>
             </div>
-            <div className="right-2 top-[0.4rem] absolute items-center opacity-0 hover:opacity-100 peer-hover:opacity-100 duration-300 gap-2">
+            <div className="right-2 top-[0.4rem] absolute items-center opacity-0 hover:opacity-100 peer-hover:opacity-100 duration-300 gap-2 bg-background rounded-md">
               <CreateNewNoteButton small parentDirectoryId={directory._id} />
               <CreateNewDirectoryButton small parentDirectoryId={directory._id} />
             </div>
