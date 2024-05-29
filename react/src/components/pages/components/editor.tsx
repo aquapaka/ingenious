@@ -26,10 +26,10 @@ function Editor(props: { note: Note }) {
         visible
         value={note.content}
         onChange={handleOnChange}
-        enableScroll
+        enableScroll={false}
         autoFocus
         previewProps={{
-          className: 'prose dark:prose-invert',
+          className: 'prose dark:prose-invert prose-sm lg:prose-base prose-ingenious',
         }}
       />
       <p className="m-2 flex items-center text-xs">
