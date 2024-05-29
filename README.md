@@ -24,10 +24,10 @@ A notion alternative multipurpose productive app
 - State management:
   - [Redux toolkit](https://redux-toolkit.js.org/introduction/getting-started)
   - [Redux toolkit query](https://redux-toolkit.js.org/rtk-query/overview)
-- PWA:
-  - Can be installed
-  - App still working when offline
-  - Automatic sync local data with backend when online
+- PWA: ☑️
+  - Can be installed ☑️
+  - App still working when offline ☑️
+  - Automatic sync local data with backend when online ☑️
   - [Vite PWA Plugin](https://vite-pwa-org.netlify.app/guide/)
 - [Validate commit message convention using Commitlint and Husky](https://dev.to/omarzi/how-to-validate-commit-message-convention-using-commitlint-and-husky-aaa) (This post use old version of Husky, we can use this [Migrate guide](https://typicode.github.io/husky/migrate-from-v4.html)) ☑️
 - Use Github Action to run test before release
@@ -40,7 +40,7 @@ A notion alternative multipurpose productive app
 
 - [Progressive Web App](https://web.dev/explore/progressive-web-apps)
 - [modern-full-stack-development-with-nestjs-react-typescript-and-mongodb-part-1](https://auth0.com/blog/modern-full-stack-development-with-nestjs-react-typescript-and-mongodb-part-1/)
-- [Turn your react + vite app into a PWA](https://dev.to/bhendi/turn-your-react-vite-app-into-a-pwa-3lpg)
+- [React + PWA](https://www.saurabhmisra.dev/setup-react-pwa-using-vite/)
 
 ## Libs
 

@@ -8,6 +8,8 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
+      registerType: 'autoUpdate',
+      includeAssets: ['vite.svg'],
       injectRegister: 'auto',
       base: '/',
       manifest: {
@@ -16,6 +18,11 @@ export default defineConfig({
         description: 'A multipurpose productive app',
         theme_color: '#ffffff',
         icons: [
+          {
+            src: 'pwa-64x64.png',
+            sizes: '64x64',
+            type: 'image/png',
+          },
           {
             src: 'pwa-192x192.png',
             sizes: '192x192',
@@ -26,14 +33,17 @@ export default defineConfig({
             sizes: '512x512',
             type: 'image/png',
           },
+          {
+            src: 'maskable-icon-512x512.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'maskable',
+          },
         ],
         display: 'standalone',
         scope: '/',
         start_url: '/',
         orientation: 'portrait',
-      },
-      devOptions: {
-        enabled: true,
       },
     }),
   ],

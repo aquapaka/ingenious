@@ -8,7 +8,8 @@
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "pretty": "prettier --write \"./**/*.{js,jsx,mjs,cjs,ts,tsx,json}\""
+    "pretty": "prettier --write \"./**/*.{js,jsx,mjs,cjs,ts,tsx,json}\"",
+    "generate-pwa-assets": "pwa-assets-generator --preset minimal public/vite.svg"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.1.2",
@@ -41,6 +42,7 @@
     "@types/react-edit-text": "^5.0.4",
     "@typescript-eslint/eslint-plugin": "^7.9.0",
     "@typescript-eslint/parser": "^7.9.0",
+    "@vite-pwa/assets-generator": "^0.2.4",
     "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "^10.4.19",
     "eslint": "^8.57.0",
