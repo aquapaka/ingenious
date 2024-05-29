@@ -87,7 +87,7 @@ function CreateNewNoteButton(props: { small?: boolean; parentDirectoryId?: strin
   }
   return (
     <Button variant="ghost" size={small ? 'sm-icon' : 'icon'} onClick={handleCreateNewNote} disabled={isAddingNote}>
-      <FilePen size={small ? 14 : 16} strokeWidth={2} className="text-primary" />
+      <FilePen size={small ? 14 : 16} strokeWidth={2} />
     </Button>
   );
 }
@@ -112,7 +112,7 @@ function CreateNewDirectoryButton(props: { small?: boolean; parentDirectoryId?: 
       onClick={handleCreateNewDirectory}
       disabled={isAddingDirectory}
     >
-      <FolderPen size={small ? 14 : 16} strokeWidth={2} className="text-primary" />
+      <FolderPen size={small ? 14 : 16} strokeWidth={2} />
     </Button>
   );
 }
