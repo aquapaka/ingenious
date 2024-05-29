@@ -3,11 +3,14 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { NotesModule } from './notes/notes.module';
 import { MongooseModule } from '@nestjs/mongoose';
+import { DirectoriesModule } from './directories/directories.module';
+import { MONGO_DB_URL } from './constants';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://127.0.0.1:27017/ingenious'),
+    MongooseModule.forRoot(MONGO_DB_URL),
     NotesModule,
+    DirectoriesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

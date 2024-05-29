@@ -1,13 +1,13 @@
 import { Outlet } from 'react-router-dom';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '../ui/resizable';
-import CategoriesPanel from './components/directories-panel';
+import DirectoriesPanel from './components/directories-panel';
 import TopBar from './components/top-bar';
 
 export default function MainPage() {
   return (
-    <ResizablePanelGroup direction="horizontal">
-      <ResizablePanel defaultSize={12}>
-        <CategoriesPanel />
+    <ResizablePanelGroup className="h-full" direction="horizontal">
+      <ResizablePanel defaultSize={16}>
+        <DirectoriesPanel />
       </ResizablePanel>
       <ResizableHandle withHandle />
       <ResizablePanel>
