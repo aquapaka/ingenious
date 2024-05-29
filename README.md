@@ -40,7 +40,7 @@ A notion alternative multipurpose productive app
 
 - [Progressive Web App](https://web.dev/explore/progressive-web-apps)
 - [modern-full-stack-development-with-nestjs-react-typescript-and-mongodb-part-1](https://auth0.com/blog/modern-full-stack-development-with-nestjs-react-typescript-and-mongodb-part-1/)
-- [Turn your react + vite app into a PWA](https://dev.to/bhendi/turn-your-react-vite-app-into-a-pwa-3lpg)
+- [React + PWA](https://www.saurabhmisra.dev/setup-react-pwa-using-vite/)
 
 ## Libs
 
