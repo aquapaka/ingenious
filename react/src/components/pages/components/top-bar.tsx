@@ -11,7 +11,7 @@ import { useParams } from 'react-router-dom';
 
 export default function TopBar() {
   const { id } = useParams();
-  const { data: note } = useGetNoteQuery({ _id: id });
+  const { data: note } = useGetNoteQuery(id);
 
   return (
     <div className="flex justify-between items-center p-2">

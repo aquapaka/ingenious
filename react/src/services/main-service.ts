@@ -22,8 +22,8 @@ export const mainApi = createApi({
       }),
       invalidatesTags: ['Directory'],
     }),
-    getNote: builder.query<Note, { _id: string | undefined }>({
-      query: ({ _id }) => `/notes/${_id}`,
+    getNote: builder.query<Note, string | undefined>({
+      query: (id) => (id ? `/notes/${id}` : ''),
       providesTags: ['Note'],
     }),
     addNote: builder.mutation<Note, Omit<Note, '_id'> & { parentDirectoryId?: string }>({

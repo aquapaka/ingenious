@@ -5,7 +5,7 @@ import { useGetNoteQuery } from '@/services/main-service';
 
 export default function NotesPanel() {
   const { id } = useParams();
-  const { data: note, error, isLoading } = useGetNoteQuery({ _id: id });
+  const { data: note, error, isLoading } = useGetNoteQuery(id);
 
   return (
     <div className="h-full flex justify-center items-center">
