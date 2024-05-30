@@ -1,11 +1,17 @@
 import { Frown, Loader2 } from 'lucide-react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Editor from './editor';
 import { useGetNoteQuery } from '@/services/main-service';
+import { useEffect } from 'react';
 
 export default function NotesPanel() {
   const { id } = useParams();
   const { data: note, error, isLoading } = useGetNoteQuery(id);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (error) navigate('/');
+  }, [navigate, error]);
 
   return (
     <div className="h-full flex justify-center items-center">

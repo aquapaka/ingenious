@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { CreateNoteDto } from './dto/create-note.dto';
-import { Note } from './schemas/note.schema';
 import {
   Directory,
   DirectoryDocument,
 } from 'src/directories/schemas/directory.schema';
+import { CreateNoteDto } from './dto/create-note.dto';
 import { UpdateNoteDto } from './dto/update-note.dto';
+import { Note } from './schemas/note.schema';
 
 @Injectable()
 export class NotesService {
@@ -56,7 +56,9 @@ export class NotesService {
     );
   }
 
-  // remove(id: number) {
-  //   return `This action removes a #${id} note`;
-  // }
+  remove(id: string) {
+    return this.noteModel.deleteOne({
+      _id: id,
+    });
+  }
 }

@@ -42,6 +42,13 @@ export const mainApi = createApi({
       }),
       invalidatesTags: ['Note', 'Directory'],
     }),
+    deleteNote: builder.mutation<Note, string>({
+      query: (id) => ({
+        url: `notes/${id}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Directory', 'Note'],
+    }),
   }),
 });
 
@@ -51,4 +58,5 @@ export const {
   useGetNoteQuery,
   useAddNoteMutation,
   useUpdateNoteMutation,
+  useDeleteNoteMutation,
 } = mainApi;
