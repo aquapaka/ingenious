@@ -12,7 +12,7 @@ A notion alternative multipurpose productive app
 ## Main technologies
 
 - React + TypeScript + Vite ☑️
-- Package management: [PNPM](https://pnpm.io/)
+- Package management: [PNPM](https://pnpm.io/) ☑️
 - UI library: [shadcn/ui](https://ui.shadcn.com/) ☑️
 - Backend:
   - [NestJS](https://docs.nestjs.com/) ☑️
@@ -21,10 +21,10 @@ A notion alternative multipurpose productive app
   - Unit Test: [JestJS](https://jestjs.io/docs/getting-started) + [React Testing library](https://jestjs.io/docs/tutorial-react)
   - E2E Test: Playwright or Cypress
 
-- State management:
-  - [Redux toolkit](https://redux-toolkit.js.org/introduction/getting-started)
-  - [Redux toolkit query](https://redux-toolkit.js.org/rtk-query/overview)
-- PWA: ☑️
+- State management: ☑️
+  - [Redux toolkit](https://redux-toolkit.js.org/introduction/getting-started) ☑️
+  - [Redux toolkit query](https://redux-toolkit.js.org/rtk-query/overview) ☑️
+- Implement PWA: ☑️
   - Can be installed ☑️
   - App still working when offline ☑️
   - Automatic sync local data with backend when online ☑️
@@ -33,8 +33,8 @@ A notion alternative multipurpose productive app
 - Use Github Action to run test before release
 - Deployment:
   - On [Vercel](https://vercel.com/)
-- Markdown Editor Library: [React Markdown Editor](https://github.com/uiwjs/react-markdown-editor) ☑️
-  - An implement of [React MD Editor](https://github.com/uiwjs/react-md-editor) using [CodeMirror](https://codemirror.net/)
+- [React Markdown Editor](https://github.com/uiwjs/react-markdown-editor) (An implement of [React MD Editor](https://github.com/uiwjs/react-md-editor) using [CodeMirror](https://codemirror.net/)
+) ☑️
 
 ## Resources
 

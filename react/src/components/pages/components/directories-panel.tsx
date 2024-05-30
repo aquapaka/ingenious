@@ -10,12 +10,7 @@ function NoteButton({ note }: { note: Note }) {
 
   return (
     <Button asChild variant={id === note._id ? 'secondary' : 'ghost'} className="w-full justify-start">
-      <NavLink
-        to={`/notes/${note._id}`}
-        className={({ isActive, isPending, isTransitioning }) =>
-          [isPending ? 'pending' : '', isActive ? 'active' : '', isTransitioning ? 'transitioning' : ''].join(' ')
-        }
-      >
+      <NavLink to={`/notes/${note._id}`}>
         <span className="pl-4">{note.icon ? note.icon : <StickyNote size={16} />}</span>
         <span className="pl-2 overflow-hidden">{note.title}</span>
       </NavLink>
@@ -35,7 +30,7 @@ function NoteList({ notes }: { notes: Note[] }) {
   );
 }
 
-function DirectoryList({ directory }: { directory: Directory }) {
+function DirectoryContent({ directory }: { directory: Directory }) {
   return (
     <div>
       {/* Display all child directory */}
@@ -55,7 +50,7 @@ function DirectoryList({ directory }: { directory: Directory }) {
               <CreateNewDirectoryButton small parentDirectoryId={directory._id} />
             </div>
             <AccordionContent>
-              <DirectoryList directory={directory} />
+              <DirectoryContent directory={directory} />
               <div className="h-1"></div>
             </AccordionContent>
           </AccordionItem>
@@ -143,7 +138,7 @@ export default function DirectoriesPanel() {
         </div>
       ) : (
         <Accordion type="multiple" className="flex flex-col w-full gap-1">
-          <DirectoryList directory={data} />
+          <DirectoryContent directory={data} />
         </Accordion>
       )}
     </div>
