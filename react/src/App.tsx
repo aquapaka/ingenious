@@ -1,7 +1,7 @@
 import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom';
 import './App.css';
-import MainPage from './components/pages/mainpage';
-import NotesPanel from './components/pages/components/notes-panel';
+import MainPage from './components/pages/main-page/mainpage';
+import NotesPanel from './components/pages/main-page/components/notes-panel';
 import { ThemeProvider } from './components/theme-provider';
 import { Provider } from 'react-redux';
 import { store } from './app/store';

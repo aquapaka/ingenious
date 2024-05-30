@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom';
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '../ui/resizable';
-import DirectoriesPanel from './components/directories-panel';
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '../../ui/resizable';
+import DirectoriesPanel from './components/directories-panel/directories-panel';
 import TopBar from './components/top-bar';
 
 export default function MainPage() {
