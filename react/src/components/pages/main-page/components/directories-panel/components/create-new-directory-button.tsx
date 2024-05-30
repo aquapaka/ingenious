@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Directory } from '@/lib/types';
 import { useAddDirectoryMutation } from '@/services/main-service';
-import { FolderPen } from 'lucide-react';
+import { FolderPlus } from 'lucide-react';
 
 export default function CreateNewDirectoryButton(props: { small?: boolean; parentDirectoryId?: string }) {
   const { small, parentDirectoryId } = props;
@@ -23,7 +23,7 @@ export default function CreateNewDirectoryButton(props: { small?: boolean; paren
       onClick={handleCreateNewDirectory}
       disabled={isAddingDirectory}
     >
-      <FolderPen size={small ? 14 : 16} strokeWidth={2} />
+      <FolderPlus size={small ? 14 : 16} strokeWidth={2} />
     </Button>
   );
 }

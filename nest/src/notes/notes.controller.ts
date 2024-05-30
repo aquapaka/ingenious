@@ -1,7 +1,15 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { CreateNoteDto } from './dto/create-note.dto';
-import { NotesService } from './notes.service';
 import { UpdateNoteDto } from './dto/update-note.dto';
+import { NotesService } from './notes.service';
 
 @Controller('notes')
 export class NotesController {
@@ -27,8 +35,8 @@ export class NotesController {
     return this.notesService.update(id, updateNoteDto);
   }
 
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.notesService.remove(+id);
-  // }
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.notesService.remove(id);
+  }
 }

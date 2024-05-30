@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Note } from '@/lib/types';
 import { useAddNoteMutation } from '@/services/main-service';
-import { FilePen } from 'lucide-react';
+import { FilePlus } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 export default function CreateNewNoteButton(props: { small?: boolean; parentDirectoryId?: string }) {
@@ -24,7 +24,7 @@ export default function CreateNewNoteButton(props: { small?: boolean; parentDire
   }
   return (
     <Button variant="ghost" size={small ? 'sm-icon' : 'icon'} onClick={handleCreateNewNote} disabled={isAddingNote}>
-      <FilePen size={small ? 14 : 16} strokeWidth={2} />
+      <FilePlus size={small ? 14 : 16} strokeWidth={2} />
     </Button>
   );
 }
