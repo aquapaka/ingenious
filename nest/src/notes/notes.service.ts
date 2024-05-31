@@ -39,15 +39,15 @@ export class NotesService {
     return createdNote.save();
   }
 
-  async findAll(): Promise<Note[]> {
+  async findAllNote(): Promise<Note[]> {
     return this.noteModel.find().exec();
   }
 
-  findOne(id: string) {
+  async findOneNote(id: string) {
     return this.noteModel.findById(id).exec();
   }
 
-  update(id: string, updateNoteDto: UpdateNoteDto) {
+  async updateNote(id: string, updateNoteDto: UpdateNoteDto) {
     return this.noteModel.updateOne(
       { _id: id },
       {
@@ -56,9 +56,7 @@ export class NotesService {
     );
   }
 
-  remove(id: string) {
-    return this.noteModel.deleteOne({
-      _id: id,
-    });
+  async deleteNote(id: string) {
+    return this.noteModel.findByIdAndDelete(id);
   }
 }
