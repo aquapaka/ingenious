@@ -45,10 +45,6 @@ function DeleteAlertDialogContent(props: { note: Note }) {
 function ButtonContextMenuContent() {
   return (
     <ContextMenuContent className="w-64">
-      <ContextMenuItem>
-        <PencilLine size={16} className="mr-2" />
-        Rename
-      </ContextMenuItem>
       <ContextMenuItem asChild>
         <AlertDialogTrigger className="w-full">
           <Trash2 size={16} className="mr-2" /> Delete
@@ -69,7 +65,7 @@ export default function NoteButton({ note }: { note: Note }) {
             <NavLink to={`/notes/${note._id}`}>
               <div className="pl-4 flex justify-start items-center gap-2 overflow-hidden w-full [&>div]:grow [&>div]:flex [&>div]:justify-between [&>div]:items-center group">
                 <span className="">{note.icon ? note.icon : <StickyNote size={16} />}</span>
-                <EditableNoteTitle note={note} isShowOnHover />
+                <EditableNoteTitle note={note} isShowOnHover isIconSmall />
               </div>
             </NavLink>
           </Button>
