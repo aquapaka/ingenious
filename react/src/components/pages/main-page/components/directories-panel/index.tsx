@@ -14,7 +14,7 @@ function DirectoryContent({ directory }: { directory: Directory }) {
         <div key={directory._id}>
           <AccordionItem className="pl-4 relative" value={directory._id}>
             <div className="peer">
-              <AccordionTrigger className="hover:bg-secondary rounded-md yo">
+              <AccordionTrigger className="hover:bg-secondary rounded-md">
                 <div className="flex items-center">
                   {directory.icon ? directory.icon : <Folder size={16} />}
                   <span className="pl-2">{directory.title}</span>

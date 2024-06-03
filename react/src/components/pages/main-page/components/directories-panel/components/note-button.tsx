@@ -15,6 +15,7 @@ import { Note } from '@/lib/types';
 import { useDeleteNoteMutation } from '@/services/main-service';
 import { PencilLine, StickyNote, Trash2 } from 'lucide-react';
 import { NavLink, useParams } from 'react-router-dom';
+import EditableNoteTitle from '../../editable-note-title';
 
 function DeleteAlertDialogContent(props: { note: Note }) {
   const { note } = props;
@@ -66,8 +67,10 @@ export default function NoteButton({ note }: { note: Note }) {
         <ContextMenuTrigger asChild>
           <Button asChild variant={id === note._id ? 'secondary' : 'ghost'} className="w-full justify-start">
             <NavLink to={`/notes/${note._id}`}>
-              <span className="pl-4">{note.icon ? note.icon : <StickyNote size={16} />}</span>
-              <span className="pl-2 overflow-hidden">{note.title}</span>
+              <div className="pl-4 flex justify-start items-center gap-2 overflow-hidden w-full [&>div]:grow [&>div]:flex [&>div]:justify-between [&>div]:items-center group">
+                <span className="">{note.icon ? note.icon : <StickyNote size={16} />}</span>
+                <EditableNoteTitle note={note} isShowOnHover />
+              </div>
             </NavLink>
           </Button>
         </ContextMenuTrigger>
