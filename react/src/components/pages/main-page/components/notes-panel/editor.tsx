@@ -9,8 +9,8 @@ function Editor(props: { note: Note }) {
   const { note } = props;
   const [updateNote, { isLoading: isUpdating }] = useUpdateNoteMutation();
   const debouncedUpdateNote = useDebouncedCallback((value) => {
-    updateNote({ ...note, content: value });
     setIsTyping(false);
+    updateNote({ ...note, content: value });
   }, 1000);
   const [isTyping, setIsTyping] = useState(false);
 
@@ -24,9 +24,9 @@ function Editor(props: { note: Note }) {
       <MarkdownEditor
         className="h-[92%] rounded-none"
         visible
+        enableScroll
         value={note.content}
         onChange={handleOnChange}
-        enableScroll={false}
         autoFocus
         previewProps={{
           className: 'prose dark:prose-invert prose-sm lg:prose-base prose-ingenious',
