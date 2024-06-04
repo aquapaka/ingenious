@@ -22,6 +22,9 @@ export class Note {
 
   @Prop()
   content: string;
+
+  @Prop()
+  isTrash: boolean;
 }
 
 export const NoteSchema = SchemaFactory.createForClass(Note);

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { DirectoriesService } from './directories.service';
 import { CreateDirectoryDto } from './dto/create-directory.dto';
 
@@ -13,6 +13,11 @@ export class DirectoriesController {
 
   @Post()
   createDirectory(@Body() createDirectoryDto: CreateDirectoryDto) {
-    return this.directoriesService.create(createDirectoryDto);
+    return this.directoriesService.createDirectory(createDirectoryDto);
+  }
+
+  @Post()
+  deleteDirectory(@Param('id') id: string) {
+    return this.directoriesService.deleteDirectory(id);
   }
 }
