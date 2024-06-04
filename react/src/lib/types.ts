@@ -4,6 +4,7 @@ export type Note = {
   tags: string[];
   title: string;
   content: string;
+  isTrash: boolean;
 };
 
 export type Directory = {

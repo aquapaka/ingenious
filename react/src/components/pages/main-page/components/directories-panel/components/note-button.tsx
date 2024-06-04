@@ -12,17 +12,23 @@ import {
 import { Button } from '@/components/ui/button';
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from '@/components/ui/context-menu';
 import { Note } from '@/lib/types';
-import { useDeleteNoteMutation } from '@/services/main-service';
-import { PencilLine, StickyNote, Trash2 } from 'lucide-react';
+import { useDeleteNoteMutation, useUpdateNoteMutation } from '@/services/main-service';
+import { StickyNote, Trash2 } from 'lucide-react';
 import { NavLink, useParams } from 'react-router-dom';
 import EditableNoteTitle from '../../editable-note-title';
 
 function DeleteAlertDialogContent(props: { note: Note }) {
   const { note } = props;
   const [deleteNote] = useDeleteNoteMutation();
+  const [updateNote] = useUpdateNoteMutation();
 
   function handleDeleteConfirm() {
-    deleteNote(note._id);
+    if (note.isTrash) deleteNote(note._id);
+    else
+      updateNote({
+        ...note,
+        isTrash: true,
+      });
   }
 
   return (
