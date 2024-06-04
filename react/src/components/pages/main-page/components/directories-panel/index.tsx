@@ -4,12 +4,13 @@ import { Ghost, Loader2 } from 'lucide-react';
 import CreateNewDirectoryButton from './components/create-new-directory-button';
 import CreateNewNoteButton from './components/create-new-note-button';
 import DirectoryAccordion from './components/directory-accodion';
+import TrashBin from './components/trash-bin';
 
 export default function DirectoriesPanel() {
   const { data, error, isLoading } = useGetMainDirectoryQuery(undefined);
 
   return (
-    <div className="h-full flex flex-col p-4">
+    <div className="h-screen flex flex-col p-4">
       <div className="flex justify-between items-center gap-1 mb-2">
         <h1 className="font-bold">Notes</h1>
         <div className="flex">
@@ -30,8 +31,9 @@ export default function DirectoriesPanel() {
           )}
         </div>
       ) : (
-        <Accordion type="multiple" className="flex flex-col w-full gap-1">
+        <Accordion type="multiple" className="flex flex-col w-full h-full justify-between">
           <DirectoryAccordion directory={data} />
+          <TrashBin directory={data} />
         </Accordion>
       )}
     </div>
