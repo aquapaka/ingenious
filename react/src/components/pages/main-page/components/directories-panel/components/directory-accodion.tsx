@@ -12,12 +12,12 @@ import {
 } from '@/components/ui/alert-dialog';
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from '@/components/ui/context-menu';
 import { Directory } from '@/lib/types';
-import { useDeleteDirectoryMutation, useUpdateDirectoryMutation } from '@/services/main-service';
+import { useDeleteDirectoryMutation } from '@/services/main-service';
 import { Folder, Trash2 } from 'lucide-react';
+import { useCallback, useMemo } from 'react';
 import CreateNewDirectoryButton from './create-new-directory-button';
 import CreateNewNoteButton from './create-new-note-button';
 import NoteButton from './note-button';
-import { useCallback, useMemo } from 'react';
 
 function DeleteAlertDialogContent(props: { directory: Directory }) {
   const { directory } = props;
