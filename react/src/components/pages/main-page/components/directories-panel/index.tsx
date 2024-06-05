@@ -1,14 +1,46 @@
 import { Accordion } from '@/components/ui/accordion';
+import { Input } from '@/components/ui/input';
 import { useGetMainDirectoryQuery } from '@/services/main-service';
 import { Bug, Ghost, Loader2 } from 'lucide-react';
+import { useCallback, useMemo, useState } from 'react';
 import CreateNewDirectoryButton from './components/create-new-directory-button';
 import CreateNewNoteButton from './components/create-new-note-button';
 import DirectoryAccordion from './components/directory-accodion';
 import TrashBin from './components/trash-bin';
-import SearchAndFilter from './components/search-and-filter';
+import { Directory, Note } from '@/lib/types';
+import NoteButton from './components/note-button';
 
 export default function DirectoriesPanel() {
   const { data, isLoading, isError, error } = useGetMainDirectoryQuery(undefined);
+  const [searchTitle, setSearchTitle] = useState('');
+  const [filterTags, setFilterTags] = useState<string[]>([]);
+
+  const filterNotes = useCallback((directory: Directory | undefined, searchTitle: string, filterTags: string[]) => {
+    if (!directory) return [];
+
+    const filteredNotes: Note[] = [];
+
+    directory.notes.forEach((note) => {
+      if (
+        !note.isTrash &&
+        note.title.toLowerCase().includes(searchTitle.toLowerCase()) &&
+        filterTags.every((tag) => note.tags.includes(tag))
+      )
+        filteredNotes.push(note);
+    });
+    directory.directories.forEach((dir) => {
+      filteredNotes.push(...filterNotes(dir, searchTitle, filterTags));
+    });
+
+    return filteredNotes;
+  }, []);
+
+  const filteredNotes = useMemo(
+    () => filterNotes(data, searchTitle, filterTags),
+    [filterNotes, data, searchTitle, filterTags],
+  );
+
+  console.log(filteredNotes);
 
   if (isError) console.log(error);
 
@@ -21,8 +53,8 @@ export default function DirectoriesPanel() {
           <CreateNewDirectoryButton />
         </div>
       </div>
-      <div className="mb-4">
-        <SearchAndFilter />
+      <div className="mb-2">
+        <Input type="text" placeholder="search note..." onChange={(e) => setSearchTitle(e.target.value)} />
       </div>
       {isLoading ? (
         <div className="flex justify-center items-center grow">
@@ -38,6 +70,16 @@ export default function DirectoriesPanel() {
             {!data.directories.length && !data.notes.filter((note) => !note.isTrash).length ? (
               <div className="grow flex justify-center items-center italic text-secondary-foreground">
                 <Ghost className="inline mr-2" size={16} /> It's empty here
+              </div>
+            ) : searchTitle.length || filterTags.length ? (
+              <div>
+                {filteredNotes
+                  .filter((note) => !note.isTrash)
+                  .map((note) => (
+                    <div key={note._id}>
+                      <NoteButton note={note} />
+                    </div>
+                  ))}
               </div>
             ) : (
               <DirectoryAccordion directory={data!} />
