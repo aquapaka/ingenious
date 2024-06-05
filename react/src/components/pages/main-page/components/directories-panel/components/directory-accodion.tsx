@@ -110,7 +110,7 @@ export default function DirectoryAccordion({ directory }: { directory: Directory
               <CreateNewNoteButton small parentDirectoryId={directory._id} />
               <CreateNewDirectoryButton small parentDirectoryId={directory._id} />
             </div>
-            <AccordionContent className="">
+            <AccordionContent>
               <DirectoryAccordion directory={directory} />
             </AccordionContent>
           </AccordionItem>

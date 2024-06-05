@@ -1,13 +1,13 @@
 import { Accordion } from '@/components/ui/accordion';
 import { useGetMainDirectoryQuery } from '@/services/main-service';
-import { Ghost, Loader2 } from 'lucide-react';
+import { Bug, Ghost, Loader2 } from 'lucide-react';
 import CreateNewDirectoryButton from './components/create-new-directory-button';
 import CreateNewNoteButton from './components/create-new-note-button';
 import DirectoryAccordion from './components/directory-accodion';
 import TrashBin from './components/trash-bin';
 
 export default function DirectoriesPanel() {
-  const { data, error, isLoading } = useGetMainDirectoryQuery(undefined);
+  const { data, isLoading, isError } = useGetMainDirectoryQuery(undefined);
 
   return (
     <div className="h-screen flex flex-col p-4">
@@ -18,22 +18,22 @@ export default function DirectoriesPanel() {
           <CreateNewDirectoryButton />
         </div>
       </div>
-      {!data || (!data.directories.length && !data.notes.length) ? (
-        <div className="h-[80%] flex justify-center items-center grow">
-          {isLoading ? (
-            <>
-              <Loader2 className="inline animate-spin mr-2" size={16} /> Loading...
-            </>
-          ) : (
-            <>
-              <Ghost className="inline mr-2" size={16} /> {error ? 'Error while loading notes' : 'No notes were found'}
-            </>
-          )}
+      {isLoading ? (
+        <div className="h-full flex justify-center items-center grow">
+          <Loader2 className="inline animate-spin mr-2" size={16} /> Loading...
+        </div>
+      ) : isError ? (
+        <div className="h-full flex justify-center items-center grow">
+          <Bug className="inline mr-2" size={16} /> Error while loading notes
+        </div>
+      ) : !data!.directories.length && !data!.notes.length ? (
+        <div className="h-full flex justify-center items-center grow">
+          <Ghost className="inline mr-2" size={16} /> It's empty here
         </div>
       ) : (
         <Accordion type="multiple" className="flex flex-col w-full h-full justify-between">
-          <DirectoryAccordion directory={data} />
-          <TrashBin directory={data} />
+          <DirectoryAccordion directory={data!} />
+          <TrashBin directory={data!} />
         </Accordion>
       )}
     </div>
