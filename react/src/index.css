@@ -84,3 +84,32 @@
 .cm-gutters * {
   @apply bg-background;
 }
+
+/* Style tags input */
+.react-tagsinput {
+  @apply rounded-md bg-background border border-border px-2 grow;
+}
+
+.react-tagsinput--focused {
+  @apply  ring-ring ring-1
+}
+
+.react-tagsinput-tag {
+  @apply bg-primary text-primary-foreground rounded-sm text-xs p-1 font-bold mr-1
+}
+
+.react-tagsinput-remove {
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.react-tagsinput-tag a::before {
+  content: ' ×';
+}
+
+.react-tagsinput-input {
+  background: transparent;
+  border: 0;
+  outline: none;
+  @apply text-primary-foreground placeholder:text-muted-foreground text-xs p-2 w-[100px] placeholder:italic
+}

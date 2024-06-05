@@ -1,7 +1,7 @@
 import { Accordion } from '@/components/ui/accordion';
 import { Input } from '@/components/ui/input';
 import { useGetMainDirectoryQuery } from '@/services/main-service';
-import { Bug, Ghost, Loader2 } from 'lucide-react';
+import { Bug, Ghost, Loader2, Tag } from 'lucide-react';
 import { useCallback, useMemo, useState } from 'react';
 import CreateNewDirectoryButton from './components/create-new-directory-button';
 import CreateNewNoteButton from './components/create-new-note-button';
@@ -9,6 +9,7 @@ import DirectoryAccordion from './components/directory-accodion';
 import TrashBin from './components/trash-bin';
 import { Directory, Note } from '@/lib/types';
 import NoteButton from './components/note-button';
+import TagsInput from 'react-tagsinput';
 
 export default function DirectoriesPanel() {
   const { data, isLoading, isError, error } = useGetMainDirectoryQuery(undefined);
@@ -53,8 +54,23 @@ export default function DirectoriesPanel() {
           <CreateNewDirectoryButton />
         </div>
       </div>
-      <div className="mb-2">
-        <Input type="text" placeholder="search note..." onChange={(e) => setSearchTitle(e.target.value)} />
+      <div className="mb-3">
+        <Input
+          className="mb-2 placeholder:italic text-xs"
+          type="text"
+          placeholder="search note by title..."
+          onChange={(e) => setSearchTitle(e.target.value)}
+        />
+        <div className="flex">
+          <div className="flex items-center px-2">
+            <Tag size={16} />
+          </div>
+          <TagsInput
+            value={filterTags}
+            inputProps={{ placeholder: 'filter by tags...' }}
+            onChange={(tags) => setFilterTags(tags)}
+          />
+        </div>
       </div>
       {isLoading ? (
         <div className="flex justify-center items-center grow">
