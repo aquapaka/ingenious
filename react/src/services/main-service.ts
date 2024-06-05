@@ -22,6 +22,21 @@ export const mainApi = createApi({
       }),
       invalidatesTags: ['Directory'],
     }),
+    updateDirectory: builder.mutation<Directory, Partial<Directory>>({
+      query: ({ ...directory }) => ({
+        url: `/directories/${directory._id}`,
+        method: 'PATCH',
+        body: directory,
+      }),
+      invalidatesTags: ['Note', 'Directory'],
+    }),
+    deleteDirectory: builder.mutation<Directory, string>({
+      query: (id) => ({
+        url: `directories/${id}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Directory', 'Note'],
+    }),
     getNote: builder.query<Note, string | undefined>({
       query: (id) => (id ? `/notes/${id}` : ''),
       providesTags: ['Note'],
@@ -55,8 +70,10 @@ export const mainApi = createApi({
 export const {
   useGetMainDirectoryQuery,
   useAddDirectoryMutation,
+  useDeleteDirectoryMutation,
   useGetNoteQuery,
   useAddNoteMutation,
   useUpdateNoteMutation,
   useDeleteNoteMutation,
+  useUpdateDirectoryMutation,
 } = mainApi;

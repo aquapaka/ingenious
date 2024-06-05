@@ -3,8 +3,8 @@ import { useUpdateNoteMutation } from '@/services/main-service';
 import { Loader2, PencilLine } from 'lucide-react';
 import { EditText, onSaveProps } from 'react-edit-text';
 
-export default function EditableNoteTitle(props: { note: Note; isShowOnHover?: boolean }) {
-  const { note, isShowOnHover } = props;
+export default function EditableNoteTitle(props: { note: Note; isShowOnHover?: boolean; isIconSmall?: boolean }) {
+  const { note, isShowOnHover, isIconSmall } = props;
   const [updateNote, { isLoading: isUpdating }] = useUpdateNoteMutation();
 
   function handleTitleSave({ value }: onSaveProps) {
@@ -18,7 +18,7 @@ export default function EditableNoteTitle(props: { note: Note; isShowOnHover?: b
         inputClassName="focus:outline-0 focus:bg-secondary p-2 rounded-md"
         defaultValue={note.title}
         showEditButton
-        editButtonContent={<PencilLine size={16} />}
+        editButtonContent={<PencilLine size={isIconSmall ? 14 : 16} />}
         editButtonProps={{
           className: `p-2 hover:bg-secondary rounded-sm ${
             isShowOnHover && 'opacity-0 group-hover:opacity-100 duration-300'
