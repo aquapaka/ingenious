@@ -98,7 +98,7 @@ function DirectoryAccordionTriggerButton(props: { directory: Directory }) {
 
 export default function DirectoryAccordion({ directory }: { directory: Directory }) {
   return (
-    <div className="overflow-scroll">
+    <div>
       {/* Display all child directory */}
       {directory.directories.map((directory) => (
         <div key={directory._id}>
@@ -110,7 +110,7 @@ export default function DirectoryAccordion({ directory }: { directory: Directory
               <CreateNewNoteButton small parentDirectoryId={directory._id} />
               <CreateNewDirectoryButton small parentDirectoryId={directory._id} />
             </div>
-            <AccordionContent className="">
+            <AccordionContent>
               <DirectoryAccordion directory={directory} />
             </AccordionContent>
           </AccordionItem>

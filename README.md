@@ -45,3 +45,4 @@ A notion alternative multipurpose productive app
 ## Libs
 
 - [React Edit Text](https://www.npmjs.com/package/react-edit-text)
+- [React Tags Input](https://www.npmjs.com/package/react-tagsinput)
