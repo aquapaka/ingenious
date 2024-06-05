@@ -1,4 +1,4 @@
 import { PartialType } from '@nestjs/mapped-types';
-import { CreateDirectoryDto } from './create-directory.dto';
+import { Directory } from '../schemas/directory.schema';
 
-export class UpdateDirectoryDto extends PartialType(CreateDirectoryDto) {}
+export class UpdateDirectoryDto extends PartialType(Directory) {}

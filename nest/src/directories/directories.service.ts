@@ -4,6 +4,7 @@ import { Model } from 'mongoose';
 import { Directory, DirectoryDocument } from './schemas/directory.schema';
 import { CreateDirectoryDto } from './dto/create-directory.dto';
 import { Note } from 'src/notes/schemas/note.schema';
+import { UpdateDirectoryDto } from './dto/update-directory.dto';
 
 @Injectable()
 export class DirectoriesService {
@@ -44,7 +45,45 @@ export class DirectoriesService {
     return newDirectory.save();
   }
 
-  deleteDirectory(id: string) {
+  updateDirectory(id: string, updateDirectotyDto: UpdateDirectoryDto) {
+    const { icon, title, directories, notes } = updateDirectotyDto;
+    return this.directoryModel.updateOne(
+      {
+        _id: id,
+      },
+      {
+        icon,
+        title,
+        directories,
+        notes,
+      },
+    );
+  }
+
+  private async recursivePushNotes(
+    currDir: DirectoryDocument,
+    targetDir: DirectoryDocument,
+  ) {
+    if (currDir.notes.length) {
+      await targetDir.updateOne({ $push: { notes: currDir.notes } });
+      await this.noteModel.updateMany(
+        { _id: { $in: currDir.notes } },
+        {
+          isTrash: true,
+        },
+      );
+    }
+
+    for (const dir of currDir.directories) {
+      await this.recursivePushNotes(dir, targetDir);
+    }
+  }
+
+  async deleteDirectory(id: string) {
+    const thisDir = await this.directoryModel.findById(id);
+    const mainDirectory = await this.directoryModel.findOne();
+    this.recursivePushNotes(thisDir, mainDirectory);
+
     return this.directoryModel.findByIdAndDelete(id);
   }
 }

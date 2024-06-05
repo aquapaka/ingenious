@@ -1,6 +1,15 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { DirectoriesService } from './directories.service';
 import { CreateDirectoryDto } from './dto/create-directory.dto';
+import { UpdateDirectoryDto } from './dto/update-directory.dto';
 
 @Controller('directories')
 export class DirectoriesController {
@@ -16,7 +25,15 @@ export class DirectoriesController {
     return this.directoriesService.createDirectory(createDirectoryDto);
   }
 
-  @Post()
+  @Patch(':id')
+  updateDirectory(
+    @Param('id') id: string,
+    @Body() updateDirectotyDto: UpdateDirectoryDto,
+  ) {
+    return this.directoriesService.updateDirectory(id, updateDirectotyDto);
+  }
+
+  @Delete(':id')
   deleteDirectory(@Param('id') id: string) {
     return this.directoriesService.deleteDirectory(id);
   }

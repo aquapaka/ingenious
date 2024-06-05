@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from '@/components/ui/context-menu';
 import { Directory } from '@/lib/types';
-import { useDeleteDirectoryMutation } from '@/services/main-service';
+import { useDeleteDirectoryMutation, useUpdateDirectoryMutation } from '@/services/main-service';
 import { Folder, Trash2 } from 'lucide-react';
 import CreateNewDirectoryButton from './create-new-directory-button';
 import CreateNewNoteButton from './create-new-note-button';

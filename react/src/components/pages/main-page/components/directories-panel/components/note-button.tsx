@@ -36,8 +36,17 @@ function DeleteAlertDialogContent(props: { note: Note }) {
       <AlertDialogHeader>
         <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
         <AlertDialogDescription>
-          You are about to delete <strong className="text-foreground">{`${note.icon} ${note.title}`}</strong>. This
-          action cannot be undone.
+          {note.isTrash === undefined || !note.isTrash ? (
+            <>
+              You are about to moving <strong className="text-foreground">{`${note.icon} ${note.title}`}</strong> into
+              trash.
+            </>
+          ) : (
+            <>
+              You are about to delete <strong className="text-foreground">{`${note.icon} ${note.title}`}</strong>. This
+              action cannot be undone.
+            </>
+          )}
         </AlertDialogDescription>
       </AlertDialogHeader>
       <AlertDialogFooter>
