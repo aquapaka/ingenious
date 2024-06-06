@@ -7,8 +7,7 @@ export default function CreateNewDirectoryButton(props: { small?: boolean; paren
   const { small, parentDirectoryId } = props;
   const [addNewDorectory, { isLoading: isAddingDirectory }] = useAddDirectoryMutation();
 
-  function handleCreateNewDirectory(event: React.MouseEvent) {
-    event.stopPropagation();
+  function handleCreateNewDirectory() {
     const directory: Omit<Directory, '_id' | 'directories' | 'notes'> & { parentDirectoryId?: string } = {
       icon: '',
       title: 'New directory',

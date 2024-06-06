@@ -10,15 +10,16 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
+import { Button } from '@/components/ui/button';
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from '@/components/ui/context-menu';
 import { Directory } from '@/lib/types';
-import { useDeleteDirectoryMutation } from '@/services/main-service';
-import { Folder, Trash2 } from 'lucide-react';
-import { useCallback, useMemo } from 'react';
-import EditableDirectoryTitle from '../../editable-directory-title';
+import { useDeleteDirectoryMutation, useUpdateDirectoryMutation } from '@/services/main-service';
+import { Folder, PencilLine, Trash2 } from 'lucide-react';
+import { useCallback, useMemo, useState } from 'react';
 import CreateNewDirectoryButton from './create-new-directory-button';
 import CreateNewNoteButton from './create-new-note-button';
 import NoteButton from './note-button';
+import { Input } from '@/components/ui/input';
 
 function DeleteAlertDialogContent(props: { directory: Directory }) {
   const { directory } = props;
@@ -76,19 +77,12 @@ function ButtonContextMenuContent() {
   );
 }
 
-function DirectoryAccordionTriggerButton(props: { directory: Directory }) {
-  const { directory } = props;
+function DirectoryAccordionTriggerButton(props: { directory: Directory; isEditingTitle: boolean }) {
+  const { directory, isEditingTitle } = props;
   return (
     <ContextMenu>
       <AlertDialog>
-        <ContextMenuTrigger>
-          <AccordionTrigger className="hover:bg-secondary rounded-md group inline-flex">
-            <div className="flex gap-2 items-center [&>div]:grow [&>div]:flex [&>div]:justify-between [&>div]:items-center">
-              {directory.icon ? directory.icon : <Folder size={16} />}
-              <EditableDirectoryTitle directory={directory} isShowOnHover isIconSmall />
-            </div>
-          </AccordionTrigger>
-        </ContextMenuTrigger>
+        <ContextMenuTrigger>{/* ... */}</ContextMenuTrigger>
         {/* Contents */}
         <ButtonContextMenuContent />
         <DeleteAlertDialogContent directory={directory} />
@@ -98,6 +92,18 @@ function DirectoryAccordionTriggerButton(props: { directory: Directory }) {
 }
 
 export default function DirectoryAccordion({ directory }: { directory: Directory }) {
+  const [updateDirectory, { isLoading: isUpdating }] = useUpdateDirectoryMutation();
+  const [isEditingTitle, setIsEditingTitle] = useState(false);
+
+  function handleRenameButton() {
+    console.log('Begin rename directory');
+    setIsEditingTitle(true);
+  }
+
+  function handleRenameInputOnBlur() {
+    setIsEditingTitle(false);
+  }
+
   return (
     <div>
       {/* Display all child directory */}
@@ -105,11 +111,23 @@ export default function DirectoryAccordion({ directory }: { directory: Directory
         <div key={directory._id}>
           <AccordionItem className="pl-4 relative" value={directory._id}>
             <div className="peer">
-              <DirectoryAccordionTriggerButton directory={directory} />
+              <AccordionTrigger className="hover:bg-secondary rounded-md group inline-flex">
+                <div className="flex gap-2 items-center">
+                  {directory.icon ? directory.icon : <Folder size={16} />}
+                  {isEditingTitle ? (
+                    <Input type="text" defaultValue={directory.title} onBlur={handleRenameInputOnBlur} />
+                  ) : (
+                    <span>{directory.title}</span>
+                  )}
+                </div>
+              </AccordionTrigger>
             </div>
             <div className="right-2 top-[0.4rem] absolute items-center opacity-0 hover:opacity-100 peer-hover:opacity-100 duration-300 gap-2 bg-background rounded-md">
               <CreateNewNoteButton small parentDirectoryId={directory._id} />
               <CreateNewDirectoryButton small parentDirectoryId={directory._id} />
+              <Button variant="ghost" size="sm-icon" onClick={handleRenameButton}>
+                <PencilLine size={14} strokeWidth={2} />
+              </Button>
             </div>
             <AccordionContent>
               <DirectoryAccordion directory={directory} />

@@ -9,13 +9,13 @@ export default function CreateNewNoteButton(props: { small?: boolean; parentDire
   const [addNewNote, { isLoading: isAddingNote }] = useAddNoteMutation();
   const navigate = useNavigate();
 
-  function handleCreateNewNote(event: React.MouseEvent) {
-    event.stopPropagation();
+  function handleCreateNewNote() {
     const note: Omit<Note, '_id'> & { parentDirectoryId?: string } = {
       icon: '',
       tags: [],
       title: 'New Note',
       content: '',
+      isTrash: false,
       parentDirectoryId,
     };
     addNewNote(note).then(({ data }) => {
