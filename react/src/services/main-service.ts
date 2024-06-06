@@ -7,6 +7,8 @@ export const mainApi = createApi({
   tagTypes: ['Directory', 'Note'],
   baseQuery: fetchBaseQuery({ baseUrl: API_BASE_URL }),
   endpoints: (builder) => ({
+    // -------------------------------------------------------------------------------------
+    // Directories
     getMainDirectory: builder.query<Directory, undefined>({
       query: () => '/directories/main',
       providesTags: ['Directory'],
@@ -37,6 +39,8 @@ export const mainApi = createApi({
       }),
       invalidatesTags: ['Directory', 'Note'],
     }),
+    // ---------------------------------------------------------------------------------------
+    // Notes
     getNote: builder.query<Note, string | undefined>({
       query: (id) => (id ? `/notes/${id}` : ''),
       providesTags: ['Note'],
