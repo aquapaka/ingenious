@@ -5,12 +5,16 @@ import { NotesModule } from './notes/notes.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { DirectoriesModule } from './directories/directories.module';
 import { MONGO_DB_URL } from './constants';
+import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
     MongooseModule.forRoot(MONGO_DB_URL),
     NotesModule,
     DirectoriesModule,
+    UsersModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
