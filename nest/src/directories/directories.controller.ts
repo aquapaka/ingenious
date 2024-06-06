@@ -15,26 +15,26 @@ import { UpdateDirectoryDto } from './dto/update-directory.dto';
 export class DirectoriesController {
   constructor(private readonly directoriesService: DirectoriesService) {}
 
-  @Get('/main')
-  getMainDirectory() {
-    return this.directoriesService.getMainDirectory();
-  }
+  // @Get('/main')
+  // getMainDirectory() {
+  //   return this.directoriesService.getMainDirectory();
+  // }
 
-  @Post()
-  createDirectory(@Body() createDirectoryDto: CreateDirectoryDto) {
-    return this.directoriesService.createDirectory(createDirectoryDto);
-  }
+  // @Post()
+  // createDirectory(@Body() createDirectoryDto: CreateDirectoryDto) {
+  //   return this.directoriesService.createDirectory(createDirectoryDto);
+  // }
 
-  @Patch(':id')
-  updateDirectory(
-    @Param('id') id: string,
-    @Body() updateDirectotyDto: UpdateDirectoryDto,
-  ) {
-    return this.directoriesService.updateDirectory(id, updateDirectotyDto);
-  }
+  // @Patch(':id')
+  // updateDirectory(
+  //   @Param('id') id: string,
+  //   @Body() updateDirectotyDto: UpdateDirectoryDto,
+  // ) {
+  //   return this.directoriesService.updateDirectory(id, updateDirectotyDto);
+  // }
 
-  @Delete(':id')
-  deleteDirectory(@Param('id') id: string) {
-    return this.directoriesService.deleteDirectory(id);
-  }
+  // @Delete(':id')
+  // deleteDirectory(@Param('id') id: string) {
+  //   return this.directoriesService.deleteDirectory(id);
+  // }
 }
