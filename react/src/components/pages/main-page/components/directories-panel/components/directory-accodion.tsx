@@ -15,6 +15,7 @@ import { Directory } from '@/lib/types';
 import { useDeleteDirectoryMutation } from '@/services/main-service';
 import { Folder, Trash2 } from 'lucide-react';
 import { useCallback, useMemo } from 'react';
+import EditableDirectoryTitle from '../../editable-directory-title';
 import CreateNewDirectoryButton from './create-new-directory-button';
 import CreateNewNoteButton from './create-new-note-button';
 import NoteButton from './note-button';
@@ -81,10 +82,10 @@ function DirectoryAccordionTriggerButton(props: { directory: Directory }) {
     <ContextMenu>
       <AlertDialog>
         <ContextMenuTrigger>
-          <AccordionTrigger className="hover:bg-secondary rounded-md">
-            <div className="flex items-center">
+          <AccordionTrigger className="hover:bg-secondary rounded-md group inline-flex">
+            <div className="flex gap-2 items-center [&>div]:grow [&>div]:flex [&>div]:justify-between [&>div]:items-center">
               {directory.icon ? directory.icon : <Folder size={16} />}
-              <span className="pl-2">{directory.title}</span>
+              <EditableDirectoryTitle directory={directory} isShowOnHover isIconSmall />
             </div>
           </AccordionTrigger>
         </ContextMenuTrigger>
@@ -117,7 +118,7 @@ export default function DirectoryAccordion({ directory }: { directory: Directory
         </div>
       ))}
       {/* Display all child notes in this directory*/}
-      <div className="pl-4">
+      <div className="pl-4 min-h-1">
         {directory.notes
           .filter((note) => !note.isTrash)
           .map((note) => (

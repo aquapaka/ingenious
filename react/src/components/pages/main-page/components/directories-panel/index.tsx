@@ -1,15 +1,15 @@
 import { Accordion } from '@/components/ui/accordion';
 import { Input } from '@/components/ui/input';
+import { Directory, Note } from '@/lib/types';
 import { useGetMainDirectoryQuery } from '@/services/main-service';
 import { Bug, Ghost, Loader2, Tag } from 'lucide-react';
 import { useCallback, useMemo, useState } from 'react';
+import TagsInput from 'react-tagsinput';
 import CreateNewDirectoryButton from './components/create-new-directory-button';
 import CreateNewNoteButton from './components/create-new-note-button';
 import DirectoryAccordion from './components/directory-accodion';
-import TrashBin from './components/trash-bin';
-import { Directory, Note } from '@/lib/types';
 import NoteButton from './components/note-button';
-import TagsInput from 'react-tagsinput';
+import TrashBin from './components/trash-bin';
 
 export default function DirectoriesPanel() {
   const { data, isLoading, isError, error } = useGetMainDirectoryQuery(undefined);
@@ -40,8 +40,6 @@ export default function DirectoriesPanel() {
     () => filterNotes(data, searchTitle, filterTags),
     [filterNotes, data, searchTitle, filterTags],
   );
-
-  console.log(filteredNotes);
 
   if (isError) console.log(error);
 
