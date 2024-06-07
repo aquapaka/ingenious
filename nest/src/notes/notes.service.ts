@@ -16,47 +16,47 @@ export class NotesService {
     @InjectModel(Directory.name) private directoryModel: Model<Directory>,
   ) {}
 
-  async create(createNoteDto: CreateNoteDto): Promise<Note> {
-    const { icon, title, tags, content, parentDirectoryId } = createNoteDto;
-    const createdNote = new this.noteModel({
-      icon,
-      title,
-      tags,
-      content,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    });
+  // async create(createNoteDto: CreateNoteDto): Promise<Note> {
+  //   const { icon, title, tags, content, parentDirectoryId } = createNoteDto;
+  //   const createdNote = new this.noteModel({
+  //     icon,
+  //     title,
+  //     tags,
+  //     content,
+  //     createdAt: new Date(),
+  //     updatedAt: new Date(),
+  //   });
 
-    let parentDir: DirectoryDocument;
-    if (parentDirectoryId) {
-      parentDir = await this.directoryModel.findById(parentDirectoryId);
-    } else {
-      parentDir = await this.directoryModel.findOne();
-    }
-    parentDir.notes.push(createdNote);
-    parentDir.save();
+  //   let parentDir: DirectoryDocument;
+  //   if (parentDirectoryId) {
+  //     parentDir = await this.directoryModel.findById(parentDirectoryId);
+  //   } else {
+  //     parentDir = await this.directoryModel.findOne();
+  //   }
+  //   parentDir.notes.push(createdNote);
+  //   parentDir.save();
 
-    return createdNote.save();
-  }
+  //   return createdNote.save();
+  // }
 
-  async findAllNote(): Promise<Note[]> {
-    return this.noteModel.find().exec();
-  }
+  // async findAllNote(): Promise<Note[]> {
+  //   return this.noteModel.find().exec();
+  // }
 
-  async findOneNote(id: string) {
-    return this.noteModel.findById(id).exec();
-  }
+  // async findOneNote(id: string) {
+  //   return this.noteModel.findById(id).exec();
+  // }
 
-  async updateNote(id: string, updateNoteDto: UpdateNoteDto) {
-    return this.noteModel.updateOne(
-      { _id: id },
-      {
-        $set: updateNoteDto,
-      },
-    );
-  }
+  // async updateNote(id: string, updateNoteDto: UpdateNoteDto) {
+  //   return this.noteModel.updateOne(
+  //     { _id: id },
+  //     {
+  //       $set: updateNoteDto,
+  //     },
+  //   );
+  // }
 
-  async deleteNote(id: string) {
-    return this.noteModel.findByIdAndDelete(id);
-  }
+  // async deleteNote(id: string) {
+  //   return this.noteModel.findByIdAndDelete(id);
+  // }
 }

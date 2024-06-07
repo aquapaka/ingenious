@@ -3,16 +3,13 @@ import { HydratedDocument } from 'mongoose';
 
 @Schema()
 export class Tag {
-  @Prop()
-  icon: string;
-
-  @Prop()
+  @Prop({ unique: true })
   name: string;
 
   @Prop()
   color: string;
 }
 
-export type DirectoryDocument = HydratedDocument<Tag>;
+export type TagDocument = HydratedDocument<Tag>;
 
-export const DirectorySchema = SchemaFactory.createForClass(Tag);
+export const TagSchema = SchemaFactory.createForClass(Tag);
