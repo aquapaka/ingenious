@@ -1,5 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
+import mongoose, { HydratedDocument } from 'mongoose';
+import { Directory } from 'src/directories/schemas/directory.schema';
+import { Tag } from 'src/tags/schemas/tag.schema';
 
 @Schema()
 export class Note {
@@ -9,8 +11,8 @@ export class Note {
   @Prop({ required: true })
   title: string;
 
-  @Prop([String])
-  tags: string[];
+  @Prop({ type: [{ type: mongoose.Types.ObjectId, ref: 'Tag' }] })
+  tags: Tag[];
 
   @Prop()
   createdAt: Date;
@@ -23,6 +25,9 @@ export class Note {
 
   @Prop()
   isTrash: boolean;
+
+  @Prop({ type: mongoose.Types.ObjectId, ref: 'Directory' })
+  directory: Directory | null;
 }
 
 export type NoteDocument = HydratedDocument<Note>;
