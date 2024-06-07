@@ -20,8 +20,8 @@ export class AuthService {
     if (!foundUser) return null;
 
     if (password === foundUser.password) {
-      const { password, ...user } = foundUser;
-      return this.jwtService.sign(user);
+      const { _id, username } = foundUser;
+      return this.jwtService.sign({ _id, username });
     }
   }
 }
