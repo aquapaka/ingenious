@@ -7,9 +7,13 @@ import { DirectoriesModule } from './directories/directories.module';
 import { MONGO_DB_URL } from './constants';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     MongooseModule.forRoot(MONGO_DB_URL),
     NotesModule,
     DirectoriesModule,

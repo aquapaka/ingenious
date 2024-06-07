@@ -9,11 +9,13 @@ import { JwtStrategy } from './strategies/jwt.strategy';
 
 @Module({
   imports: [
-    JwtModule.register({
-      secret: 'demo-secret',
-      signOptions: {
-        expiresIn: '24h',
-      },
+    JwtModule.registerAsync({
+      useFactory: async () => ({
+        secret: process.env.JWT_SECRET,
+        signOptions: {
+          expiresIn: process.env.JWT_EXPIRATION_TIME,
+        },
+      }),
     }),
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
   ],
