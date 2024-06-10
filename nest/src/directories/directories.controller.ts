@@ -10,7 +10,9 @@ import {
 import { DirectoriesService } from './directories.service';
 import { CreateDirectoryDto } from './dto/create-directory.dto';
 import { UpdateDirectoryDto } from './dto/update-directory.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('directories')
 @Controller('directories')
 export class DirectoriesController {
   constructor(private readonly directoriesService: DirectoriesService) {}

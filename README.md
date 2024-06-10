@@ -16,6 +16,7 @@ A notion alternative multipurpose productive app
 - UI library: [shadcn/ui](https://ui.shadcn.com/) ☑️
 - Backend:
   - [NestJS](https://docs.nestjs.com/) ☑️
+    - [OpenAPI (Swagger)](https://docs.nestjs.com/openapi/introduction) ☑️
   - [MongoDB](https://www.mongodb.com/docs/manual/) ☑️
 - Testing:
   - Unit Test: [JestJS](https://jestjs.io/docs/getting-started) + [React Testing library](https://jestjs.io/docs/tutorial-react)
