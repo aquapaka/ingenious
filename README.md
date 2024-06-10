@@ -45,7 +45,7 @@ A notion alternative multipurpose productive app
 - [React + PWA](https://www.saurabhmisra.dev/setup-react-pwa-using-vite/)
 - [NestJS JWT Authentication Tutorial](https://www.youtube.com/watch?v=EFDUvzJT_wI)
 - [NestJS Authorization with CASL](https://www.youtube.com/watch?v=1pPjCX0FHco)
-- [Async Local Storage](https://readmedium.com/en/https:/luckylibora.medium.com/using-async-local-storage-with-nestjs-64f5bfd4f100)
+- [Async Local Storage](https://papooch.github.io/nestjs-cls/introduction/quick-start)
 
 ## Libs
 
