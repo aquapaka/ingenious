@@ -17,6 +17,7 @@ A notion alternative multipurpose productive app
 - Backend:
   - [NestJS](https://docs.nestjs.com/) ☑️
     - [OpenAPI (Swagger)](https://docs.nestjs.com/openapi/introduction) ☑️
+    - [Validation data sent to server](https://docs.nestjs.com/techniques/validation) ☑️
   - [MongoDB](https://www.mongodb.com/docs/manual/) ☑️
 - Testing:
   - Unit Test: [JestJS](https://jestjs.io/docs/getting-started) + [React Testing library](https://jestjs.io/docs/tutorial-react)

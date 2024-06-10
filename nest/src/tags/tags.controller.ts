@@ -28,20 +28,19 @@ export class TagsController {
   createTag(@Body() createTagDto: CreateTagDto) {
     const user = UserStorage.get();
 
-    return this.tagsService.createTag({
-      ...createTagDto,
-      ownerId: user._id,
-    });
+    return this.tagsService.createTag(createTagDto, user._id);
   }
 
   @Patch(':id')
-  @CheckAbilities({ action: Action.Manage, subject: Tag })
+  @CheckAbilities({ action: Action.Update, subject: Tag })
   @UseGuards(JwtAuthGuard, CaslAbilityGuard)
   updateTag(@Param('id') id: string, @Body() updateTagDto: UpdateTagDto) {
     return this.tagsService.updateTag(id, updateTagDto);
   }
 
   @Delete(':id')
+  @CheckAbilities({ action: Action.Delete, subject: Tag })
+  @UseGuards(JwtAuthGuard, CaslAbilityGuard)
   deleteTag(@Param('id') id: string) {
     return this.tagsService.deleteTag(id);
   }

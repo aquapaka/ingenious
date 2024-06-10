@@ -30,7 +30,7 @@ export class CaslAbilityFactory {
       createMongoAbility<PossibleAbilities, Conditions>,
     );
 
-    can([Action.Manage], User, { _id: user._id });
+    can([Action.Read, Action.Update], User, { _id: user._id });
     can(Action.Manage, Tag, { _owner: user });
 
     return build({

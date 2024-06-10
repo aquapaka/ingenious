@@ -17,10 +17,10 @@ export class TagsService {
     return this.tagModel.findById(id).exec();
   }
 
-  async createTag(createTagDto: CreateTagDto): Promise<Tag> {
+  async createTag(createTagDto: CreateTagDto, ownerId: string): Promise<Tag> {
     const owner = await this.userModel
       .findOne({
-        _id: createTagDto.ownerId,
+        _id: ownerId,
       })
       .exec();
     const createdTag = new this.tagModel({ ...createTagDto, _owner: owner });
