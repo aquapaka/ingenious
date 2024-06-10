@@ -7,6 +7,7 @@ import {
   Directory,
   DirectorySchema,
 } from 'src/directories/schemas/directory.schema';
+import { UsersService } from 'src/users/users.service';
 
 @Module({
   imports: [

@@ -42,6 +42,8 @@ A notion alternative multipurpose productive app
 - [modern-full-stack-development-with-nestjs-react-typescript-and-mongodb-part-1](https://auth0.com/blog/modern-full-stack-development-with-nestjs-react-typescript-and-mongodb-part-1/)
 - [React + PWA](https://www.saurabhmisra.dev/setup-react-pwa-using-vite/)
 - [NestJS JWT Authentication Tutorial](https://www.youtube.com/watch?v=EFDUvzJT_wI)
+- [NestJS Authorization with CASL](https://www.youtube.com/watch?v=1pPjCX0FHco)
+- [NestJS Access Current User without Request Scope](https://webcache.googleusercontent.com/search?q=cache:https://medium.com/@sascha.wolff/advanced-nestjs-how-to-have-access-to-the-current-user-in-every-service-without-request-scope-2586665741f&strip=0&vwsrc=1&referer=medium-parser)
 
 ## Libs
 

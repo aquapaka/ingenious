@@ -4,7 +4,9 @@ import { Directory } from 'src/directories/schemas/directory.schema';
 
 @Schema()
 export class User {
-  @Prop()
+  _id: mongoose.Types.ObjectId;
+
+  @Prop({ required: true, unique: true })
   username: string;
 
   @Prop()
