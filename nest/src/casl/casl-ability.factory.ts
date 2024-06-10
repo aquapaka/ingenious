@@ -31,7 +31,7 @@ export class CaslAbilityFactory {
     );
 
     can([Action.Read, Action.Update], User, { _id: user._id });
-    can(Action.Manage, Tag, { _owner: user });
+    can(Action.Manage, Tag, { _owner: user._id });
 
     return build({
       detectSubjectType: (item) =>

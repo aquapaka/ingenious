@@ -9,6 +9,7 @@ import { DirectoriesModule } from './directories/directories.module';
 import { NotesModule } from './notes/notes.module';
 import { TagsModule } from './tags/tags.module';
 import { UsersModule } from './users/users.module';
+import { ClsModule } from 'nestjs-cls';
 
 @Module({
   imports: [
@@ -17,6 +18,10 @@ import { UsersModule } from './users/users.module';
     }),
     MongooseModule.forRootAsync({
       useFactory: async () => ({ uri: process.env.MONGO_DB_URL }),
+    }),
+    ClsModule.forRoot({
+      global: true,
+      middleware: { mount: true },
     }),
     NotesModule,
     DirectoriesModule,
