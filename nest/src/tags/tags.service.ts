@@ -4,7 +4,7 @@ import { UpdateTagDto } from './dto/update-tag.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Tag } from './schemas/tag.schema';
 import { Model } from 'mongoose';
-import { User } from 'src/users/schemas/user.schema';
+import { User } from '../users/schemas/user.schema';
 
 @Injectable()
 export class TagsService {
@@ -13,7 +13,7 @@ export class TagsService {
     @InjectModel(User.name) private userModel: Model<User>,
   ) {}
 
-  findOneTag(id: string): Promise<Tag> {
+  findOneTagById(id: string): Promise<Tag> {
     return this.tagModel.findById(id).exec();
   }
 

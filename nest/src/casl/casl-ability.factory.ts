@@ -7,8 +7,8 @@ import {
   createMongoAbility,
 } from '@casl/ability';
 import { Injectable } from '@nestjs/common';
-import { Tag } from 'src/tags/schemas/tag.schema';
-import { User } from 'src/users/schemas/user.schema';
+import { Tag } from '../tags/schemas/tag.schema';
+import { User } from '../users/schemas/user.schema';
 
 export enum Action {
   Manage = 'manage',
