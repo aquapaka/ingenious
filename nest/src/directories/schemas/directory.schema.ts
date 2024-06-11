@@ -1,16 +1,19 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
+import mongoose, { HydratedDocument } from 'mongoose';
+import { User } from '../../users/schemas/user.schema';
 
 @Schema()
 export class Directory {
-  @Prop()
-  icon: string;
+  _id: mongoose.Types.ObjectId;
 
-  @Prop()
+  @Prop({ required: true })
   title: string;
 
-  @Prop()
+  @Prop({ required: true })
   color: string;
+
+  @Prop({ type: mongoose.Types.ObjectId, ref: 'User', required: true })
+  _owner: User;
 }
 
 export type DirectoryDocument = HydratedDocument<Directory>;
