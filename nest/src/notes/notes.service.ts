@@ -1,62 +1,39 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import {
-  Directory,
-  DirectoryDocument,
-} from 'src/directories/schemas/directory.schema';
+import mongoose, { Model } from 'mongoose';
 import { CreateNoteDto } from './dto/create-note.dto';
 import { UpdateNoteDto } from './dto/update-note.dto';
 import { Note } from './schemas/note.schema';
 
 @Injectable()
 export class NotesService {
-  constructor(
-    @InjectModel(Note.name) private noteModel: Model<Note>,
-    @InjectModel(Directory.name) private directoryModel: Model<Directory>,
-  ) {}
+  constructor(@InjectModel(Note.name) private noteModel: Model<Note>) {}
 
-  // async create(createNoteDto: CreateNoteDto): Promise<Note> {
-  //   const { icon, title, tags, content, parentDirectoryId } = createNoteDto;
-  //   const createdNote = new this.noteModel({
-  //     icon,
-  //     title,
-  //     tags,
-  //     content,
-  //     createdAt: new Date(),
-  //     updatedAt: new Date(),
-  //   });
+  findOneNoteById(id: string): Promise<Note> {
+    return this.noteModel.findById(id).exec();
+  }
 
-  //   let parentDir: DirectoryDocument;
-  //   if (parentDirectoryId) {
-  //     parentDir = await this.directoryModel.findById(parentDirectoryId);
-  //   } else {
-  //     parentDir = await this.directoryModel.findOne();
-  //   }
-  //   parentDir.notes.push(createdNote);
-  //   parentDir.save();
+  async createNote(
+    createNoteDto: CreateNoteDto,
+    ownerId: string,
+  ): Promise<Note> {
+    const createdNote = new this.noteModel({
+      ...createNoteDto,
+      _owner: new mongoose.Types.ObjectId(ownerId),
+      _tags: createNoteDto.tagIds.map(
+        (tagId) => new mongoose.Types.ObjectId(tagId),
+      ),
+      _directory: new mongoose.Types.ObjectId(createNoteDto.directoryId),
+    });
 
-  //   return createdNote.save();
-  // }
+    return createdNote.save();
+  }
 
-  // async findAllNote(): Promise<Note[]> {
-  //   return this.noteModel.find().exec();
-  // }
+  updateNote(id: string, updateNoteDto: UpdateNoteDto): Promise<Note> {
+    return this.noteModel.findByIdAndUpdate(id, updateNoteDto).exec();
+  }
 
-  // async findOneNote(id: string) {
-  //   return this.noteModel.findById(id).exec();
-  // }
-
-  // async updateNote(id: string, updateNoteDto: UpdateNoteDto) {
-  //   return this.noteModel.updateOne(
-  //     { _id: id },
-  //     {
-  //       $set: updateNoteDto,
-  //     },
-  //   );
-  // }
-
-  // async deleteNote(id: string) {
-  //   return this.noteModel.findByIdAndDelete(id);
-  // }
+  deleteNote(id: string): Promise<Note> {
+    return this.noteModel.findByIdAndDelete(id).exec();
+  }
 }
