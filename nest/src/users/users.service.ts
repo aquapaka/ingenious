@@ -24,6 +24,38 @@ export class UsersService {
     return foundUser ? true : false;
   }
 
+  getUserData(_id: Types.ObjectId): Promise<any> {
+    return this.userModel.aggregate([
+      {
+        $match: { _id: _id },
+      },
+      {
+        $lookup: {
+          from: 'notes',
+          localField: '_id',
+          foreignField: '_owner',
+          as: 'allNotes',
+        },
+      },
+      {
+        $lookup: {
+          from: 'directories',
+          localField: '_id',
+          foreignField: '_owner',
+          as: 'allDirectories',
+        },
+      },
+      {
+        $lookup: {
+          from: 'tags',
+          localField: '_id',
+          foreignField: '_owner',
+          as: 'allTags',
+        },
+      },
+    ]);
+  }
+
   findUserById(_id: Types.ObjectId): Promise<User> {
     return this.userModel.findById(_id);
   }

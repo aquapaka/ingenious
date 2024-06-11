@@ -20,10 +20,14 @@ export class NotesService {
     const createdNote = new this.noteModel({
       ...createNoteDto,
       _owner: new mongoose.Types.ObjectId(ownerId),
-      _tags: createNoteDto.tagIds.map(
-        (tagId) => new mongoose.Types.ObjectId(tagId),
-      ),
-      _directory: new mongoose.Types.ObjectId(createNoteDto.directoryId),
+      _tags: createNoteDto.tagIds
+        ? createNoteDto.tagIds.map(
+            (tagId) => new mongoose.Types.ObjectId(tagId),
+          )
+        : null,
+      _directory: createNoteDto.directoryId
+        ? new mongoose.Types.ObjectId(createNoteDto.directoryId)
+        : null,
     });
 
     return createdNote.save();
