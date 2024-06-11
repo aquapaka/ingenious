@@ -28,6 +28,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     if (!user) throw new UnauthorizedException();
     this.cls.set('user', user);
 
+    // JWT Token has been validated and decoded to this payload
+    // Below just set payload to Req.user
     return payload;
   }
 }

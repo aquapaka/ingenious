@@ -5,6 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Directory, DirectorySchema } from './schemas/directory.schema';
 import { User, UserSchema } from '../users/schemas/user.schema';
 import { Note, NoteSchema } from '../notes/schemas/note.schema';
+import { CaslModule } from '../casl/casl.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { Note, NoteSchema } from '../notes/schemas/note.schema';
         schema: UserSchema,
       },
     ]),
+    CaslModule,
   ],
   controllers: [DirectoriesController],
   providers: [DirectoriesService],

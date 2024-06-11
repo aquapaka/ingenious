@@ -1,35 +1,49 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
-import { User } from './schemas/user.schema';
 import { Model, Types } from 'mongoose';
+import { User } from './schemas/user.schema';
+import { RegisterUserDto } from './dto/register-user.dto';
+import * as bcrypt from 'bcrypt';
+import { JwtService } from '@nestjs/jwt';
+import { SALT_OR_ROUNDS } from '../constants/constants';
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectModel(User.name) private userModel: Model<User>) {}
+  constructor(
+    private jwtService: JwtService,
+    @InjectModel(User.name) private userModel: Model<User>,
+  ) {}
 
-  findUserById(_id: Types.ObjectId) {
+  async isUsernameAlreadyExist(username: string): Promise<boolean> {
+    const foundUser = await this.userModel
+      .findOne({
+        username: username,
+      })
+      .exec();
+
+    return foundUser ? true : false;
+  }
+
+  findUserById(_id: Types.ObjectId): Promise<User> {
     return this.userModel.findById(_id);
   }
 
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
-  }
+  async createUser(registerUserDto: RegisterUserDto): Promise<string> {
+    const hashedPassword = await bcrypt.hash(
+      registerUserDto.password,
+      SALT_OR_ROUNDS,
+    );
 
-  findAll() {
-    return `This action returns all users`;
-  }
+    const newUser = new this.userModel({
+      username: registerUserDto.username,
+      password: hashedPassword,
+    });
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
-  }
+    await newUser.save();
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+    return this.jwtService.sign({
+      _id: newUser._id,
+      username: newUser.username,
+    });
   }
 }
