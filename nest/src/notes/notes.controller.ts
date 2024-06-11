@@ -12,7 +12,7 @@ import {
 import { CreateNoteDto } from './dto/create-note.dto';
 import { UpdateNoteDto } from './dto/update-note.dto';
 import { NotesService } from './notes.service';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 import { FindOneParams } from '../validation/findOneParams';
 import { Action, CaslAbilityFactory } from '../casl/casl-ability.factory';
@@ -20,6 +20,7 @@ import { ClsService } from 'nestjs-cls';
 import { Note } from './schemas/note.schema';
 import { ForbiddenError } from '@casl/ability';
 
+@ApiBearerAuth()
 @ApiTags('notes')
 @Controller('notes')
 export class NotesController {

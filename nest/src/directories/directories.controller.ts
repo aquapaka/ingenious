@@ -12,7 +12,7 @@ import {
 import { DirectoriesService } from './directories.service';
 import { CreateDirectoryDto } from './dto/create-directory.dto';
 import { UpdateDirectoryDto } from './dto/update-directory.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 import { FindOneParams } from '../validation/findOneParams';
 import { ForbiddenError } from '@casl/ability';
@@ -20,6 +20,7 @@ import { Action, CaslAbilityFactory } from '../casl/casl-ability.factory';
 import { Directory } from './schemas/directory.schema';
 import { ClsService } from 'nestjs-cls';
 
+@ApiBearerAuth()
 @ApiTags('directories')
 @Controller('directories')
 export class DirectoriesController {

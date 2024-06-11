@@ -14,9 +14,14 @@ async function bootstrap() {
     .setDescription('API description for Ingenious App')
     .setVersion('1.0')
     .addTag('ingenious')
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('swagger', app, document);
+  SwaggerModule.setup('swagger', app, document, {
+    swaggerOptions: {
+      persistAuthorization: true,
+    },
+  });
 
   // Validation Pipe
   app.useGlobalPipes(new ValidationPipe());

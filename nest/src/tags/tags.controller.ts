@@ -10,7 +10,7 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { ClsService } from 'nestjs-cls';
 import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 import { Action, CaslAbilityFactory } from '../casl/casl-ability.factory';
@@ -20,6 +20,7 @@ import { UpdateTagDto } from './dto/update-tag.dto';
 import { Tag } from './schemas/tag.schema';
 import { TagsService } from './tags.service';
 
+@ApiBearerAuth()
 @ApiTags('tags')
 @Controller('tags')
 export class TagsController {
