@@ -1,29 +1,23 @@
 import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import mongoose, { Model } from 'mongoose';
 import { CreateTagDto } from './dto/create-tag.dto';
 import { UpdateTagDto } from './dto/update-tag.dto';
-import { InjectModel } from '@nestjs/mongoose';
 import { Tag } from './schemas/tag.schema';
-import { Model } from 'mongoose';
-import { User } from '../users/schemas/user.schema';
 
 @Injectable()
 export class TagsService {
-  constructor(
-    @InjectModel(Tag.name) private tagModel: Model<Tag>,
-    @InjectModel(User.name) private userModel: Model<User>,
-  ) {}
+  constructor(@InjectModel(Tag.name) private tagModel: Model<Tag>) {}
 
   findOneTagById(id: string): Promise<Tag> {
     return this.tagModel.findById(id).exec();
   }
 
   async createTag(createTagDto: CreateTagDto, ownerId: string): Promise<Tag> {
-    const owner = await this.userModel
-      .findOne({
-        _id: ownerId,
-      })
-      .exec();
-    const createdTag = new this.tagModel({ ...createTagDto, _owner: owner });
+    const createdTag = new this.tagModel({
+      ...createTagDto,
+      _owner: new mongoose.Types.ObjectId(ownerId),
+    });
 
     return createdTag.save();
   }
