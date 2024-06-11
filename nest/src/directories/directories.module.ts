@@ -1,16 +1,16 @@
 import { Module } from '@nestjs/common';
-import { DirectoriesService } from './directories.service';
-import { DirectoriesController } from './directories.controller';
 import { MongooseModule } from '@nestjs/mongoose';
+import { CaslModule } from '../casl/casl.module';
+import { DirectoriesController } from './directories.controller';
+import { DirectoriesService } from './directories.service';
 import { Directory, DirectorySchema } from './schemas/directory.schema';
-import { Note, NoteSchema } from 'src/notes/schemas/note.schema';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
-      { name: Note.name, schema: NoteSchema },
       { name: Directory.name, schema: DirectorySchema },
     ]),
+    CaslModule,
   ],
   controllers: [DirectoriesController],
   providers: [DirectoriesService],

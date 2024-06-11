@@ -1,16 +1,22 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
+import mongoose, { HydratedDocument } from 'mongoose';
+import { Directory } from '../../directories/schemas/directory.schema';
+import { Tag } from '../../tags/schemas/tag.schema';
+import { User } from '../../users/schemas/user.schema';
 
 @Schema()
 export class Note {
-  @Prop()
-  icon: string;
-
   @Prop({ required: true })
   title: string;
 
-  @Prop([String])
-  tags: string[];
+  @Prop()
+  content: string;
+
+  @Prop({ type: mongoose.Types.ObjectId, ref: 'User' })
+  _owner: User;
+
+  @Prop({ type: [{ type: mongoose.Types.ObjectId, ref: 'Tag' }] })
+  _tags: Tag[];
 
   @Prop()
   createdAt: Date;
@@ -19,10 +25,10 @@ export class Note {
   updatedAt: Date;
 
   @Prop()
-  content: string;
+  isInTrash: boolean;
 
-  @Prop()
-  isTrash: boolean;
+  @Prop({ type: mongoose.Types.ObjectId, ref: 'Directory' })
+  _directory: Directory;
 }
 
 export type NoteDocument = HydratedDocument<Note>;

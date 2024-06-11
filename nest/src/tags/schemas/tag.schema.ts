@@ -3,11 +3,11 @@ import mongoose, { HydratedDocument } from 'mongoose';
 import { User } from '../../users/schemas/user.schema';
 
 @Schema()
-export class Directory {
+export class Tag {
   _id: mongoose.Types.ObjectId;
 
   @Prop({ required: true })
-  title: string;
+  name: string;
 
   @Prop({ required: true })
   color: string;
@@ -16,6 +16,6 @@ export class Directory {
   _owner: User;
 }
 
-export type DirectoryDocument = HydratedDocument<Directory>;
+export type TagDocument = HydratedDocument<Tag>;
 
-export const DirectorySchema = SchemaFactory.createForClass(Directory);
+export const TagSchema = SchemaFactory.createForClass(Tag);

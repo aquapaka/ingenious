@@ -1,7 +1,16 @@
+import { IsMongoId, IsNotEmpty, IsOptional } from 'class-validator';
+
 export class CreateNoteDto {
-  readonly icon: string;
+  @IsNotEmpty()
   readonly title: string;
-  readonly tags: string[];
+
   readonly content: string;
-  readonly parentDirectoryId: string;
+
+  @IsMongoId({ each: true })
+  @IsOptional()
+  readonly tagIds: string[];
+
+  @IsMongoId()
+  @IsOptional()
+  readonly directoryId: string;
 }
