@@ -1,8 +1,10 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Avatar, AvatarImage } from '@radix-ui/react-avatar';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { z } from 'zod';
+import { API_BASE_URL } from '../../../../const/const';
 import { Button } from '../../../ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from '../../../ui/card';
 import { Checkbox } from '../../../ui/checkbox';
@@ -38,6 +40,9 @@ const registerFormSchema = z
 
 export function RegisterForm(props: { isHidden: boolean }) {
   const { isHidden } = props;
+  const [isRegistering, setIsRegistering] = useState(false);
+  const navigate = useNavigate();
+
   const registerForm = useForm<z.infer<typeof registerFormSchema>>({
     resolver: zodResolver(registerFormSchema),
     defaultValues: {
@@ -48,7 +53,28 @@ export function RegisterForm(props: { isHidden: boolean }) {
   });
 
   function onRegisterSubmit(values: z.infer<typeof registerFormSchema>) {
-    console.log(values);
+    if (isRegistering) return;
+
+    const { username, password } = values;
+
+    fetch(API_BASE_URL + '/users/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ username, password }),
+    }).then((response) => {
+      if (response.status === 409) {
+        registerForm.setError('username', {
+          type: 'custom',
+          message: 'Username already taken',
+        });
+      }
+      if (response.status === 201) {
+        navigate('/');
+      }
+      setIsRegistering(false);
+    });
   }
 
   return (
