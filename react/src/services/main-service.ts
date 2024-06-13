@@ -1,12 +1,19 @@
 import { API_BASE_URL } from '@/const/const';
-import { Directory, Note } from '@/lib/types';
+import { Directory, Note, User } from '@/lib/types';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { RootState } from '../app/store';
-import { LoginData, RegisterData } from './api-types';
+import {
+  CreateDirectoryData,
+  CreateNoteData,
+  LoginData,
+  RegisterData,
+  UpdateDirectoryData,
+  UpdateNoteData,
+} from './api-types';
 
 export const mainApi = createApi({
   reducerPath: 'mainApi',
-  tagTypes: ['Directory', 'Note'],
+  tagTypes: ['User', 'Directory', 'Note'],
   baseQuery: fetchBaseQuery({
     baseUrl: API_BASE_URL,
     prepareHeaders(headers, api) {
@@ -38,79 +45,76 @@ export const mainApi = createApi({
         responseHandler: (response) => response.text(),
       }),
     }),
+    getUserData: builder.query<User, void>({
+      query: () => '/users/self',
+      providesTags: ['User'],
+    }),
     // -------------------------------------------------------------------------------------
     // Directories
-    getMainDirectory: builder.query<Directory, undefined>({
-      query: () => '/directories/main',
-      providesTags: ['Directory'],
-    }),
-    addDirectory: builder.mutation<
-      Directory,
-      Omit<Directory, '_id' | 'directories' | 'notes'> & { parentDirectoryId?: string }
-    >({
+    addDirectory: builder.mutation<Directory, CreateDirectoryData>({
       query: ({ ...body }) => ({
         url: '/directories',
         method: 'POST',
         body,
       }),
-      invalidatesTags: ['Directory'],
+      invalidatesTags: ['User'],
     }),
-    updateDirectory: builder.mutation<Directory, Partial<Directory>>({
-      query: ({ ...directory }) => ({
-        url: `/directories/${directory._id}`,
+    updateDirectory: builder.mutation<Directory, { id: string; directory: UpdateDirectoryData }>({
+      query: ({ id, directory }) => ({
+        url: `/directories/${id}`,
         method: 'PATCH',
         body: directory,
       }),
-      invalidatesTags: ['Note', 'Directory'],
+      invalidatesTags: ['User'],
     }),
     deleteDirectory: builder.mutation<Directory, string>({
       query: (id) => ({
         url: `directories/${id}`,
         method: 'DELETE',
       }),
-      invalidatesTags: ['Directory', 'Note'],
+      invalidatesTags: ['User'],
     }),
     // ---------------------------------------------------------------------------------------
     // Notes
-    getNote: builder.query<Note, string | undefined>({
-      query: (id) => (id ? `/notes/${id}` : ''),
+    getNote: builder.query<Note, string>({
+      query: (id) => `/notes/${id}`,
       providesTags: ['Note'],
     }),
-    addNote: builder.mutation<Note, Omit<Note, '_id'> & { parentDirectoryId?: string }>({
+    addNote: builder.mutation<Note, CreateNoteData>({
       query: ({ ...body }) => ({
         url: `/notes`,
         method: 'POST',
         body,
       }),
-      invalidatesTags: ['Directory'],
+      invalidatesTags: ['User'],
     }),
-    updateNote: builder.mutation<Note, Partial<Note>>({
-      query: ({ ...note }) => ({
-        url: `/notes/${note._id}`,
+    updateNote: builder.mutation<Note, { id: string; note: UpdateNoteData }>({
+      query: ({ id, note }) => ({
+        url: `/notes/${id}`,
         method: 'PATCH',
         body: note,
       }),
-      invalidatesTags: ['Note', 'Directory'],
+      invalidatesTags: ['User'],
     }),
     deleteNote: builder.mutation<Note, string>({
       query: (id) => ({
         url: `notes/${id}`,
         method: 'DELETE',
       }),
-      invalidatesTags: ['Directory', 'Note'],
+      invalidatesTags: ['User'],
     }),
   }),
 });
 
 export const {
-  useGetMainDirectoryQuery,
-  useAddDirectoryMutation,
-  useDeleteDirectoryMutation,
+  useRegisterUserMutation,
+  useLoginMutation,
+  useGetUserDataQuery,
   useGetNoteQuery,
   useAddNoteMutation,
   useUpdateNoteMutation,
   useDeleteNoteMutation,
+  useAddDirectoryMutation,
   useUpdateDirectoryMutation,
-  useRegisterUserMutation,
-  useLoginMutation,
+  useDeleteDirectoryMutation,
 } = mainApi;

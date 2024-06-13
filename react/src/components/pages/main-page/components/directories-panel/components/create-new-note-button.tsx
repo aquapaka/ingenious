@@ -1,8 +1,8 @@
 import { Button } from '@/components/ui/button';
-import { Note } from '@/lib/types';
 import { useAddNoteMutation } from '@/services/main-service';
 import { FilePlus } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { CreateNoteData } from '../../../../../../services/api-types';
 
 export default function CreateNewNoteButton(props: { small?: boolean; parentDirectoryId?: string }) {
   const { small, parentDirectoryId } = props;
@@ -11,12 +11,10 @@ export default function CreateNewNoteButton(props: { small?: boolean; parentDire
 
   function handleCreateNewNote(event: React.MouseEvent) {
     event.stopPropagation();
-    const note: Omit<Note, '_id'> & { parentDirectoryId?: string } = {
-      icon: '',
-      tags: [],
-      title: 'New Note',
+    const note: CreateNoteData = {
+      title: 'Untitled',
       content: '',
-      parentDirectoryId,
+      directoryId: parentDirectoryId,
     };
     addNewNote(note).then(({ data }) => {
       if (data) navigate(`/notes/${data._id}`);

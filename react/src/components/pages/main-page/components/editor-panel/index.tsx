@@ -4,9 +4,9 @@ import Editor from './editor';
 import { useGetNoteQuery } from '@/services/main-service';
 import { useEffect } from 'react';
 
-export default function NotesPanel() {
+export default function EditorPanel() {
   const { id } = useParams();
-  const { data: note, error, isLoading } = useGetNoteQuery(id);
+  const { data: note, error, isLoading } = useGetNoteQuery(id || '', { skip: id === undefined });
   const navigate = useNavigate();
 
   useEffect(() => {

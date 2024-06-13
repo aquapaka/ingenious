@@ -16,8 +16,11 @@ export interface Note {
   _id: string;
   title: string;
   content: string;
-  isTrash: boolean;
-  tags: string[];
+  isInTrash: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  _tags: string[];
+  _directory: Directory;
 }
 
 export interface Directory {
