@@ -62,7 +62,6 @@ export function RegisterForm(props: { isHidden: boolean }) {
   }
 
   useEffect(() => {
-    console.log(isError, error);
     if (isError && 'status' in error) {
       if (error.status === 409) {
         registerForm.setError('username', {
