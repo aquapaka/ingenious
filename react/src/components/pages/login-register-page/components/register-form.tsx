@@ -10,6 +10,9 @@ import { Card, CardContent, CardFooter, CardHeader } from '../../../ui/card';
 import { Checkbox } from '../../../ui/checkbox';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '../../../ui/form';
 import { Input } from '../../../ui/input';
+import { toast } from 'sonner';
+import { useDispatch } from 'react-redux';
+import { saveUserToken } from '../../../../app/slices/authSlice';
 
 const USERNAME_REGEX = /^[a-zA-Z0-9]+$/;
 const STRONG_PASSWORD_REGEX = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/;
@@ -40,7 +43,8 @@ const registerFormSchema = z
 
 export function RegisterForm(props: { isHidden: boolean }) {
   const { isHidden } = props;
-  const [registerUser, { isLoading: isRegistering, isError, error, isSuccess }] = useRegisterUserMutation();
+  const [registerUser, { data, isLoading: isRegistering, isError, error, isSuccess }] = useRegisterUserMutation();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const registerForm = useForm<z.infer<typeof registerFormSchema>>({
@@ -58,19 +62,28 @@ export function RegisterForm(props: { isHidden: boolean }) {
   }
 
   useEffect(() => {
+    console.log(isError, error);
     if (isError && 'status' in error) {
       if (error.status === 409) {
         registerForm.setError('username', {
           message: 'This username already taken',
         });
       } else {
-        console.log('other errors');
+        toast.error('Something when wrong', {
+          description: 'There is error while registering',
+        });
       }
     }
     if (isSuccess) {
-      navigate('/');
+      dispatch(saveUserToken(data));
+      toast.success('Register successfully', {
+        description: 'Redirecting you to main page...',
+      });
+      setTimeout(() => {
+        navigate('/');
+      }, 5000);
     }
-  }, [isError, error, registerForm, isSuccess, navigate]);
+  }, [isError, error, registerForm, isSuccess, navigate, dispatch, data]);
 
   return (
     <Card className="w-full max-w-sm" hidden={isHidden}>
