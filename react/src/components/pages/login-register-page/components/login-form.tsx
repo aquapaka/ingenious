@@ -69,7 +69,7 @@ export function LoginForm(props: { isHidden: boolean }) {
                 <FormItem>
                   <FormLabel>Username</FormLabel>
                   <FormControl>
-                    <Input placeholder="enter your username..." {...field} />
+                    <Input placeholder="your cool username..." {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -82,7 +82,7 @@ export function LoginForm(props: { isHidden: boolean }) {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input type="password" placeholder="enter your password..." {...field} />
+                    <Input type="password" placeholder="your secret incantation..." {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
