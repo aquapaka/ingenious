@@ -1,12 +1,20 @@
 import { API_BASE_URL } from '@/const/const';
 import { Directory, Note } from '@/lib/types';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { RegisterData } from './api-types';
 
 export const mainApi = createApi({
   reducerPath: 'mainApi',
   tagTypes: ['Directory', 'Note'],
   baseQuery: fetchBaseQuery({ baseUrl: API_BASE_URL }),
   endpoints: (builder) => ({
+    registerUser: builder.mutation({
+      query: (body: RegisterData) => ({
+        url: '/users/register',
+        method: 'POST',
+        body,
+      }),
+    }),
     // -------------------------------------------------------------------------------------
     // Directories
     getMainDirectory: builder.query<Directory, undefined>({
@@ -80,4 +88,5 @@ export const {
   useUpdateNoteMutation,
   useDeleteNoteMutation,
   useUpdateDirectoryMutation,
+  useRegisterUserMutation,
 } = mainApi;

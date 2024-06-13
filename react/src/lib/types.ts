@@ -1,16 +1,28 @@
-export type Note = {
+export interface User {
   _id: string;
-  icon: string;
-  tags: string[];
+  username: string;
+  allNotes: Note[];
+  allDirectories: Directory[];
+  allTags: Tag[];
+}
+
+export interface Tag {
+  _id: string;
+  name: string;
+  color: string;
+}
+
+export interface Note {
+  _id: string;
   title: string;
   content: string;
   isTrash: boolean;
-};
+  tags: string[];
+}
 
-export type Directory = {
+export interface Directory {
   _id: string;
-  icon: string;
   title: string;
-  directories: Directory[];
+  color: string;
   notes: Note[];
-};
+}

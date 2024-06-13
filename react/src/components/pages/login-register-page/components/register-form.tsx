@@ -1,10 +1,10 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Avatar, AvatarImage } from '@radix-ui/react-avatar';
-import { useState } from 'react';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { z } from 'zod';
-import { API_BASE_URL } from '../../../../const/const';
+import { useRegisterUserMutation } from '../../../../services/main-service';
 import { Button } from '../../../ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from '../../../ui/card';
 import { Checkbox } from '../../../ui/checkbox';
@@ -40,7 +40,7 @@ const registerFormSchema = z
 
 export function RegisterForm(props: { isHidden: boolean }) {
   const { isHidden } = props;
-  const [isRegistering, setIsRegistering] = useState(false);
+  const [registerUser, { isLoading: isRegistering, isError, error, isSuccess }] = useRegisterUserMutation();
   const navigate = useNavigate();
 
   const registerForm = useForm<z.infer<typeof registerFormSchema>>({
@@ -53,29 +53,24 @@ export function RegisterForm(props: { isHidden: boolean }) {
   });
 
   function onRegisterSubmit(values: z.infer<typeof registerFormSchema>) {
-    if (isRegistering) return;
-
     const { username, password } = values;
-
-    fetch(API_BASE_URL + '/users/register', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ username, password }),
-    }).then((response) => {
-      if (response.status === 409) {
-        registerForm.setError('username', {
-          type: 'custom',
-          message: 'Username already taken',
-        });
-      }
-      if (response.status === 201) {
-        navigate('/');
-      }
-      setIsRegistering(false);
-    });
+    registerUser({ username, password });
   }
+
+  useEffect(() => {
+    if (isError && 'status' in error) {
+      if (error.status === 409) {
+        registerForm.setError('username', {
+          message: 'This username already taken',
+        });
+      } else {
+        console.log('other errors');
+      }
+    }
+    if (isSuccess) {
+      navigate('/');
+    }
+  }, [isError, error, registerForm, isSuccess, navigate]);
 
   return (
     <Card className="w-full max-w-sm" hidden={isHidden}>
@@ -97,7 +92,7 @@ export function RegisterForm(props: { isHidden: boolean }) {
                   <FormControl>
                     <Input placeholder="enter your username..." {...field} />
                   </FormControl>
-                  <FormDescription>This is your public display name.</FormDescription>
+                  <FormDescription>This will be used to login.</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -155,7 +150,7 @@ export function RegisterForm(props: { isHidden: boolean }) {
             />
           </CardContent>
           <CardFooter className="block text-center">
-            <Button type="submit" className="w-full">
+            <Button type="submit" className="w-full" disabled={isRegistering}>
               Register
             </Button>
             <p className="mt-4 text-sm text-secondary-foreground font-light">
