@@ -104,7 +104,7 @@ export function RegisterForm(props: { isHidden: boolean }) {
                 <FormItem>
                   <FormLabel>Username</FormLabel>
                   <FormControl>
-                    <Input placeholder="enter your username..." {...field} />
+                    <Input placeholder="enter your coolest username..." {...field} />
                   </FormControl>
                   <FormDescription>This will be used to login.</FormDescription>
                   <FormMessage />
@@ -118,7 +118,7 @@ export function RegisterForm(props: { isHidden: boolean }) {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input type="password" placeholder="enter your password..." {...field} />
+                    <Input type="password" placeholder="enter your secret..." {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -131,7 +131,7 @@ export function RegisterForm(props: { isHidden: boolean }) {
                 <FormItem>
                   <FormLabel>Confirm Password</FormLabel>
                   <FormControl>
-                    <Input type="password" placeholder="confirm your password..." {...field} />
+                    <Input type="password" placeholder="confirm your secret..." {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
