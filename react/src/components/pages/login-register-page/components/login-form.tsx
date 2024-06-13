@@ -1,20 +1,28 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Avatar, AvatarImage } from '@radix-ui/react-avatar';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { NavLink } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 import { z } from 'zod';
+import { useLoginMutation } from '../../../../services/main-service';
 import { Button } from '../../../ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from '../../../ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../../../ui/form';
 import { Input } from '../../../ui/input';
+import { saveUserToken } from '../../../../app/slices/authSlice';
 
 const loginFormSchema = z.object({
-  username: z.string(),
-  password: z.string(),
+  username: z.string().trim().min(1, 'Please enter username'),
+  password: z.string().trim().min(1, 'Please enter password'),
 });
 
 export function LoginForm(props: { isHidden: boolean }) {
   const { isHidden } = props;
+  const [login, { isLoading: isLoggingin, data, isError, error, isSuccess }] = useLoginMutation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const loginForm = useForm<z.infer<typeof loginFormSchema>>({
     resolver: zodResolver(loginFormSchema),
@@ -25,8 +33,24 @@ export function LoginForm(props: { isHidden: boolean }) {
   });
 
   function onLoginSubmit(values: z.infer<typeof loginFormSchema>) {
-    console.log(values);
+    const { username, password } = values;
+    login({ username, password });
   }
+
+  useEffect(() => {
+    if (isError && 'status' in error) {
+      if (error.status === 401) {
+        loginForm.setError('password', {
+          message: 'Password is not correct',
+        });
+      }
+    }
+    if (isSuccess) {
+      dispatch(saveUserToken(data));
+      toast.success('Logged in');
+      navigate('/');
+    }
+  }, [isSuccess, data, dispatch, isError, error, loginForm, navigate]);
 
   return (
     <Card className="w-full max-w-sm" hidden={isHidden}>
@@ -66,7 +90,7 @@ export function LoginForm(props: { isHidden: boolean }) {
             />
           </CardContent>
           <CardFooter className="block text-center">
-            <Button type="submit" className="w-full">
+            <Button type="submit" className="w-full" disabled={isLoggingin}>
               Login
             </Button>
             <p className="mt-4 text-sm text-secondary-foreground font-light">

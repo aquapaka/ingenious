@@ -2,7 +2,7 @@ import { API_BASE_URL } from '@/const/const';
 import { Directory, Note } from '@/lib/types';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { RootState } from '../app/store';
-import { RegisterData } from './api-types';
+import { LoginData, RegisterData } from './api-types';
 
 export const mainApi = createApi({
   reducerPath: 'mainApi',
@@ -22,6 +22,14 @@ export const mainApi = createApi({
   endpoints: (builder) => ({
     // -------------------------------------------------------------------------------------
     // Users & Auth
+    login: builder.mutation({
+      query: (body: LoginData) => ({
+        url: '/auth/login',
+        method: 'POST',
+        body,
+        responseHandler: (response) => response.text(),
+      }),
+    }),
     registerUser: builder.mutation({
       query: (body: RegisterData) => ({
         url: '/users/register',
@@ -104,4 +112,5 @@ export const {
   useDeleteNoteMutation,
   useUpdateDirectoryMutation,
   useRegisterUserMutation,
+  useLoginMutation,
 } = mainApi;

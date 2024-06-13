@@ -21,11 +21,13 @@ const registerFormSchema = z
   .object({
     username: z
       .string()
+      .trim()
       .min(3, 'Username need to have atleast 3 characters')
       .max(20, "Username can't have more than 20 characters")
       .regex(USERNAME_REGEX, 'Username can only contains letters and numbers'),
     password: z
       .string()
+      .trim()
       .min(8)
       .regex(
         STRONG_PASSWORD_REGEX,

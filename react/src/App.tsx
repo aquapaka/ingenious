@@ -8,6 +8,7 @@ import NotesPanel from './components/pages/main-page/components/notes-panel';
 import { ThemeProvider } from './components/theme-provider';
 import { LOGIN_PATHNAME, REGISTER_PATHNAME } from './const/const';
 import ProtectedRoute from './components/protected-route';
+import { Toaster } from './components/ui/sonner';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -31,6 +32,7 @@ function App() {
         <div className="h-screen">
           <RouterProvider router={router} />
         </div>
+        <Toaster position="bottom-center" />
       </ThemeProvider>
     </Provider>
   );
