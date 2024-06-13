@@ -1,12 +1,43 @@
 import { API_BASE_URL } from '@/const/const';
 import { Directory, Note } from '@/lib/types';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { RootState } from '../app/store';
+import { LoginData, RegisterData } from './api-types';
 
 export const mainApi = createApi({
   reducerPath: 'mainApi',
   tagTypes: ['Directory', 'Note'],
-  baseQuery: fetchBaseQuery({ baseUrl: API_BASE_URL }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: API_BASE_URL,
+    prepareHeaders(headers, api) {
+      const state = api.getState() as RootState;
+      const userToken = state.auth.userToken;
+
+      if (userToken) {
+        headers.set('authorization', `Bearer ${userToken}`);
+        return headers;
+      }
+    },
+  }),
   endpoints: (builder) => ({
+    // -------------------------------------------------------------------------------------
+    // Users & Auth
+    login: builder.mutation({
+      query: (body: LoginData) => ({
+        url: '/auth/login',
+        method: 'POST',
+        body,
+        responseHandler: (response) => response.text(),
+      }),
+    }),
+    registerUser: builder.mutation({
+      query: (body: RegisterData) => ({
+        url: '/users/register',
+        method: 'POST',
+        body,
+        responseHandler: (response) => response.text(),
+      }),
+    }),
     // -------------------------------------------------------------------------------------
     // Directories
     getMainDirectory: builder.query<Directory, undefined>({
@@ -80,4 +111,6 @@ export const {
   useUpdateNoteMutation,
   useDeleteNoteMutation,
   useUpdateDirectoryMutation,
+  useRegisterUserMutation,
+  useLoginMutation,
 } = mainApi;

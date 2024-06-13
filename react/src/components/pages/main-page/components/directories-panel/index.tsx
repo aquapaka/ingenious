@@ -12,7 +12,7 @@ import NoteButton from './components/note-button';
 import TrashBin from './components/trash-bin';
 
 export default function DirectoriesPanel() {
-  const { data, isLoading, isError, error } = useGetMainDirectoryQuery(undefined);
+  const { data, isLoading, isError } = useGetMainDirectoryQuery(undefined);
   const [searchTitle, setSearchTitle] = useState('');
   const [filterTags, setFilterTags] = useState<string[]>([]);
 
@@ -40,8 +40,6 @@ export default function DirectoriesPanel() {
     () => filterNotes(data, searchTitle, filterTags),
     [filterNotes, data, searchTitle, filterTags],
   );
-
-  if (isError) console.log(error);
 
   return (
     <div className="h-screen overflow-auto flex flex-col w-full justify-between p-4">

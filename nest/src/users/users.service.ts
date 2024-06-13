@@ -29,6 +29,7 @@ export class UsersService {
       {
         $match: { _id: _id },
       },
+      { $unset: ['password'] },
       {
         $lookup: {
           from: 'notes',
