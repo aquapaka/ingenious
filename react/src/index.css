@@ -47,15 +47,28 @@
     --ring: 341 77% 40%;
     --radius: 0.5rem;
   }
-}
-
-@layer base {
   * {
     @apply border-border;
   }
   body {
     @apply bg-background text-foreground;
   }
+}
+
+@layer components {
+  .lucide {
+    color: var(--foreground);
+    width: 16px;
+    height: 16px;
+    stroke-width: 2px;
+  }
+}
+
+.lucide {
+  color: var(--foreground);
+  width: 16px;
+  height: 16px;
+  stroke-width: 2px;
 }
 
 /* Style react-md-editor */
@@ -91,11 +104,11 @@
 }
 
 .react-tagsinput--focused {
-  @apply  ring-ring ring-1
+  @apply ring-ring ring-1;
 }
 
 .react-tagsinput-tag {
-  @apply bg-primary text-primary-foreground rounded-sm text-xs p-1 font-bold mr-1
+  @apply bg-primary text-primary-foreground rounded-sm text-xs p-1 font-bold mr-1;
 }
 
 .react-tagsinput-remove {
@@ -111,12 +124,5 @@
   background: transparent;
   border: 0;
   outline: none;
-  @apply text-primary-foreground placeholder:text-muted-foreground text-xs p-2 w-[100px] placeholder:italic
-}
-
-.lucide {
-  color: var(--foreground);
-  width: 16px;
-  height: 16px;
-  stroke-width: 2px;
+  @apply text-primary-foreground placeholder:text-muted-foreground text-xs p-2 w-[100px] placeholder:italic;
 }

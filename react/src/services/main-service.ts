@@ -36,6 +36,7 @@ export const mainApi = createApi({
         body,
         responseHandler: (response) => response.text(),
       }),
+      invalidatesTags: ['User'],
     }),
     registerUser: builder.mutation({
       query: (body: RegisterData) => ({
@@ -44,6 +45,7 @@ export const mainApi = createApi({
         body,
         responseHandler: (response) => response.text(),
       }),
+      invalidatesTags: ['User'],
     }),
     getUserData: builder.query<User, void>({
       query: () => '/users/self',
