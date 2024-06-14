@@ -30,8 +30,7 @@ function DeleteAlertDialogContent(props: { directory: Directory }) {
       <AlertDialogHeader>
         <AlertDialogTitle>Are you sure?</AlertDialogTitle>
         <AlertDialogDescription>
-          You are about to delete <strong className="text-foreground">{`${directory.icon} ${directory.title}`}</strong>{' '}
-          directory along with all it's sub directories and notes.
+          You are about to delete <strong className="text-foreground">{directory.title}</strong> directory.
           {directory.notes.length ? (
             <span>
               {' '}

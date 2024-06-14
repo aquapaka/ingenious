@@ -113,3 +113,10 @@
   outline: none;
   @apply text-primary-foreground placeholder:text-muted-foreground text-xs p-2 w-[100px] placeholder:italic
 }
+
+.lucide {
+  color: var(--foreground);
+  width: 16px;
+  height: 16px;
+  stroke-width: 2px;
+}

@@ -1,24 +1,10 @@
 import { AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { Directory, Note } from '@/lib/types';
 import { Trash2 } from 'lucide-react';
-import { useCallback, useMemo } from 'react';
 import NoteButton from './note-button';
+import { Note } from '../../../../../../lib/types';
 
-export default function TrashBin(props: { directory: Directory }) {
-  const { directory } = props;
-  const filterNotesInTrash = useCallback((directory: Directory) => {
-    const trashNotes: Note[] = [];
-
-    directory.notes.forEach((note) => {
-      if (note.isTrash) trashNotes.push(note);
-    });
-    directory.directories.forEach((dir) => {
-      trashNotes.push(...filterNotesInTrash(dir));
-    });
-
-    return trashNotes;
-  }, []);
-  const notesInTrash = useMemo(() => filterNotesInTrash(directory), [filterNotesInTrash, directory]);
+export default function TrashBin(props: { inTrashNodes: Note[] }) {
+  const { inTrashNodes } = props;
 
   return (
     <AccordionItem value="trash" className="w-full overflow-scroll">
@@ -29,8 +15,8 @@ export default function TrashBin(props: { directory: Directory }) {
         </div>
       </AccordionTrigger>
       <AccordionContent>
-        <div className="pl-4">
-          {notesInTrash.map((note) => (
+        <div className="">
+          {inTrashNodes.map((note) => (
             <div key={note._id}>
               <NoteButton note={note} />
             </div>

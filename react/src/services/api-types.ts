@@ -11,6 +11,7 @@ export interface LoginData {
 export interface CreateNoteData {
   title: string;
   content: string;
+  isInTrash?: boolean;
   tagIds?: string[];
   directoryId?: string;
 }

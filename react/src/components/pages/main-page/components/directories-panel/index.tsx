@@ -9,11 +9,12 @@ import CreateNewDirectoryButton from './components/create-new-directory-button';
 import CreateNewNoteButton from './components/create-new-note-button';
 import DirectoryAccordion from './components/directory-accodion';
 import NoteButton from './components/note-button';
+import TrashBin from './components/trash-bin';
 
 export default function DirectoriesPanel() {
   const { data, isLoading, isError, isSuccess } = useGetUserDataQuery();
   const [userData, setUserData] = useState<User | null>(null);
-  const { allDirectories, allNotes } = userData || {};
+  const { allDirectories, allNotes, inTrashNotes } = userData || {};
   const [searchTitle, setSearchTitle] = useState('');
   const [filterTags, setFilterTags] = useState<string[]>([]);
 
@@ -99,7 +100,7 @@ export default function DirectoriesPanel() {
               </div>
             )}
 
-            {/* <TrashBin directory={data} /> */}
+            {inTrashNotes && <TrashBin inTrashNodes={inTrashNotes} />}
           </Accordion>
         )
       )}

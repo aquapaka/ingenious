@@ -36,6 +36,17 @@ export class UsersService {
             from: 'notes',
             localField: '_id',
             foreignField: '_owner',
+            pipeline: [
+              {
+                $match: {
+                  isInTrash: {
+                    $not: {
+                      $eq: true,
+                    },
+                  },
+                },
+              },
+            ],
             as: 'allNotes',
           },
         },
@@ -50,6 +61,18 @@ export class UsersService {
                   from: 'notes',
                   localField: '_id',
                   foreignField: '_directory',
+                  let: { isInTrash: '$isInTrash' },
+                  pipeline: [
+                    {
+                      $match: {
+                        isInTrash: {
+                          $not: {
+                            $eq: true,
+                          },
+                        },
+                      },
+                    },
+                  ],
                   as: 'notes',
                 },
               },
@@ -63,6 +86,23 @@ export class UsersService {
             localField: '_id',
             foreignField: '_owner',
             as: 'allTags',
+          },
+        },
+        {
+          $lookup: {
+            from: 'notes',
+            localField: '_id',
+            foreignField: '_owner',
+            pipeline: [
+              {
+                $match: {
+                  isInTrash: {
+                    $eq: true,
+                  },
+                },
+              },
+            ],
+            as: 'inTrashNotes',
           },
         },
       ])

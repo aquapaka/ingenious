@@ -4,6 +4,7 @@ export interface User {
   allNotes: Note[];
   allDirectories: Directory[];
   allTags: Tag[];
+  inTrashNotes: Note[];
 }
 
 export interface Tag {

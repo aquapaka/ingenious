@@ -6,6 +6,9 @@ export class CreateNoteDto {
 
   readonly content: string;
 
+  @IsOptional()
+  readonly isInTrash: boolean;
+
   @IsMongoId({ each: true })
   @IsOptional()
   readonly tagIds: string[];
