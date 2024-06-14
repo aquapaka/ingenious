@@ -1,7 +1,6 @@
 import { Outlet } from 'react-router-dom';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '../../ui/resizable';
 import DirectoriesPanel from './components/directories-panel';
-import TopBar from './components/top-bar';
 
 export default function MainPage() {
   return (
@@ -10,8 +9,7 @@ export default function MainPage() {
         <DirectoriesPanel />
       </ResizablePanel>
       <ResizableHandle withHandle />
-      <ResizablePanel>
-        <TopBar />
+      <ResizablePanel className="h-screen">
         <Outlet />
       </ResizablePanel>
     </ResizablePanelGroup>

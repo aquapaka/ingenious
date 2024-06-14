@@ -1,5 +1,5 @@
-import { Note } from '@/lib/types';
-import { useUpdateNoteMutation } from '@/services/main-service';
+import { Note } from '../../../../../../lib/types';
+import { useUpdateNoteMutation } from '../../../../../../services/main-service';
 import { Loader2, PencilLine } from 'lucide-react';
 import { EditText, onSaveProps } from 'react-edit-text';
 
@@ -8,7 +8,7 @@ export default function EditableNoteTitle(props: { note: Note; isShowOnHover?: b
   const [updateNote, { isLoading: isUpdating }] = useUpdateNoteMutation();
 
   function handleTitleSave({ value }: onSaveProps) {
-    updateNote({ ...note, title: value });
+    updateNote({ id: note._id, note: { title: value } });
   }
 
   return (

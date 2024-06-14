@@ -13,7 +13,7 @@ import EditableNoteTitle from './editable-note-title';
 
 export default function TopBar() {
   const { id } = useParams();
-  const { data: note } = useGetNoteQuery(id);
+  const { data: note } = useGetNoteQuery(id!, { skip: !id });
 
   return (
     <div className="flex justify-between items-center p-2">
@@ -30,7 +30,6 @@ export default function TopBar() {
               <BreadcrumbItem>
                 <BreadcrumbPage className="flex items-center">
                   <div className="[&>div]:flex [&>div]:items-center [&>div]:gap-2">
-                    {note.icon}
                     <EditableNoteTitle note={note} />
                   </div>
                 </BreadcrumbPage>

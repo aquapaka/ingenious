@@ -22,7 +22,7 @@ function Editor(props: { note: Note }) {
   return (
     <>
       <MarkdownEditor
-        className="h-[92%] rounded-none"
+        className="grow rounded-none"
         visible
         enableScroll
         value={note.content}
@@ -32,21 +32,23 @@ function Editor(props: { note: Note }) {
           className: 'prose dark:prose-invert prose-sm lg:prose-base prose-ingenious',
         }}
       />
-      <p className="m-2 flex items-center text-xs">
-        {isTyping ? (
-          <>
-            <TextCursorInput className="mr-2 animate-pulse" size={16} /> Typing...
-          </>
-        ) : isUpdating ? (
-          <>
-            <Loader2 className="animate-spin mr-2" size={16} /> Saving...
-          </>
-        ) : (
-          <>
-            <CheckCheck className="mr-2" size={16} /> Saved
-          </>
-        )}
-      </p>
+      <div className="">
+        <p className="m-2 flex items-center text-xs">
+          {isTyping ? (
+            <>
+              <TextCursorInput className="mr-2 animate-pulse" size={16} /> Typing...
+            </>
+          ) : isUpdating ? (
+            <>
+              <Loader2 className="animate-spin mr-2" size={16} /> Saving...
+            </>
+          ) : (
+            <>
+              <CheckCheck className="mr-2" size={16} /> Saved
+            </>
+          )}
+        </p>
+      </div>
     </>
   );
 }

@@ -1,8 +1,9 @@
 import { Frown, Loader2 } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';
-import Editor from './editor';
+import Editor from './components/editor';
 import { useGetNoteQuery } from '@/services/main-service';
 import { useEffect } from 'react';
+import TopBar from './components/top-bar';
 
 export default function EditorPanel() {
   const { id } = useParams();
@@ -14,7 +15,7 @@ export default function EditorPanel() {
   }, [navigate, error]);
 
   return (
-    <div className="h-full flex justify-center items-center">
+    <div className="h-screen flex justify-center items-center">
       {!id ? (
         <p>Open a note to edit</p>
       ) : isLoading ? (
@@ -26,7 +27,8 @@ export default function EditorPanel() {
           <Frown className="mr-2" /> Error while loading note
         </p>
       ) : (
-        <div className="h-full w-full">
+        <div className="h-full w-full flex flex-col">
+          <TopBar />
           <Editor note={note} />
         </div>
       )}
