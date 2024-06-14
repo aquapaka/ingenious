@@ -25,7 +25,7 @@ export default function DirectoriesPanel() {
   }, [allDirectories, data, isSuccess]);
 
   return (
-    <div className="h-screen overflow-auto flex flex-col w-full justify-between p-4">
+    <div className="h-screen overflow-auto flex flex-col w-full justify-between p-4 pt-2">
       <div className="flex justify-between items-center gap-1 mb-2">
         <h1 className="font-bold">Ingenious</h1>
         <div className="flex">
@@ -70,7 +70,10 @@ export default function DirectoriesPanel() {
               <div>
                 {allNotes &&
                   allNotes
-                    .filter((note) => !note.isInTrash)
+                    .filter(
+                      (note) =>
+                        !note.isInTrash && note.title.toLocaleLowerCase().includes(searchTitle.toLocaleLowerCase()),
+                    )
                     .map((note) => (
                       <div key={note._id}>
                         <NoteButton note={note} />
