@@ -82,7 +82,7 @@ export function RegisterForm(props: { isHidden: boolean }) {
       });
       setTimeout(() => {
         navigate('/');
-      }, 5000);
+      }, 3000);
     }
   }, [isError, error, registerForm, isSuccess, navigate, dispatch, data]);
 

@@ -10,6 +10,7 @@ import CreateNewNoteButton from './components/create-new-note-button';
 import DirectoryAccordion from './components/directory-accodion';
 import NoteButton from './components/note-button';
 import TrashBin from './components/trash-bin';
+import { UserDropdownMenu } from './components/user-dropdown-menu';
 
 export default function DirectoriesPanel() {
   const { data, isLoading, isError, isSuccess } = useGetUserDataQuery();
@@ -27,7 +28,7 @@ export default function DirectoriesPanel() {
   return (
     <div className="h-screen overflow-auto flex flex-col w-full justify-between p-4 pt-2">
       <div className="flex justify-between items-center gap-1 mb-2">
-        <h1 className="font-bold">Ingenious</h1>
+        <UserDropdownMenu />
         <div className="flex">
           <CreateNewNoteButton />
           <CreateNewDirectoryButton />
