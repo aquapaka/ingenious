@@ -94,7 +94,7 @@ export const mainApi = createApi({
         method: 'PATCH',
         body: note,
       }),
-      invalidatesTags: ['User'],
+      invalidatesTags: ['User', 'Note'],
     }),
     deleteNote: builder.mutation<Note, string>({
       query: (id) => ({
