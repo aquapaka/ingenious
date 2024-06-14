@@ -43,6 +43,10 @@ export function LoginForm(props: { isHidden: boolean }) {
         loginForm.setError('password', {
           message: 'Password is not correct',
         });
+      } else {
+        toast("Unexpected Error", {
+          description: error.status
+        })
       }
     }
     if (isSuccess) {
