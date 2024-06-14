@@ -21,7 +21,7 @@ export interface Note {
   createdAt: Date;
   updatedAt: Date;
   _tags: string[];
-  _directory: Directory;
+  _directory: Directory | string;
 }
 
 export interface Directory {
