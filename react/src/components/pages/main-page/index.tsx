@@ -6,7 +6,7 @@ import TopBar from './components/top-bar';
 export default function MainPage() {
   return (
     <ResizablePanelGroup className="h-full" direction="horizontal">
-      <ResizablePanel defaultSize={16}>
+      <ResizablePanel defaultSize={16} className="min-w-[200px]">
         <DirectoriesPanel />
       </ResizablePanel>
       <ResizableHandle withHandle />

@@ -76,7 +76,9 @@ function DeleteAlertDialogContent(props: { note: Note }) {
               <strong className="text-foreground">
                 <StickyNote className="inline-block mb-1" /> {note.title}
               </strong>
-              <br />.<span className="text-destructive mt-2">This action cannot be undone.</span>
+              .
+              <br />
+              <span className="text-destructive mt-2">This action cannot be undone.</span>
             </>
           )}
         </AlertDialogDescription>
