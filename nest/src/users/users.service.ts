@@ -24,37 +24,91 @@ export class UsersService {
     return foundUser ? true : false;
   }
 
-  getUserData(_id: Types.ObjectId): Promise<any> {
-    return this.userModel.aggregate([
-      {
-        $match: { _id: _id },
-      },
-      { $unset: ['password'] },
-      {
-        $lookup: {
-          from: 'notes',
-          localField: '_id',
-          foreignField: '_owner',
-          as: 'allNotes',
+  async getUserData(_id: Types.ObjectId): Promise<any> {
+    const queryArr = await this.userModel
+      .aggregate([
+        {
+          $match: { _id: _id },
         },
-      },
-      {
-        $lookup: {
-          from: 'directories',
-          localField: '_id',
-          foreignField: '_owner',
-          as: 'allDirectories',
+        { $unset: ['password'] },
+        {
+          $lookup: {
+            from: 'notes',
+            localField: '_id',
+            foreignField: '_owner',
+            pipeline: [
+              {
+                $match: {
+                  isInTrash: {
+                    $not: {
+                      $eq: true,
+                    },
+                  },
+                },
+              },
+            ],
+            as: 'allNotes',
+          },
         },
-      },
-      {
-        $lookup: {
-          from: 'tags',
-          localField: '_id',
-          foreignField: '_owner',
-          as: 'allTags',
+        {
+          $lookup: {
+            from: 'directories',
+            localField: '_id',
+            foreignField: '_owner',
+            pipeline: [
+              {
+                $lookup: {
+                  from: 'notes',
+                  localField: '_id',
+                  foreignField: '_directory',
+                  let: { isInTrash: '$isInTrash' },
+                  pipeline: [
+                    {
+                      $match: {
+                        isInTrash: {
+                          $not: {
+                            $eq: true,
+                          },
+                        },
+                      },
+                    },
+                  ],
+                  as: 'notes',
+                },
+              },
+            ],
+            as: 'allDirectories',
+          },
         },
-      },
-    ]);
+        {
+          $lookup: {
+            from: 'tags',
+            localField: '_id',
+            foreignField: '_owner',
+            as: 'allTags',
+          },
+        },
+        {
+          $lookup: {
+            from: 'notes',
+            localField: '_id',
+            foreignField: '_owner',
+            pipeline: [
+              {
+                $match: {
+                  isInTrash: {
+                    $eq: true,
+                  },
+                },
+              },
+            ],
+            as: 'inTrashNotes',
+          },
+        },
+      ])
+      .exec();
+
+    return queryArr[0];
   }
 
   findUserById(_id: Types.ObjectId): Promise<User> {

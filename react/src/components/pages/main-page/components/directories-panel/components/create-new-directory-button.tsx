@@ -1,18 +1,17 @@
 import { Button } from '@/components/ui/button';
-import { Directory } from '@/lib/types';
 import { useAddDirectoryMutation } from '@/services/main-service';
 import { FolderPlus } from 'lucide-react';
+import { CreateDirectoryData } from '../../../../../../services/api-types';
 
 export default function CreateNewDirectoryButton(props: { small?: boolean; parentDirectoryId?: string }) {
-  const { small, parentDirectoryId } = props;
+  const { small } = props;
   const [addNewDorectory, { isLoading: isAddingDirectory }] = useAddDirectoryMutation();
 
   function handleCreateNewDirectory(event: React.MouseEvent) {
     event.stopPropagation();
-    const directory: Omit<Directory, '_id' | 'directories' | 'notes'> & { parentDirectoryId?: string } = {
-      icon: '',
-      title: 'New directory',
-      parentDirectoryId,
+    const directory: CreateDirectoryData = {
+      title: 'Untitled',
+      color: '#ffffff',
     };
     addNewDorectory(directory);
   }

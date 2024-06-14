@@ -4,7 +4,7 @@ import './App.css';
 import { store } from './app/store';
 import LoginRegisterPage from './components/pages/login-register-page';
 import MainPage from './components/pages/main-page';
-import NotesPanel from './components/pages/main-page/components/notes-panel';
+import EditorPanel from './components/pages/main-page/components/editor-panel';
 import { ThemeProvider } from './components/theme-provider';
 import { LOGIN_PATHNAME, REGISTER_PATHNAME } from './const/const';
 import ProtectedRoute from './components/protected-route';
@@ -17,8 +17,8 @@ const router = createBrowserRouter(
       <Route path={REGISTER_PATHNAME} element={<LoginRegisterPage />} />
       <Route element={<ProtectedRoute />}>
         <Route path="/" element={<MainPage />}>
-          <Route path="" element={<NotesPanel />} />
-          <Route path="notes/:id" element={<NotesPanel />} />
+          <Route path="" element={<EditorPanel />} />
+          <Route path="notes/:id" element={<EditorPanel />} />
         </Route>
       </Route>
     </>,

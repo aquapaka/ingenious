@@ -31,7 +31,6 @@ export class UsersController {
 
   @Post('register')
   async registerNewUser(@Body() registerUserDto: RegisterUserDto) {
-    console.log(registerUserDto);
     // Check if username is already exist
     const isUsernameExist = await this.usersService.isUsernameAlreadyExist(
       registerUserDto.username,

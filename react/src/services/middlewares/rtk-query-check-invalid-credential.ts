@@ -7,7 +7,8 @@ import { clearUserToken } from '../../app/slices/authSlice';
 export const rtkQueryCheckInvalidCredential: Middleware = (api: MiddlewareAPI) => (next) => (action) => {
   // RTK Query uses `createAsyncThunk` from redux-toolkit under the hood, so we're able to utilize these matchers!
   if (isRejectedWithValue(action)) {
-    if ('status' in action.payload && action.payload.status === 401) {
+    const payload = action.payload as object;
+    if ('status' in payload && payload.status === 401) {
       api.dispatch(clearUserToken());
     }
   }

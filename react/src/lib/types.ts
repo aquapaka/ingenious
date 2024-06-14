@@ -4,6 +4,7 @@ export interface User {
   allNotes: Note[];
   allDirectories: Directory[];
   allTags: Tag[];
+  inTrashNotes: Note[];
 }
 
 export interface Tag {
@@ -16,8 +17,11 @@ export interface Note {
   _id: string;
   title: string;
   content: string;
-  isTrash: boolean;
-  tags: string[];
+  isInTrash: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  _tags: string[];
+  _directory: Directory | string;
 }
 
 export interface Directory {

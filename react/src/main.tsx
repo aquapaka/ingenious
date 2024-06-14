@@ -3,11 +3,14 @@ import ReactDOM from 'react-dom/client';
 import { registerSW } from 'virtual:pwa-register';
 import App from './App.tsx';
 import './index.css';
+import { toast } from 'sonner';
 
 registerSW({
   immediate: true,
   onOfflineReady() {
-    console.log('Ready to work offline');
+    toast.info('Ready to work offline', {
+      description: 'This app can work even you are not connected to internet. Yay!',
+    });
   },
 });
 

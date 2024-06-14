@@ -14,26 +14,12 @@ import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } 
 import { Directory } from '@/lib/types';
 import { useDeleteDirectoryMutation } from '@/services/main-service';
 import { Folder, Trash2 } from 'lucide-react';
-import { useCallback, useMemo } from 'react';
-import EditableDirectoryTitle from '../../editable-directory-title';
-import CreateNewDirectoryButton from './create-new-directory-button';
 import CreateNewNoteButton from './create-new-note-button';
 import NoteButton from './note-button';
 
 function DeleteAlertDialogContent(props: { directory: Directory }) {
   const { directory } = props;
   const [deleteDirectory] = useDeleteDirectoryMutation();
-  const calculateTotalSubNotes = useCallback((directory: Directory) => {
-    let totalNotes = 0;
-
-    totalNotes += directory.notes.length;
-    for (const subDir of directory.directories) {
-      totalNotes += calculateTotalSubNotes(subDir);
-    }
-
-    return totalNotes;
-  }, []);
-  const totalSubNotes = useMemo(() => calculateTotalSubNotes(directory), [calculateTotalSubNotes, directory]);
 
   function handleDeleteConfirm() {
     deleteDirectory(directory._id);
@@ -44,12 +30,11 @@ function DeleteAlertDialogContent(props: { directory: Directory }) {
       <AlertDialogHeader>
         <AlertDialogTitle>Are you sure?</AlertDialogTitle>
         <AlertDialogDescription>
-          You are about to delete <strong className="text-foreground">{`${directory.icon} ${directory.title}`}</strong>{' '}
-          directory along with all it's sub directories and notes.
-          {totalSubNotes ? (
+          You are about to delete <strong className="text-foreground">{directory.title}</strong> directory.
+          {directory.notes.length ? (
             <span>
               {' '}
-              This will move <strong>{totalSubNotes} notes</strong> into trash.
+              This will move <strong>{directory.notes.length} notes</strong> into trash.
             </span>
           ) : (
             <span> There is no note in this directory.</span>
@@ -78,14 +63,15 @@ function ButtonContextMenuContent() {
 
 function DirectoryAccordionTriggerButton(props: { directory: Directory }) {
   const { directory } = props;
+
   return (
     <ContextMenu>
       <AlertDialog>
         <ContextMenuTrigger>
           <AccordionTrigger className="hover:bg-secondary rounded-md group inline-flex">
             <div className="flex gap-2 items-center [&>div]:grow [&>div]:flex [&>div]:justify-between [&>div]:items-center">
-              {directory.icon ? directory.icon : <Folder size={16} />}
-              <EditableDirectoryTitle directory={directory} isShowOnHover isIconSmall />
+              <Folder size={16} />
+              <span>{directory.title}</span>
             </div>
           </AccordionTrigger>
         </ContextMenuTrigger>
@@ -99,34 +85,22 @@ function DirectoryAccordionTriggerButton(props: { directory: Directory }) {
 
 export default function DirectoryAccordion({ directory }: { directory: Directory }) {
   return (
-    <div>
-      {/* Display all child directory */}
-      {directory.directories.map((directory) => (
-        <div key={directory._id}>
-          <AccordionItem className="pl-4 relative" value={directory._id}>
-            <div className="peer">
-              <DirectoryAccordionTriggerButton directory={directory} />
-            </div>
-            <div className="right-2 top-[0.4rem] absolute items-center opacity-0 hover:opacity-100 peer-hover:opacity-100 duration-300 gap-2 bg-background rounded-md">
-              <CreateNewNoteButton small parentDirectoryId={directory._id} />
-              <CreateNewDirectoryButton small parentDirectoryId={directory._id} />
-            </div>
-            <AccordionContent>
-              <DirectoryAccordion directory={directory} />
-            </AccordionContent>
-          </AccordionItem>
-        </div>
-      ))}
-      {/* Display all child notes in this directory*/}
-      <div className="pl-4 min-h-1">
-        {directory.notes
-          .filter((note) => !note.isTrash)
-          .map((note) => (
+    <AccordionItem className="relative" value={directory._id}>
+      <div className="peer">
+        <DirectoryAccordionTriggerButton directory={directory} />
+      </div>
+      <div className="right-2 top-[0.4rem] absolute items-center opacity-0 hover:opacity-100 peer-hover:opacity-100 duration-300 gap-2 bg-background rounded-md">
+        <CreateNewNoteButton small parentDirectoryId={directory._id} />
+      </div>
+      <AccordionContent>
+        <div className="min-h-1 space-y-1">
+          {directory.notes.map((note) => (
             <div key={note._id}>
               <NoteButton note={note} />
             </div>
           ))}
-      </div>
-    </div>
+        </div>
+      </AccordionContent>
+    </AccordionItem>
   );
 }

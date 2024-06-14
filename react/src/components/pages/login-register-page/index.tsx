@@ -7,7 +7,7 @@ export default function LoginRegisterPage() {
   const location = useLocation();
 
   return (
-    <div className="flex h-screen justify-center items-center">
+    <div className="flex h-screen justify-center items-center p-2">
       <LoginForm isHidden={location.pathname !== LOGIN_PATHNAME} />
       <RegisterForm isHidden={location.pathname !== REGISTER_PATHNAME} />
     </div>

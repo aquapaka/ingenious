@@ -9,7 +9,6 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['logo.svg'],
       injectRegister: 'auto',
       base: '/',
       manifest: {
@@ -45,6 +44,10 @@ export default defineConfig({
         start_url: '/',
         orientation: 'portrait',
       },
+      workbox: {
+        globPatterns: ['**/*'],
+      },
+      includeAssets: ['**/*'],
     }),
   ],
   resolve: {

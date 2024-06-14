@@ -10,7 +10,7 @@ function Editor(props: { note: Note }) {
   const [updateNote, { isLoading: isUpdating }] = useUpdateNoteMutation();
   const debouncedUpdateNote = useDebouncedCallback((value) => {
     setIsTyping(false);
-    updateNote({ ...note, content: value });
+    updateNote({ id: note._id, note: { content: value } });
   }, 1000);
   const [isTyping, setIsTyping] = useState(false);
 
@@ -22,7 +22,7 @@ function Editor(props: { note: Note }) {
   return (
     <>
       <MarkdownEditor
-        className="h-[92%] rounded-none"
+        className="grow rounded-none overflow-auto"
         visible
         enableScroll
         value={note.content}
@@ -32,21 +32,23 @@ function Editor(props: { note: Note }) {
           className: 'prose dark:prose-invert prose-sm lg:prose-base prose-ingenious',
         }}
       />
-      <p className="m-2 flex items-center text-xs">
-        {isTyping ? (
-          <>
-            <TextCursorInput className="mr-2 animate-pulse" size={16} /> Typing...
-          </>
-        ) : isUpdating ? (
-          <>
-            <Loader2 className="animate-spin mr-2" size={16} /> Saving...
-          </>
-        ) : (
-          <>
-            <CheckCheck className="mr-2" size={16} /> Saved
-          </>
-        )}
-      </p>
+      <div className="">
+        <p className="m-2 flex items-center text-xs">
+          {isTyping ? (
+            <>
+              <TextCursorInput className="mr-2 animate-pulse" size={16} /> Typing...
+            </>
+          ) : isUpdating ? (
+            <>
+              <Loader2 className="animate-spin mr-2" size={16} /> Saving...
+            </>
+          ) : (
+            <>
+              <CheckCheck className="mr-2" size={16} /> Saved
+            </>
+          )}
+        </p>
+      </div>
     </>
   );
 }
