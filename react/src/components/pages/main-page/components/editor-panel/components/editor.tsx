@@ -10,7 +10,7 @@ function Editor(props: { note: Note }) {
   const [updateNote, { isLoading: isUpdating }] = useUpdateNoteMutation();
   const debouncedUpdateNote = useDebouncedCallback((value) => {
     setIsTyping(false);
-    updateNote({ ...note, content: value });
+    updateNote({ id: note._id, note: { content: value } });
   }, 1000);
   const [isTyping, setIsTyping] = useState(false);
 
@@ -22,7 +22,7 @@ function Editor(props: { note: Note }) {
   return (
     <>
       <MarkdownEditor
-        className="grow rounded-none"
+        className="grow rounded-none overflow-auto"
         visible
         enableScroll
         value={note.content}
