@@ -17,7 +17,14 @@ import { ClsModule } from 'nestjs-cls';
       isGlobal: true,
     }),
     MongooseModule.forRootAsync({
-      useFactory: async () => ({ uri: process.env.MONGO_DB_URL }),
+      useFactory: async () => ({
+        uri: process.env.MONGO_DB_URI,
+        dbName: process.env.MONGO_DB_NAME,
+        auth: {
+          username: process.env.MONGO_DB_USER,
+          password: process.env.MONGO_DB_PASS,
+        },
+      }),
     }),
     ClsModule.forRoot({
       global: true,

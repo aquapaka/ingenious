@@ -1,0 +1,25 @@
+services:
+  app:
+    container_name: nestjs-backend
+    build:
+      context: ./
+      dockerfile: ./.dockerfile
+    environment:
+      MONGO_DB_URI=${MONGO_DB_URI}
+      MONGO_DB_NAME=${MONGO_DB_NAME}
+      MONGO_DB_USER=${MONGO_DB_USER}
+      MONGO_DB_PASS=${MONGO_DB_PASS}
+    ports:
+      - '4000:4000'
+    depends_on:
+      - database
+
+  database:
+    image: mongo:7.0
+    container_name: mongodb
+    restart: always
+    ports:
+      - '27017:27017'
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME:${MONGO_DB_USER}
+      - MONGO_INITDB_ROOT_PASSWORD:${MONGO_DB_PASS}
