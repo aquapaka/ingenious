@@ -3,6 +3,8 @@ import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 
+const PORT = parseInt(process.env.PORT, 10) || 4000;
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix('/api/v1');
@@ -26,6 +28,8 @@ async function bootstrap() {
   // Validation Pipe
   app.useGlobalPipes(new ValidationPipe());
 
-  await app.listen(3000);
+  await app.listen(PORT, () => {
+    console.log(`🚀 Application running at port ${PORT}`);
+  });
 }
 bootstrap();
