@@ -1,9 +1,7 @@
 services:
   app:
     container_name: nestjs-backend
-    build:
-      context: ./
-      dockerfile: ./.dockerfile
+    build: .
     environment:
       MONGO_DB_URI=${MONGO_DB_URI}
       MONGO_DB_NAME=${MONGO_DB_NAME}
