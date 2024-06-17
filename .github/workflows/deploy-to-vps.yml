@@ -11,9 +11,6 @@ jobs:
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v4
-        with:
-          sparse-checkout: |
-            nest
 
       - name: Login to Dockerhub
         uses: docker/login-action@v1
@@ -23,6 +20,7 @@ jobs:
 
       - name: Build and push Docker image
         run: |
+          cd ./nest
           docker build -t aquapaka/ingenious:latest .
           docker push aquapaka/ingenious:latest
 
