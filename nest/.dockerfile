@@ -22,4 +22,4 @@ ENV NODE_ENV=Production
 COPY --from=builder /app/dist ./dist
 EXPOSE ${PORT}
 
-CMD ["pnpm", "run", "start"]
+CMD ["pnpm", "run", "start:prod"]
