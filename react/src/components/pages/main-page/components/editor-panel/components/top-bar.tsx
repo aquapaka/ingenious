@@ -11,11 +11,19 @@ import { useGetNoteQuery, useGetUserDataQuery } from '@/services/main-service';
 import { NavLink, useParams } from 'react-router-dom';
 import EditableNoteTitle from './editable-note-title';
 import { Folder, StickyNote } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Directory } from '../../../../../../lib/types';
 
 export default function TopBar() {
   const { id } = useParams();
   const { data: userData } = useGetUserDataQuery();
   const { data: note } = useGetNoteQuery(id!, { skip: !id });
+  const [currentDirectory, setCurrentDirectory] = useState<Directory | undefined>(undefined);
+
+  useEffect(() => {
+    if (userData && note)
+      setCurrentDirectory(userData.allDirectories.find((directory) => directory._id === note._directory));
+  }, [note, userData]);
 
   return (
     <div className="flex justify-between items-center p-2">
@@ -28,15 +36,13 @@ export default function TopBar() {
           </BreadcrumbItem>
           {note && userData && (
             <>
-              {note._directory && (
+              {currentDirectory && (
                 <>
                   <BreadcrumbSeparator />
                   <BreadcrumbItem>
                     <BreadcrumbPage className="flex items-center">
-                      <Folder className="inline-block mr-2" />
-                      <span>
-                        {userData.allDirectories.find((directory) => directory._id === note._directory)?.title}
-                      </span>
+                      <Folder fill={currentDirectory.color} className="inline-block mr-2" />
+                      <span>{currentDirectory.title}</span>
                     </BreadcrumbPage>
                   </BreadcrumbItem>
                 </>
