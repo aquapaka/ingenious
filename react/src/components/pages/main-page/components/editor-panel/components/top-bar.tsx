@@ -33,7 +33,7 @@ export default function TopBar() {
                   <BreadcrumbSeparator />
                   <BreadcrumbItem>
                     <BreadcrumbPage className="flex items-center">
-                      <Folder className="inline-block mr-1" />
+                      <Folder className="inline-block mr-2" />
                       <span>
                         {userData.allDirectories.find((directory) => directory._id === note._directory)?.title}
                       </span>
@@ -44,7 +44,7 @@ export default function TopBar() {
               <BreadcrumbSeparator />
               <BreadcrumbItem>
                 <BreadcrumbPage className="flex items-center">
-                  <StickyNote className="inline-block mr-1" />
+                  <StickyNote className="inline-block mr-2" />
                   <div className="[&>div]:flex [&>div]:items-center [&>div]:gap-2">
                     <EditableNoteTitle note={note} />
                   </div>
