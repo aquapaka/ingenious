@@ -33,7 +33,7 @@ jobs:
           script: |
             echo ${{ secrets.VPS_PASSWORD }} | sudo -S docker pull aquapaka/ingenious:latest
             cd ingenious
-            sudo docker-compose up -d --build
+            echo ${{ secrets.VPS_PASSWORD }} | sudo -S docker-compose up -d --build
 
       - name: Bump version and push tag
         uses: anothrNick/github-tag-action@v1 # Don't use @master or @v1 unless you're happy to test the latest version
