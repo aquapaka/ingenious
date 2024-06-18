@@ -37,11 +37,12 @@ jobs:
           # Add more variables as needed
 
       - name: Copy files to VPS
-        uses: appleboy/scp-action@v0.1.0
+        uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.VPS_IP }}
           username: ${{ secrets.VPS_USER }}
           password: ${{ secrets.VPS_PASSWORD }}
+          port: 22
           source: ".env,docker-compose.yml"
           target: "~/ingenious-deployment"
 
