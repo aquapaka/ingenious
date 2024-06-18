@@ -13,7 +13,7 @@ import {
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from '@/components/ui/context-menu';
 import { Directory } from '@/lib/types';
 import { useDeleteDirectoryMutation } from '@/services/main-service';
-import { Folder, Trash2 } from 'lucide-react';
+import { Folder, Ghost, Trash2 } from 'lucide-react';
 import CreateNewNoteButton from './create-new-note-button';
 import NoteButton from './note-button';
 
@@ -68,9 +68,9 @@ function DirectoryAccordionTriggerButton(props: { directory: Directory }) {
     <ContextMenu>
       <AlertDialog>
         <ContextMenuTrigger>
-          <AccordionTrigger className="hover:bg-secondary rounded-md group inline-flex">
+          <AccordionTrigger className={`hover:bg-secondary rounded-md group inline-flex`}>
             <div className="flex gap-2 items-center [&>div]:grow [&>div]:flex [&>div]:justify-between [&>div]:items-center">
-              <Folder size={16} />
+              <Folder size={16} fill={directory.color} />
               <span>{directory.title}</span>
             </div>
           </AccordionTrigger>
@@ -85,7 +85,7 @@ function DirectoryAccordionTriggerButton(props: { directory: Directory }) {
 
 export default function DirectoryAccordion({ directory }: { directory: Directory }) {
   return (
-    <AccordionItem className="relative" value={directory._id}>
+    <AccordionItem className={`relative bg-[${directory.color}] bg-opacity-10 rounded-md`} value={directory._id}>
       <div className="peer">
         <DirectoryAccordionTriggerButton directory={directory} />
       </div>
@@ -93,12 +93,18 @@ export default function DirectoryAccordion({ directory }: { directory: Directory
         <CreateNewNoteButton small parentDirectoryId={directory._id} />
       </div>
       <AccordionContent>
-        <div className="min-h-1 space-y-1">
+        <div className="space-y-1">
           {directory.notes.map((note) => (
             <div key={note._id}>
               <NoteButton note={note} />
             </div>
           ))}
+          {!directory.notes.length && (
+            <div className="flex justify-center items-center p-4 italic text-xs">
+              <Ghost className="mr-1 lucide-sm" />
+              This directory is empty
+            </div>
+          )}
         </div>
       </AccordionContent>
     </AccordionItem>
