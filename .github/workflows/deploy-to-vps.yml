@@ -46,7 +46,7 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           password: ${{ secrets.VPS_PASSWORD }}
           port: 22
-          source: "/nest/.env,/nest/.docker-compose.yaml"
+          source: "nest/.env,nest/.docker-compose.yaml"
           target: "~/deployment"
 
       - name: Deploy to VPS
