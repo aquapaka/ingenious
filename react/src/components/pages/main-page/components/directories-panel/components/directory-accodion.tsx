@@ -10,10 +10,21 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
-import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from '@/components/ui/context-menu';
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuSub,
+  ContextMenuSubContent,
+  ContextMenuSubTrigger,
+  ContextMenuTrigger,
+} from '@/components/ui/context-menu';
 import { Directory } from '@/lib/types';
-import { useDeleteDirectoryMutation } from '@/services/main-service';
-import { Folder, Trash2 } from 'lucide-react';
+import { useDeleteDirectoryMutation, useUpdateDirectoryMutation } from '@/services/main-service';
+import { Folder, Ghost, Palette, Trash2 } from 'lucide-react';
+import { useEffect } from 'react';
+import { toast } from 'sonner';
+import ColorSelector from './color-selector';
 import CreateNewNoteButton from './create-new-note-button';
 import NoteButton from './note-button';
 
@@ -49,14 +60,39 @@ function DeleteAlertDialogContent(props: { directory: Directory }) {
   );
 }
 
-function ButtonContextMenuContent() {
+function ButtonContextMenuContent(props: { directory: Directory }) {
+  const { directory } = props;
+  const [updateDirectory, { isLoading, isSuccess }] = useUpdateDirectoryMutation();
+
+  function handleSelectColor(color: string) {
+    updateDirectory({
+      id: directory._id,
+      directory: {
+        color: color,
+      },
+    });
+  }
+
+  useEffect(() => {
+    if (isSuccess) toast.success('Changed directory color');
+  }, [isSuccess]);
+
   return (
     <ContextMenuContent className="w-64">
       <ContextMenuItem asChild>
         <AlertDialogTrigger className="w-full">
-          <Trash2 size={16} className="mr-2" /> Delete
+          <Trash2 className="mr-2" /> Delete
         </AlertDialogTrigger>
       </ContextMenuItem>
+      <ContextMenuSub>
+        <ContextMenuSubTrigger>
+          <Palette className="mr-2" />
+          Change color
+        </ContextMenuSubTrigger>
+        <ContextMenuSubContent className="p-3">
+          <ColorSelector onColorSelect={handleSelectColor} disabled={isLoading} />
+        </ContextMenuSubContent>
+      </ContextMenuSub>
     </ContextMenuContent>
   );
 }
@@ -68,24 +104,30 @@ function DirectoryAccordionTriggerButton(props: { directory: Directory }) {
     <ContextMenu>
       <AlertDialog>
         <ContextMenuTrigger>
-          <AccordionTrigger className="hover:bg-secondary rounded-md group inline-flex">
+          <AccordionTrigger className={`hover:bg-secondary rounded-md group inline-flex`}>
             <div className="flex gap-2 items-center [&>div]:grow [&>div]:flex [&>div]:justify-between [&>div]:items-center">
-              <Folder size={16} />
+              <Folder size={16} fill={directory.color} />
               <span>{directory.title}</span>
             </div>
           </AccordionTrigger>
         </ContextMenuTrigger>
         {/* Contents */}
-        <ButtonContextMenuContent />
+        <ButtonContextMenuContent directory={directory} />
         <DeleteAlertDialogContent directory={directory} />
       </AlertDialog>
     </ContextMenu>
   );
 }
 
+const TEN_PERCENT_OPACITY_HEX_CODE = '1A';
+
 export default function DirectoryAccordion({ directory }: { directory: Directory }) {
   return (
-    <AccordionItem className="relative" value={directory._id}>
+    <AccordionItem
+      className={`relative rounded-md`}
+      style={{ backgroundColor: directory.color + TEN_PERCENT_OPACITY_HEX_CODE }}
+      value={directory._id}
+    >
       <div className="peer">
         <DirectoryAccordionTriggerButton directory={directory} />
       </div>
@@ -93,12 +135,18 @@ export default function DirectoryAccordion({ directory }: { directory: Directory
         <CreateNewNoteButton small parentDirectoryId={directory._id} />
       </div>
       <AccordionContent>
-        <div className="min-h-1 space-y-1">
+        <div className="space-y-1">
           {directory.notes.map((note) => (
             <div key={note._id}>
               <NoteButton note={note} />
             </div>
           ))}
+          {!directory.notes.length && (
+            <div className="flex justify-center items-center p-4 italic text-xs text-muted-foreground">
+              <Ghost className="mr-1 lucide-sm" />
+              This directory is empty
+            </div>
+          )}
         </div>
       </AccordionContent>
     </AccordionItem>

@@ -1,7 +1,10 @@
-export const API_BASE_URL = 'http://localhost:3000/api/v1' as const;
+export const API_BASE_URL = 'http://localhost:4000/api/v1' as const;
 
 export const LOGIN_PATHNAME = '/login' as const;
 
 export const REGISTER_PATHNAME = '/register' as const;
 
 export const USER_TOKEN_NAME = 'userToken' as const;
+
+// Color selector colors
+export const COLORS = ['#f1f5f9', '#fecaca', '#fef08a', '#d9f99d', '#a7f3d0', '#a5f3fc', '#bfdbfe', '#e9d5ff'] as const;
