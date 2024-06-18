@@ -21,11 +21,13 @@ jobs:
       - name: Build and push Docker image
         run: |
           cd ./nest
+          ls -a
           docker build -t aquapaka/ingenious:latest .
           docker push aquapaka/ingenious:latest
 
       - name: Create .env file
         run: |
+          cd ./nest
           echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
           echo "JWT_EXPIRATION_TIME=${{ secrets.JWT_EXPIRATION_TIME }}" >> .env
           # URI should be mongodb://database:27017 due to mongo being a service named 'database' inside docker-compose.yml
@@ -34,6 +36,7 @@ jobs:
           echo "MONGO_DB_USER=${{ secrets.MONGO_DB_USER }}" >> .env
           echo "MONGO_DB_PASS=${{ secrets.MONGO_DB_PASS }}" >> .env
           echo "PORT=4000" >> .env
+          ls -a
           # Add more variables as needed
 
       - name: Copy files to VPS
@@ -43,8 +46,8 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           password: ${{ secrets.VPS_PASSWORD }}
           port: 22
-          source: ".env,nest/.docker-compose.yaml"
-          target: "~/ingenious-deployment"
+          source: "/nest/.env,/nest/.docker-compose.yaml"
+          target: "~/deployment"
 
       - name: Deploy to VPS
         uses: appleboy/ssh-action@master
@@ -53,7 +56,7 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           password: ${{ secrets.VPS_PASSWORD }}
           script: |
-            cd ~/ingenious-deployment
+            cd ~/deployment/nest
             echo ${{ secrets.VPS_PASSWORD }} | sudo -S docker-compose down
             echo ${{ secrets.VPS_PASSWORD }} | sudo -S docker-compose pull
             echo ${{ secrets.VPS_PASSWORD }} | sudo -S docker-compose up -d
