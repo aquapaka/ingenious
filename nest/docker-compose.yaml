@@ -7,17 +7,25 @@ services:
       - MONGO_DB_NAME=${MONGO_DB_NAME}
       - MONGO_DB_USER=${MONGO_DB_USER}
       - MONGO_DB_PASS=${MONGO_DB_PASS}
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_EXPIRATION_TIME=${JWT_EXPIRATION_TIME}
     ports:
       - '4000:4000'
     depends_on:
       - database
 
   database:
-    image: mongo:7.0
+    image: mongo:4.4.29
     container_name: mongodb
     restart: always
     ports:
       - '27017:27017'
     environment:
-      - MONGO_INITDB_ROOT_USERNAME:${MONGO_DB_USER}
-      - MONGO_INITDB_ROOT_PASSWORD:${MONGO_DB_PASS}
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_DB_USER}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_DB_PASS}
+    volumes:
+      - mongodbdata:/data/db
+
+volumes:
+  mongodbdata:
+    driver: local
