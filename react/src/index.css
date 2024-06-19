@@ -72,10 +72,14 @@
 }
 
 .lucide.lucide-sm {
-  color: var(--foreground);
   width: 14px;
   height: 14px;
-  stroke-width: 2px;
+}
+
+.lucide.lucide-xs {
+  width: 12px;
+  height: 12px;
+  stroke-width: 1px;
 }
 
 /* Style react-md-editor */

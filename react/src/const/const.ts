@@ -7,4 +7,17 @@ export const REGISTER_PATHNAME = '/register' as const;
 export const USER_TOKEN_NAME = 'userToken' as const;
 
 // Color selector colors
-export const COLORS = ['#f1f5f9', '#fecaca', '#fef08a', '#d9f99d', '#a7f3d0', '#a5f3fc', '#bfdbfe', '#e9d5ff'] as const;
+export const COLORS = [
+  '#f4f4f5',
+  '#f43f5e',
+  '#fb923c',
+  '#facc15',
+  '#84cc16',
+  '#10b981',
+  '#22d3ee',
+  '#3b82f6',
+  '#8b5cf6',
+  '#d946ef',
+] as const;
+
+export const FAVORITE_COLOR = '#facc15';

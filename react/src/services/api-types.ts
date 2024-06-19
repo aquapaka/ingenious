@@ -12,6 +12,7 @@ export interface CreateNoteData {
   title: string;
   content: string;
   isInTrash?: boolean;
+  isFavorite?: boolean;
   tagIds?: string[];
   directoryId?: string;
 }

@@ -18,6 +18,7 @@ export interface Note {
   title: string;
   content: string;
   isInTrash: boolean;
+  isFavorite: boolean;
   createdAt: Date;
   updatedAt: Date;
   _tags: string[];

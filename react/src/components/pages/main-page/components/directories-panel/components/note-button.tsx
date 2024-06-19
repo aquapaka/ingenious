@@ -13,10 +13,12 @@ import { Button } from '@/components/ui/button';
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from '@/components/ui/context-menu';
 import { Note } from '@/lib/types';
 import { useDeleteNoteMutation, useUpdateNoteMutation } from '@/services/main-service';
-import { StickyNote, Trash2 } from 'lucide-react';
+import { Star, StickyNote, Trash2 } from 'lucide-react';
 import { useEffect } from 'react';
 import { NavLink, useParams } from 'react-router-dom';
 import { toast } from 'sonner';
+import { FAVORITE_COLOR } from '../../../../../../const/const';
+import ToggleFavoriteButton from '../../toggle-favorite-button';
 
 function DeleteAlertDialogContent(props: { note: Note }) {
   const { note } = props;
@@ -110,18 +112,28 @@ export default function NoteButton({ note }: { note: Note }) {
     <ContextMenu>
       <AlertDialog>
         <ContextMenuTrigger asChild>
-          <Button asChild variant={id === note._id ? 'default' : 'ghost'} className="w-full justify-start">
-            <NavLink to={`/notes/${note._id}`}>
-              <div
-                className={`${note._directory ? 'pl-10' : 'pl-4'} flex justify-start items-center gap-2 overflow-hidden w-full [&>div]:grow [&>div]:flex [&>div]:items-center group`}
-              >
-                <span className="">
-                  <StickyNote size={16} />
-                </span>
-                <span>{note.title}</span>
-              </div>
-            </NavLink>
-          </Button>
+          <div className="relative">
+            <div className="peer">
+              <Button asChild variant={id === note._id ? 'default' : 'ghost'} className="w-full justify-start">
+                <NavLink to={`/notes/${note._id}`}>
+                  <div className={`flex justify-start items-center gap-2`}>
+                    <span className="pl-4">
+                      <StickyNote size={16} />
+                    </span>
+                    <span>{note.title}</span>
+                    {note.isFavorite && (
+                      <span className="pl-1">
+                        <Star fill={FAVORITE_COLOR} className="lucide-xs" />
+                      </span>
+                    )}
+                  </div>
+                </NavLink>
+              </Button>
+            </div>
+            <div className="right-2 top-[0.4rem] absolute items-center opacity-0 hover:opacity-100 peer-hover:opacity-100 duration-300 gap-2 bg-background rounded-md">
+              <ToggleFavoriteButton note={note} minimal />
+            </div>
+          </div>
         </ContextMenuTrigger>
         {/* Contents */}
         <ButtonContextMenuContent />

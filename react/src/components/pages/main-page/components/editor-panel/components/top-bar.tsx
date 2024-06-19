@@ -8,11 +8,12 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 import { useGetNoteQuery, useGetUserDataQuery } from '@/services/main-service';
-import { NavLink, useParams } from 'react-router-dom';
-import EditableNoteTitle from './editable-note-title';
 import { Folder, StickyNote } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { NavLink, useParams } from 'react-router-dom';
 import { Directory } from '../../../../../../lib/types';
+import ToggleFavoriteButton from '../../toggle-favorite-button';
+import EditableNoteTitle from './editable-note-title';
 
 export default function TopBar() {
   const { id } = useParams();
@@ -25,6 +26,8 @@ export default function TopBar() {
       setCurrentDirectory(userData.allDirectories.find((directory) => directory._id === note._directory));
   }, [note, userData]);
 
+  if (!note) return;
+
   return (
     <div className="flex justify-between items-center p-2">
       <Breadcrumb className="pl-3">
@@ -34,32 +37,29 @@ export default function TopBar() {
               <NavLink to="/">Notes</NavLink>
             </BreadcrumbLink>
           </BreadcrumbItem>
-          {note && userData && (
+          {currentDirectory && (
             <>
-              {currentDirectory && (
-                <>
-                  <BreadcrumbSeparator />
-                  <BreadcrumbItem>
-                    <BreadcrumbPage className="flex items-center">
-                      <Folder fill={currentDirectory.color} className="inline-block mr-2" />
-                      <span>{currentDirectory.title}</span>
-                    </BreadcrumbPage>
-                  </BreadcrumbItem>
-                </>
-              )}
               <BreadcrumbSeparator />
               <BreadcrumbItem>
                 <BreadcrumbPage className="flex items-center">
-                  <StickyNote className="inline-block mr-2" />
-                  <div className="[&>div]:flex [&>div]:items-center [&>div]:gap-2">
-                    <EditableNoteTitle note={note} />
-                  </div>
+                  <Folder fill={currentDirectory.color} className="inline-block mr-2" />
+                  <span>{currentDirectory.title}</span>
                 </BreadcrumbPage>
               </BreadcrumbItem>
             </>
           )}
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage className="flex items-center">
+              <StickyNote className="inline-block mr-2" />
+              <div className="[&>div]:flex [&>div]:items-center [&>div]:gap-0">
+                <EditableNoteTitle note={note} />
+              </div>
+            </BreadcrumbPage>
+          </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
+      <ToggleFavoriteButton note={note} />
       <ModeToggle />
     </div>
   );
