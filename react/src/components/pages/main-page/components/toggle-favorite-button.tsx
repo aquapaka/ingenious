@@ -5,7 +5,7 @@ import { Button } from '../../../ui/button';
 import { useUpdateNoteMutation } from '../../../../services/main-service';
 import { toast } from 'sonner';
 
-export default function ToggleFavoriteButton(props: { note: Note; minimal: boolean }) {
+export default function ToggleFavoriteButton(props: { note: Note; minimal?: boolean }) {
   const { note, minimal } = props;
   const [updateNote, { isLoading: isUpdatingNote }] = useUpdateNoteMutation();
 
