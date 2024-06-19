@@ -19,3 +19,5 @@ export const COLORS = [
   '#8b5cf6',
   '#d946ef',
 ] as const;
+
+export const FAVORITE_COLOR = '#facc15';

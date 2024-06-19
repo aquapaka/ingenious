@@ -27,6 +27,9 @@ export class Note {
   @Prop()
   isInTrash: boolean;
 
+  @Prop()
+  isFavorite: boolean;
+
   @Prop({ type: mongoose.Types.ObjectId, ref: 'Directory' })
   _directory: Directory;
 }
