@@ -1,3 +1,6 @@
+<h1 align="center">
+  Ingenious
+</h1>
 <p align="center">
   <img src="./react/public/pwa-512x512.png" width="120" alt="Ingenious Logo" />
 </p>
@@ -22,6 +25,7 @@ A notion alternative multipurpose productive app
   - ☑️ Can be installed
   - ☑️ App still working when offline
   - ☑️ Automatic sync local data with backend when online
+- ☑️ Deployment On [Vercel](https://vercel.com/)
 
 ### [NestJS](https://docs.nestjs.com/)
 
@@ -32,6 +36,7 @@ A notion alternative multipurpose productive app
 - ☑️ [Password Hashing](https://docs.nestjs.com/security/encryption-and-hashing)
 - ☑️ [Validation data sent to server](https://docs.nestjs.com/techniques/validation)
 - ☑️ [OpenAPI (Swagger)](https://docs.nestjs.com/openapi/introduction)
+- ☑️ Deployment On Dedicated VPS
 
 ### Others
 
@@ -41,8 +46,6 @@ A notion alternative multipurpose productive app
   - Unit Test: [JestJS](https://jestjs.io/docs/getting-started) + [React Testing library](https://jestjs.io/docs/tutorial-react)
   - E2E Test: Playwright or Cypress
 - 🚧 Use Github Action to run test before release
-- Deployment:
-  - On [Vercel](https://vercel.com/)
 
 ## Resources
 
@@ -52,13 +55,13 @@ A notion alternative multipurpose productive app
 - [NestJS JWT Authentication Tutorial](https://www.youtube.com/watch?v=EFDUvzJT_wI)
 - [NestJS Authorization with CASL](https://www.youtube.com/watch?v=1pPjCX0FHco)
 - [Async Local Storage](https://papooch.github.io/nestjs-cls/introduction/quick-start)
+- [CI/CD with Github Docker & a VPS](https://omasuaku.medium.com/ci-cd-with-github-docker-a-vps-687a00e552af)
 
 ## Libs
 
 - [React Markdown Editor](https://github.com/uiwjs/react-markdown-editor) (An implement of [React MD Editor](https://github.com/uiwjs/react-md-editor) using [CodeMirror](https://codemirror.net/)
 - [React Edit Text](https://www.npmjs.com/package/react-edit-text)
 - [React Tags Input](https://www.npmjs.com/package/react-tagsinput)
-- [CI/CD with Github Docker & a VPS](https://omasuaku.medium.com/ci-cd-with-github-docker-a-vps-687a00e552af)
 
 ## Setup VPS Guide (Debian)
 
