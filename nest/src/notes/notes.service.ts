@@ -37,9 +37,11 @@ export class NotesService {
     return this.noteModel
       .findByIdAndUpdate(id, {
         ...updateNoteDto,
-        _tags: updateNoteDto.tagIds.map(
-          (tagId) => new mongoose.Types.ObjectId(tagId),
-        ),
+        ...(updateNoteDto.tagIds && {
+          _tags: updateNoteDto.tagIds.map(
+            (tagId) => new mongoose.Types.ObjectId(tagId),
+          ),
+        }),
       })
       .exec();
   }
