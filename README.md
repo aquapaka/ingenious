@@ -25,7 +25,7 @@ A notion alternative multipurpose productive app
   - ☑️ Can be installed
   - ☑️ App still working when offline
   - ☑️ Automatic sync local data with backend when online
-- Deployment On [Vercel](https://vercel.com/)
+- ☑️ Deployment On [Vercel](https://vercel.com/)
 
 ### [NestJS](https://docs.nestjs.com/)
 
@@ -36,7 +36,7 @@ A notion alternative multipurpose productive app
 - ☑️ [Password Hashing](https://docs.nestjs.com/security/encryption-and-hashing)
 - ☑️ [Validation data sent to server](https://docs.nestjs.com/techniques/validation)
 - ☑️ [OpenAPI (Swagger)](https://docs.nestjs.com/openapi/introduction)
-- Deployment On Dedicated VPS
+- ☑️ Deployment On Dedicated VPS
 
 ### Others
 
