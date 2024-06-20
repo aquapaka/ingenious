@@ -106,7 +106,7 @@ function DirectoryAccordionTriggerButton(props: { directory: Directory }) {
         <ContextMenuTrigger>
           <AccordionTrigger className={`hover:bg-secondary rounded-md group inline-flex`}>
             <div className="flex gap-2 items-center [&>div]:grow [&>div]:flex [&>div]:justify-between [&>div]:items-center">
-              <Folder size={16} fill={directory.color} />
+              <Folder className="lucide-filled" fill={directory.color} />
               <span>{directory.title}</span>
             </div>
           </AccordionTrigger>

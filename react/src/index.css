@@ -55,15 +55,6 @@
   }
 }
 
-@layer components {
-  .lucide {
-    color: var(--foreground);
-    width: 16px;
-    height: 16px;
-    stroke-width: 2px;
-  }
-}
-
 .lucide {
   color: var(--foreground);
   width: 16px;
@@ -80,6 +71,10 @@
   width: 12px;
   height: 12px;
   stroke-width: 1px;
+}
+
+.lucide.lucide-filled {
+  color: hsl(341 5% 5%);
 }
 
 /* Style react-md-editor */

@@ -1,9 +1,9 @@
-import { Star } from 'lucide-react';
+import { Sparkle } from 'lucide-react';
+import { toast } from 'sonner';
 import { FAVORITE_COLOR } from '../../../../const/const';
 import { Note } from '../../../../lib/types';
-import { Button } from '../../../ui/button';
 import { useUpdateNoteMutation } from '../../../../services/main-service';
-import { toast } from 'sonner';
+import { Button } from '../../../ui/button';
 
 export default function ToggleFavoriteButton(props: { note: Note; minimal?: boolean }) {
   const { note, minimal } = props;
@@ -32,7 +32,10 @@ export default function ToggleFavoriteButton(props: { note: Note; minimal?: bool
       disabled={isUpdatingNote}
     >
       {!minimal && 'Favorite'}
-      <Star className={!minimal ? 'ml-2' : 'lucide-sm'} fill={note.isFavorite ? FAVORITE_COLOR : 'none'} />
+      <Sparkle
+        className={`${!minimal ? 'ml-2' : 'lucide-sm'} ${note.isFavorite ? 'lucide-filled' : ''}`}
+        fill={note.isFavorite ? FAVORITE_COLOR : 'none'}
+      />
     </Button>
   );
 }
