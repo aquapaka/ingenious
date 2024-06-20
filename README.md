@@ -59,3 +59,10 @@ A notion alternative multipurpose productive app
 - [React Edit Text](https://www.npmjs.com/package/react-edit-text)
 - [React Tags Input](https://www.npmjs.com/package/react-tagsinput)
 - [CI/CD with Github Docker & a VPS](https://omasuaku.medium.com/ci-cd-with-github-docker-a-vps-687a00e552af)
+
+## Setup VPS Guide (Debian)
+
+- [Setup SSH Server](https://wiki.debian.org/SSH)
+- [Install Docker & Docker-compose](https://docs.docker.com/engine/install/debian/)
+- [Enable SSL/TLS](https://www.server-world.info/en/note?os=Debian_12&p=nginx&f=3)
+- Port Forward SSH & HTTPS
