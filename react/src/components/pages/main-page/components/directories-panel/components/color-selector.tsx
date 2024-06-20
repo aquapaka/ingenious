@@ -1,6 +1,6 @@
 import { COLORS } from '../../../../../../const/const';
 
-export default function ColorSelector(props: { onColorSelect: (color: string) => void; disabled: boolean }) {
+export default function ColorSelector(props: { onColorSelect: (color: string) => void; disabled?: boolean }) {
   const { onColorSelect, disabled } = props;
 
   return (
@@ -8,7 +8,7 @@ export default function ColorSelector(props: { onColorSelect: (color: string) =>
       {COLORS.map((color) => (
         <button
           key={color}
-          className={`rounded-full overflow-hidden border`}
+          className={`rounded-full overflow-hidden border hover:brightness-125 hover:scale-125 duration-300`}
           onClick={() => onColorSelect(color)}
           disabled={disabled}
         >

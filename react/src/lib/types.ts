@@ -21,7 +21,7 @@ export interface Note {
   isFavorite: boolean;
   createdAt: Date;
   updatedAt: Date;
-  _tags: string[];
+  _tags: Tag[];
   _directory: Directory | string;
 }
 

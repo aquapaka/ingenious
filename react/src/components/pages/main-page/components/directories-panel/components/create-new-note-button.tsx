@@ -21,7 +21,7 @@ export default function CreateNewNoteButton(props: { small?: boolean; parentDire
     });
   }
   return (
-    <Button variant="ghost" size={small ? 'sm-icon' : 'icon'} onClick={handleCreateNewNote} disabled={isAddingNote}>
+    <Button variant="ghost" size={small ? 'xs-icon' : 'icon'} onClick={handleCreateNewNote} disabled={isAddingNote}>
       <FilePlus className={small ? 'lucide-sm' : ''} />
     </Button>
   );

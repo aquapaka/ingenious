@@ -10,17 +10,33 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
-import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from '@/components/ui/context-menu';
-import { Note } from '@/lib/types';
-import { useDeleteNoteMutation, useUpdateNoteMutation } from '@/services/main-service';
-import { Sparkle, StickyNote, Trash2 } from 'lucide-react';
-import { useEffect } from 'react';
+import {
+  ContextMenu,
+  ContextMenuCheckboxItem,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuSeparator,
+  ContextMenuSub,
+  ContextMenuSubContent,
+  ContextMenuSubTrigger,
+  ContextMenuTrigger,
+} from '@/components/ui/context-menu';
+import { Note, Tag } from '@/lib/types';
+import { useDeleteNoteMutation, useGetUserDataQuery, useUpdateNoteMutation } from '@/services/main-service';
+import { CirclePlus, Sparkle, StickyNote, TagIcon, Trash2 } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { NavLink, useParams } from 'react-router-dom';
 import { toast } from 'sonner';
 import { FAVORITE_COLOR } from '../../../../../../const/const';
+import { Badge } from '../../../../../ui/badge';
+import { Popover, PopoverTrigger } from '../../../../../ui/popover';
 import ToggleFavoriteButton from '../../toggle-favorite-button';
+import CreateTagPopoverContent from './create-tag-popover-content';
 
-function DeleteAlertDialogContent(props: { note: Note }) {
+enum Dialogs {
+  deleteNote = 'deleteNote',
+}
+function DeleteNoteDialogContent(props: { note: Note }) {
   const { note } = props;
   const [deleteNote, { isSuccess: isDeleteSuccess, isError: isDeleteError }] = useDeleteNoteMutation();
   const [updateNote, { isSuccess: isUpdateSuccess, isError: isUpdateError }] = useUpdateNoteMutation();
@@ -93,51 +109,101 @@ function DeleteAlertDialogContent(props: { note: Note }) {
   );
 }
 
-function ButtonContextMenuContent() {
-  return (
-    <ContextMenuContent className="w-64">
-      <ContextMenuItem asChild>
-        <AlertDialogTrigger className="w-full">
-          <Trash2 size={16} className="mr-2" /> Delete
-        </AlertDialogTrigger>
-      </ContextMenuItem>
-    </ContextMenuContent>
-  );
-}
-
 export default function NoteButton({ note }: { note: Note }) {
   const { id } = useParams();
+  const [currentDialog, setCurrentDialog] = useState<Dialogs>();
+  const { data: user } = useGetUserDataQuery();
+  const [updateNote] = useUpdateNoteMutation();
+
+  function handleSelectTag(e: Event, selectedTag: Tag) {
+    e.preventDefault();
+
+    const tagIds = note._tags ? note._tags.map((tag) => tag._id) : [];
+    const newTagIds = tagIds.includes(selectedTag._id)
+      ? tagIds.filter((tagId) => tagId !== selectedTag._id)
+      : [...tagIds, selectedTag._id];
+
+    updateNote({
+      id: note._id,
+      note: {
+        tagIds: newTagIds,
+      },
+    });
+  }
 
   return (
     <ContextMenu>
       <AlertDialog>
-        <ContextMenuTrigger asChild>
-          <div className="relative">
-            <div className="peer">
-              <Button asChild variant={id === note._id ? 'default' : 'ghost'} className="w-full justify-start">
-                <NavLink to={`/notes/${note._id}`}>
-                  <div className={`flex justify-start items-center gap-2`}>
-                    <span className="pl-4">
-                      <StickyNote size={16} />
-                    </span>
-                    <span>{note.title}</span>
-                    {note.isFavorite && (
-                      <span className="pl-1">
-                        <Sparkle fill={FAVORITE_COLOR} className="lucide-xs lucide-filled" />
+        <Popover modal={true}>
+          <ContextMenuTrigger asChild>
+            <div className="relative">
+              <div className="peer">
+                <Button asChild variant={id === note._id ? 'default' : 'ghost'} className="w-full justify-start">
+                  <NavLink to={`/notes/${note._id}`}>
+                    <div className={`flex justify-start items-center gap-2`}>
+                      <span className="pl-4">
+                        <StickyNote size={16} />
                       </span>
-                    )}
-                  </div>
-                </NavLink>
-              </Button>
+                      <span>{note.title}</span>
+                      {note.isFavorite && (
+                        <span className="pl-1">
+                          <Sparkle fill={FAVORITE_COLOR} className="lucide-xs lucide-filled" />
+                        </span>
+                      )}
+                    </div>
+                  </NavLink>
+                </Button>
+              </div>
+              <div className="right-2 top-[0.4rem] absolute items-center opacity-0 hover:opacity-100 peer-hover:opacity-100 duration-300 gap-2 bg-background rounded-md">
+                <ToggleFavoriteButton note={note} minimal />
+              </div>
             </div>
-            <div className="right-2 top-[0.4rem] absolute items-center opacity-0 hover:opacity-100 peer-hover:opacity-100 duration-300 gap-2 bg-background rounded-md">
-              <ToggleFavoriteButton note={note} minimal />
-            </div>
-          </div>
-        </ContextMenuTrigger>
-        {/* Contents */}
-        <ButtonContextMenuContent />
-        <DeleteAlertDialogContent note={note} />
+          </ContextMenuTrigger>
+          {/* Context menu Content */}
+          <ContextMenuContent className="w-32">
+            <ContextMenuSub>
+              <ContextMenuSubTrigger>
+                <TagIcon className="mr-2" />
+                Tags
+              </ContextMenuSubTrigger>
+              <ContextMenuSubContent
+                className="w-48"
+                onInteractOutside={(e) => e.preventDefault()}
+                onPointerDownOutside={(e) => e.preventDefault()}
+                onFocusOutside={(e) => e.preventDefault()}
+              >
+                {user?.allTags.map((tag) => (
+                  <ContextMenuCheckboxItem
+                    key={tag._id}
+                    checked={note._tags && note._tags.map((tag) => tag._id).includes(tag._id)}
+                    onSelect={(e) => handleSelectTag(e, tag)}
+                  >
+                    <Badge variant="tag" style={{ backgroundColor: tag.color }}>
+                      {tag.name}
+                    </Badge>
+                  </ContextMenuCheckboxItem>
+                ))}
+                <ContextMenuSeparator />
+                <ContextMenuItem asChild onSelect={(e) => e.preventDefault()}>
+                  <PopoverTrigger className="w-full">
+                    <CirclePlus className="mr-2" />
+                    Create new tag
+                  </PopoverTrigger>
+                </ContextMenuItem>
+              </ContextMenuSubContent>
+            </ContextMenuSub>
+            <ContextMenuItem asChild>
+              <AlertDialogTrigger className="w-full" onClick={() => setCurrentDialog(Dialogs.deleteNote)}>
+                <Trash2 className="mr-2" />
+                Delete
+              </AlertDialogTrigger>
+            </ContextMenuItem>
+          </ContextMenuContent>
+          {/* Dialog Content */}
+          {currentDialog === Dialogs.deleteNote && <DeleteNoteDialogContent note={note} />}
+          {/* Popover Content */}
+          <CreateTagPopoverContent />
+        </Popover>
       </AlertDialog>
     </ContextMenu>
   );

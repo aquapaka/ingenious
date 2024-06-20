@@ -34,7 +34,14 @@ export class NotesService {
   }
 
   updateNote(id: string, updateNoteDto: UpdateNoteDto): Promise<Note> {
-    return this.noteModel.findByIdAndUpdate(id, updateNoteDto).exec();
+    return this.noteModel
+      .findByIdAndUpdate(id, {
+        ...updateNoteDto,
+        _tags: updateNoteDto.tagIds.map(
+          (tagId) => new mongoose.Types.ObjectId(tagId),
+        ),
+      })
+      .exec();
   }
 
   deleteNote(id: string): Promise<Note> {

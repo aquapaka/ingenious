@@ -78,12 +78,7 @@ function ButtonContextMenuContent(props: { directory: Directory }) {
   }, [isSuccess]);
 
   return (
-    <ContextMenuContent className="w-64">
-      <ContextMenuItem asChild>
-        <AlertDialogTrigger className="w-full">
-          <Trash2 className="mr-2" /> Delete
-        </AlertDialogTrigger>
-      </ContextMenuItem>
+    <ContextMenuContent className="w-48">
       <ContextMenuSub>
         <ContextMenuSubTrigger>
           <Palette className="mr-2" />
@@ -93,6 +88,11 @@ function ButtonContextMenuContent(props: { directory: Directory }) {
           <ColorSelector onColorSelect={handleSelectColor} disabled={isLoading} />
         </ContextMenuSubContent>
       </ContextMenuSub>
+      <ContextMenuItem asChild>
+        <AlertDialogTrigger className="w-full">
+          <Trash2 className="mr-2" /> Delete
+        </AlertDialogTrigger>
+      </ContextMenuItem>
     </ContextMenuContent>
   );
 }

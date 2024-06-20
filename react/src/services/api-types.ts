@@ -17,6 +17,11 @@ export interface CreateNoteData {
   directoryId?: string;
 }
 
+export interface CreateTagData {
+  name: string;
+  color: string;
+}
+
 export interface UpdateNoteData extends Partial<CreateNoteData> {}
 
 export interface CreateDirectoryData {

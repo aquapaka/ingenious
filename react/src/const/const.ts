@@ -8,7 +8,7 @@ export const USER_TOKEN_NAME = 'userToken' as const;
 
 // Color selector colors
 export const COLORS = [
-  '#f4f4f5',
+  '#71717a',
   '#f43f5e',
   '#fb923c',
   '#facc15',

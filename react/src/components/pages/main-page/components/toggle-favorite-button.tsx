@@ -26,7 +26,7 @@ export default function ToggleFavoriteButton(props: { note: Note; minimal?: bool
   return (
     <Button
       variant="ghost"
-      size={minimal ? 'sm-icon' : 'default'}
+      size={minimal ? 'xs-icon' : 'default'}
       className={!minimal ? 'ml-4' : ''}
       onClick={handleOnFavorite}
       disabled={isUpdatingNote}
