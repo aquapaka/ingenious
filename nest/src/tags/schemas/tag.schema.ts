@@ -18,4 +18,7 @@ export class Tag {
 
 export type TagDocument = HydratedDocument<Tag>;
 
-export const TagSchema = SchemaFactory.createForClass(Tag);
+export const TagSchema = SchemaFactory.createForClass(Tag).index(
+  { name: 1, _owner: 1 },
+  { unique: true },
+);

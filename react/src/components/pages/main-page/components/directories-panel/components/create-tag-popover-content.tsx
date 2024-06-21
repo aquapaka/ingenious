@@ -5,7 +5,7 @@ import { useForm, useWatch } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
 import { COLORS } from '../../../../../../const/const';
-import { useAddTagMutation } from '../../../../../../services/main-service';
+import { useAddTagMutation, useGetUserDataQuery } from '../../../../../../services/main-service';
 import { Badge } from '../../../../../ui/badge';
 import { Button } from '../../../../../ui/button';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormMessage } from '../../../../../ui/form';
@@ -14,12 +14,13 @@ import { Popover, PopoverContent, PopoverTrigger } from '../../../../../ui/popov
 import ColorSelector from './color-selector';
 
 const createTagFormSchema = z.object({
-  tagName: z.string().min(1, 'Yo it empty!').max(16, 'Tag too long'),
-  tagColor: z.string().min(1, 'Tag color not selected'),
+  tagName: z.string().trim().min(1, 'Yo it empty!').max(16, 'Tag too long'),
+  tagColor: z.string().trim().min(1, 'Tag color not selected'),
 });
 
 export default function CreateTagPopoverContent() {
   const [addTag, { isSuccess: isAddTagSuccess, isError: isAddTagError }] = useAddTagMutation();
+  const {data: user} = useGetUserDataQuery();
 
   const form = useForm<z.infer<typeof createTagFormSchema>>({
     resolver: zodResolver(createTagFormSchema),
@@ -31,6 +32,14 @@ export default function CreateTagPopoverContent() {
   const formValues = useWatch({ control: form.control });
 
   function onSubmit(values: z.infer<typeof createTagFormSchema>) {
+    // Check if tag already exist
+    if (user?.allTags.map(tag => tag.name).includes(values.tagName)) {
+      form.setError('tagName', {
+        message: 'This tag already exist',
+        type: 'custom'
+      });
+      return;
+    }
     addTag({ name: values.tagName, color: values.tagColor });
   }
 
