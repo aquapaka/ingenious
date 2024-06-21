@@ -23,7 +23,7 @@ import {
 } from '@/components/ui/context-menu';
 import { Note, Tag } from '@/lib/types';
 import { useDeleteNoteMutation, useGetUserDataQuery, useUpdateNoteMutation } from '@/services/main-service';
-import { CirclePlus, Sparkle, StickyNote, TagIcon, Trash2 } from 'lucide-react';
+import { CirclePlus, Sparkles, StickyNote, TagIcon, Trash2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { NavLink, useParams } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -147,7 +147,7 @@ export default function NoteButton({ note }: { note: Note }) {
                       <span>{note.title}</span>
                       {note.isFavorite && (
                         <span className="pl-1">
-                          <Sparkle fill={FAVORITE_COLOR} className="lucide-xs lucide-filled" />
+                          <Sparkles fill={FAVORITE_COLOR} className="lucide-xs lucide-filled" />
                         </span>
                       )}
                     </div>

@@ -2,7 +2,7 @@ import { Accordion } from '@/components/ui/accordion';
 import { Input } from '@/components/ui/input';
 import { useGetUserDataQuery } from '@/services/main-service';
 import { DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu';
-import { Bug, Filter, Ghost, Loader2, Sparkle, TagIcon } from 'lucide-react';
+import { Bug, Filter, Ghost, Loader2, Sparkle, Sparkles, TagIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSearchText, toggleFilter, toggleFilterFavorite } from '../../../../../app/slices/searchAndFilterSlice';
@@ -56,7 +56,7 @@ export default function DirectoriesPanel() {
         </div>
         <div className="flex duration-300 overflow-hidden gap-1" style={{ height: isFilterOn ? '32px' : 0 }}>
           <Button variant={isFilterFavoriteOn ? 'default' : 'outline'} size="xs" onClick={() => dispatch(toggleFilterFavorite())}>
-            <Sparkle className="lucide-xs mr-1" fill={isFilterFavoriteOn ? FAVORITE_COLOR : 'none'} />
+            {isFilterFavoriteOn ? <Sparkles className="lucide-xs mr-1" fill={FAVORITE_COLOR} /> : <Sparkle className="lucide-xs mr-1"/>}
             Favorite
           </Button>
           <DropdownMenu>
