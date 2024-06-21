@@ -1,10 +1,16 @@
 import { Accordion } from '@/components/ui/accordion';
 import { Input } from '@/components/ui/input';
 import { useGetUserDataQuery } from '@/services/main-service';
-import { Bug, Ghost, Loader2, Tag } from 'lucide-react';
+import { DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu';
+import { Bug, Filter, Ghost, Loader2, Sparkle, TagIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import TagsInput from 'react-tagsinput';
+import { useDispatch, useSelector } from 'react-redux';
+import { setSearchText, toggleFilter, toggleFilterFavorite } from '../../../../../app/slices/searchAndFilterSlice';
+import { RootState } from '../../../../../app/store';
+import { FAVORITE_COLOR } from '../../../../../const/const';
 import { User } from '../../../../../lib/types';
+import { Button } from '../../../../ui/button';
+import { DropdownMenu, DropdownMenuContent } from '../../../../ui/dropdown-menu';
 import CreateNewDirectoryButton from './components/create-new-directory-button';
 import CreateNewNoteButton from './components/create-new-note-button';
 import DirectoryAccordion from './components/directory-accodion';
@@ -16,8 +22,8 @@ export default function DirectoriesPanel() {
   const { data, isLoading, isError, isSuccess } = useGetUserDataQuery();
   const [userData, setUserData] = useState<User | null>(null);
   const { allDirectories, allNotes, inTrashNotes } = userData || {};
-  const [searchTitle, setSearchTitle] = useState('');
-  const [filterTags, setFilterTags] = useState<string[]>([]);
+  const { searchText, isFilterOn, filterTagIds, isFilterFavoriteOn } = useSelector((state: RootState) => state.searchAndFilter);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (isSuccess) {
@@ -34,22 +40,34 @@ export default function DirectoriesPanel() {
           <CreateNewDirectoryButton />
         </div>
       </div>
-      <div className="mb-3">
-        <Input
-          className="mb-2 placeholder:italic text-xs"
-          type="text"
-          placeholder="search note by title..."
-          onChange={(e) => setSearchTitle(e.target.value)}
-        />
-        <div className="flex">
-          <div className="flex items-center px-2">
-            <Tag size={16} />
+      <div className="mb-0">
+        <div className="flex gap-1">
+          <div className="grow">
+            <Input
+              className="mb-2 placeholder:italic text-xs"
+              type="text"
+              placeholder="search note by title..."
+              onChange={(e) => dispatch(setSearchText(e.target.value))}
+            />
           </div>
-          <TagsInput
-            value={filterTags}
-            inputProps={{ placeholder: 'filter by tags...' }}
-            onChange={(tags) => setFilterTags(tags)}
-          />
+          <Button size="icon" variant={isFilterOn ? 'default' : 'outline'} onClick={() => dispatch(toggleFilter())}>
+            <Filter />
+          </Button>
+        </div>
+        <div className="flex duration-300 overflow-hidden gap-1" style={{ height: isFilterOn ? '32px' : 0 }}>
+          <Button variant={isFilterFavoriteOn ? 'default' : 'outline'} size="xs" onClick={() => dispatch(toggleFilterFavorite())}>
+            <Sparkle className="lucide-xs mr-1" fill={isFilterFavoriteOn ? FAVORITE_COLOR : 'none'} />
+            Favorite
+          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant={filterTagIds.length ? 'default' : 'outline'} size="xs">
+                <TagIcon className="lucide-xs mr-1" />
+                Tags <div className="bg-secondary rounded-full w-4 h-4 aspect-square ml-1">{filterTagIds.length}</div>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start">yo</DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
       {isLoading ? (
@@ -67,13 +85,15 @@ export default function DirectoriesPanel() {
               <div className="grow flex justify-center items-center italic text-secondary-foreground">
                 <Ghost className="inline mr-2" size={16} /> It's empty here
               </div>
-            ) : searchTitle.length || filterTags.length ? (
+            ) : isFilterOn && (searchText.length || filterTagIds.length || isFilterFavoriteOn) ? (
               <div>
                 {allNotes &&
                   allNotes
                     .filter(
-                      (note) =>
-                        !note.isInTrash && note.title.toLocaleLowerCase().includes(searchTitle.toLocaleLowerCase()),
+                      (note) => {
+                        if(isFilterFavoriteOn && !note.isFavorite) return false;
+                        return !note.isInTrash && note.title.toLocaleLowerCase().includes(searchText.toLocaleLowerCase());
+                      }
                     )
                     .map((note) => (
                       <div key={note._id}>
