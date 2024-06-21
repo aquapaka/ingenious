@@ -2,7 +2,7 @@ import { Accordion } from '@/components/ui/accordion';
 import { Input } from '@/components/ui/input';
 import { useGetUserDataQuery } from '@/services/main-service';
 import { DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu';
-import { Bug, Filter, Ghost, Loader2, Sparkle, Sparkles, TagIcon } from 'lucide-react';
+import { Bug, Filter, Ghost, Loader2, Sparkle, Sparkles, TagIcon, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSearchText, toggleFilter, toggleFilterFavorite } from '../../../../../app/slices/searchAndFilterSlice';
@@ -42,21 +42,35 @@ export default function DirectoriesPanel() {
       </div>
       <div className="mb-0">
         <div className="flex gap-1">
-          <div className="grow">
+          <div className="grow relative">
             <Input
+              value={searchText}
               className="mb-2 placeholder:italic text-xs"
               type="text"
               placeholder="search note by title..."
               onChange={(e) => dispatch(setSearchText(e.target.value))}
             />
+            <div className={`absolute right-[0.3rem] top-[0.36rem] ${searchText.trim().length ? 'scale-100' : 'scale-0'} duration-300`}>
+              <Button variant="outline" size="xs-icon" onClick={() => dispatch(setSearchText(''))}>
+                <X />
+              </Button>
+            </div>
           </div>
           <Button size="icon" variant={isFilterOn ? 'default' : 'outline'} onClick={() => dispatch(toggleFilter())}>
             <Filter />
           </Button>
         </div>
         <div className="flex duration-300 overflow-hidden gap-1" style={{ height: isFilterOn ? '32px' : 0 }}>
-          <Button variant={isFilterFavoriteOn ? 'default' : 'outline'} size="xs" onClick={() => dispatch(toggleFilterFavorite())}>
-            {isFilterFavoriteOn ? <Sparkles className="lucide-xs mr-1" fill={FAVORITE_COLOR} /> : <Sparkle className="lucide-xs mr-1"/>}
+          <Button
+            variant={isFilterFavoriteOn ? 'default' : 'outline'}
+            size="xs"
+            onClick={() => dispatch(toggleFilterFavorite())}
+          >
+            {isFilterFavoriteOn ? (
+              <Sparkles className="lucide-xs mr-1" fill={FAVORITE_COLOR} />
+            ) : (
+              <Sparkle className="lucide-xs mr-1" />
+            )}
             Favorite
           </Button>
           <DropdownMenu>
@@ -85,16 +99,14 @@ export default function DirectoriesPanel() {
               <div className="grow flex justify-center items-center italic text-secondary-foreground">
                 <Ghost className="inline mr-2" size={16} /> It's empty here
               </div>
-            ) : isFilterOn && (searchText.length || filterTagIds.length || isFilterFavoriteOn) ? (
+            ) : searchText.length || isFilterOn && ( filterTagIds.length || isFilterFavoriteOn) ? (
               <div>
                 {allNotes &&
                   allNotes
-                    .filter(
-                      (note) => {
-                        if(isFilterFavoriteOn && !note.isFavorite) return false;
-                        return !note.isInTrash && note.title.toLocaleLowerCase().includes(searchText.toLocaleLowerCase());
-                      }
-                    )
+                    .filter((note) => {
+                      if (isFilterFavoriteOn && !note.isFavorite) return false;
+                      return !note.isInTrash && note.title.toLocaleLowerCase().includes(searchText.toLocaleLowerCase());
+                    })
                     .map((note) => (
                       <div key={note._id}>
                         <NoteButton note={note} />

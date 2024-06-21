@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 interface InitialState {
   searchText: string;
@@ -24,14 +24,14 @@ const searchAndFilterSlice = createSlice({
     toggleFilterFavorite: (state) => {
       state.isFilterFavoriteOn = !state.isFilterFavoriteOn;
     },
-    setSearchText: (state, action: { payload: string }) => {
+    setSearchText: (state, action: PayloadAction<string>) => {
       state.searchText = action.payload;
     },
-    addFilterTagId: (state, action: { payload: string }) => {
+    addFilterTagId: (state, action: PayloadAction<string>) => {
       if (state.filterTagIds.includes(action.payload)) return;
       state.filterTagIds.push(action.payload);
     },
-    removeFilterTagId: (state, action: { payload: string }) => {
+    removeFilterTagId: (state, action: PayloadAction<string>) => {
       if (!state.filterTagIds.includes(action.payload)) return;
       state.filterTagIds = state.filterTagIds.filter((id) => id !== action.payload);
     },
