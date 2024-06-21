@@ -14,6 +14,7 @@ import { NavLink, useParams } from 'react-router-dom';
 import { Directory } from '../../../../../../lib/types';
 import ToggleFavoriteButton from '../../toggle-favorite-button';
 import EditableNoteTitle from './editable-note-title';
+import { Badge } from '../../../../../ui/badge';
 
 export default function TopBar() {
   const { id } = useParams();
@@ -60,6 +61,13 @@ export default function TopBar() {
         </BreadcrumbList>
       </Breadcrumb>
       <ToggleFavoriteButton note={note} />
+      <div className='flex gap-1'>
+        {note._tags?.map((tag) => (
+          <Badge key={tag._id} variant="tag" style={{ backgroundColor: tag.color }}>
+            {tag.name}
+          </Badge>
+        ))}
+      </div>
       <ModeToggle />
     </div>
   );

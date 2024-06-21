@@ -10,7 +10,10 @@ export class NotesService {
   constructor(@InjectModel(Note.name) private noteModel: Model<Note>) {}
 
   findOneNoteById(id: string): Promise<Note> {
-    return this.noteModel.findById(id).exec();
+    return this.noteModel
+      .findById(id)
+      .populate('_tags', undefined, 'Tag')
+      .exec();
   }
 
   async createNote(
