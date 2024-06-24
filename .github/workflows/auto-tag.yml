@@ -1,0 +1,38 @@
+name: Auto Bump Version and Push Tag
+
+on:
+  push:
+    branches:
+      - main  # or your main development branch
+
+jobs:
+  bump_version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Bump version and push tag
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Set up Git user details for the commit
+          git config --global user.name 'github-actions'
+          git config --global user.email 'github-actions@github.com'
+
+          # Fetch all tags and branches
+          git fetch --prune --unshallow
+
+          # Bump the version, create a new commit and tag
+          npm version patch -m "Bump version to %s"
+
+          # Push the commit and the new tag to the repository
+          git push origin --follow-tags
