@@ -87,6 +87,13 @@ export const mainApi = createApi({
       }),
       invalidatesTags: ['User'],
     }),
+    deleteTag: builder.mutation<Tag, { id: string }>({
+      query: ({ id }) => ({
+        url: `/tags/${id}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['User'],
+    }),
     // ---------------------------------------------------------------------------------------
     // Notes
     getNote: builder.query<Note, string>({
@@ -131,4 +138,5 @@ export const {
   useUpdateDirectoryMutation,
   useDeleteDirectoryMutation,
   useAddTagMutation,
+  useDeleteTagMutation
 } = mainApi;

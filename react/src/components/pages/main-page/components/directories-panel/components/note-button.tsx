@@ -22,8 +22,13 @@ import {
   ContextMenuTrigger,
 } from '@/components/ui/context-menu';
 import { Note, Tag } from '@/lib/types';
-import { useDeleteNoteMutation, useGetUserDataQuery, useUpdateNoteMutation } from '@/services/main-service';
-import { CirclePlus, Sparkles, StickyNote, TagIcon, Trash2 } from 'lucide-react';
+import {
+  useDeleteNoteMutation,
+  useDeleteTagMutation,
+  useGetUserDataQuery,
+  useUpdateNoteMutation,
+} from '@/services/main-service';
+import { CirclePlus, Sparkles, StickyNote, TagIcon, Trash2, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { NavLink, useParams } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -114,6 +119,7 @@ export default function NoteButton({ note }: { note: Note }) {
   const [currentDialog, setCurrentDialog] = useState<Dialogs>();
   const { data: user } = useGetUserDataQuery();
   const [updateNote] = useUpdateNoteMutation();
+  const [deleteTag, { isLoading: isDeletingTag }] = useDeleteTagMutation();
 
   function handleSelectTag(e: Event, selectedTag: Tag) {
     e.preventDefault();
@@ -129,6 +135,19 @@ export default function NoteButton({ note }: { note: Note }) {
         tagIds: newTagIds,
       },
     });
+  }
+
+  function handleDeleteTag(tagId: string) {
+    if (isDeletingTag) return;
+    deleteTag({ id: tagId })
+      .then(() => {
+        toast.success('Tag deleted');
+      })
+      .catch(() =>
+        toast.error('Uh Oh! Something when wrong 😳', {
+          description: 'Error while delete tag',
+        }),
+      );
   }
 
   return (
@@ -173,15 +192,27 @@ export default function NoteButton({ note }: { note: Note }) {
                 onFocusOutside={(e) => e.preventDefault()}
               >
                 {user?.allTags.map((tag) => (
-                  <ContextMenuCheckboxItem
-                    key={tag._id}
-                    checked={note._tags && note._tags.map((tag) => tag._id).includes(tag._id)}
-                    onSelect={(e) => handleSelectTag(e, tag)}
-                  >
-                    <Badge variant="tag" style={{ backgroundColor: tag.color + TAG_BACKGROUND_OPACITY_HEX_CODE }}>
-                      {tag.name}
-                    </Badge>
-                  </ContextMenuCheckboxItem>
+                  <div className="relative" key={tag._id}>
+                    <ContextMenuCheckboxItem
+                      checked={note._tags && note._tags.map((tag) => tag._id).includes(tag._id)}
+                      onSelect={(e) => handleSelectTag(e, tag)}
+                      className="peer duration-200"
+                    >
+                      <Badge variant="tag" style={{ backgroundColor: tag.color + TAG_BACKGROUND_OPACITY_HEX_CODE }}>
+                        {tag.name}
+                      </Badge>
+                    </ContextMenuCheckboxItem>
+                    <div className="absolute right-1 top-[0.3rem] bg-background rounded-md opacity-0 hover:opacity-100 peer-hover:opacity-100 duration-300 h-[24px]">
+                      <Button
+                        variant="ghost"
+                        size="xs-icon"
+                        onClick={() => handleDeleteTag(tag._id)}
+                        disabled={isDeletingTag}
+                      >
+                        <X />
+                      </Button>
+                    </div>
+                  </div>
                 ))}
                 <ContextMenuSeparator />
                 <ContextMenuItem asChild onSelect={(e) => e.preventDefault()}>
