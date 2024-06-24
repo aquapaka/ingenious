@@ -48,5 +48,5 @@ jobs:
           git config --global user.email 'github-actions@github.com'
           git fetch --prune --unshallow
           git checkout ${{ github.ref }}
-          npm version patch -m "Bump version to %s"
+          npm version patch -m "chore: bump version to %s [skip ci]"
           git push origin --follow-tags
