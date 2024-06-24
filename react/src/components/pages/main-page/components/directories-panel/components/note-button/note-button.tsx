@@ -28,15 +28,15 @@ import {
   useGetUserDataQuery,
   useUpdateNoteMutation,
 } from '@/services/main-service';
-import { CirclePlus, Sparkles, StickyNote, TagIcon, Trash2, X } from 'lucide-react';
+import { CirclePlus, PencilLine, Sparkles, StickyNote, TagIcon, Trash2, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { NavLink, useParams } from 'react-router-dom';
 import { toast } from 'sonner';
-import { FAVORITE_COLOR, TAG_BACKGROUND_OPACITY_HEX_CODE } from '../../../../../../const/const';
-import { Badge } from '../../../../../ui/badge';
-import { Popover, PopoverTrigger } from '../../../../../ui/popover';
-import ToggleFavoriteButton from '../../toggle-favorite-button';
-import CreateTagPopoverContent from './create-tag-popover-content';
+import { FAVORITE_COLOR, TAG_BACKGROUND_OPACITY_HEX_CODE } from '../../../../../../../const/const';
+import { Badge } from '../../../../../../ui/badge';
+import { Popover, PopoverTrigger } from '../../../../../../ui/popover';
+import ToggleFavoriteButton from '../../../toggle-favorite-button';
+import CreateTagPopoverContent from './components/create-tag-popover-content';
 
 enum Dialogs {
   deleteNote = 'deleteNote',
@@ -153,88 +153,95 @@ export default function NoteButton({ note }: { note: Note }) {
   return (
     <ContextMenu>
       <AlertDialog>
-        <Popover modal={true}>
-          <ContextMenuTrigger asChild>
-            <div className="relative">
-              <div className="peer">
-                <Button asChild variant={id === note._id ? 'default' : 'ghost'} className="w-full justify-start">
-                  <NavLink to={`/notes/${note._id}`}>
-                    <div className={`flex justify-start items-center gap-2`}>
-                      <span className="pl-4">
-                        <StickyNote size={16} />
+        <ContextMenuTrigger asChild>
+          <div className="relative">
+            <div className="peer">
+              <Button asChild variant={id === note._id ? 'default' : 'ghost'} className="w-full justify-start">
+                <NavLink to={`/notes/${note._id}`}>
+                  <div className={`flex justify-start items-center gap-2`}>
+                    <span className="pl-4">
+                      <StickyNote size={16} />
+                    </span>
+                    <span>{note.title}</span>
+                    {note.isFavorite && (
+                      <span className="pl-1">
+                        <Sparkles fill={FAVORITE_COLOR} className="lucide-xs lucide-filled" />
                       </span>
-                      <span>{note.title}</span>
-                      {note.isFavorite && (
-                        <span className="pl-1">
-                          <Sparkles fill={FAVORITE_COLOR} className="lucide-xs lucide-filled" />
-                        </span>
-                      )}
-                    </div>
-                  </NavLink>
-                </Button>
-              </div>
-              <div className="right-2 top-[0.4rem] absolute items-center opacity-0 hover:opacity-100 peer-hover:opacity-100 duration-300 gap-2 bg-background rounded-md">
-                <ToggleFavoriteButton note={note} minimal />
-              </div>
-            </div>
-          </ContextMenuTrigger>
-          {/* Context menu Content */}
-          <ContextMenuContent className="w-32">
-            <ContextMenuSub>
-              <ContextMenuSubTrigger>
-                <TagIcon className="mr-2" />
-                Tags
-              </ContextMenuSubTrigger>
-              <ContextMenuSubContent
-                className="w-48"
-                onInteractOutside={(e) => e.preventDefault()}
-                onPointerDownOutside={(e) => e.preventDefault()}
-                onFocusOutside={(e) => e.preventDefault()}
-              >
-                {user?.allTags.map((tag) => (
-                  <div className="relative" key={tag._id}>
-                    <ContextMenuCheckboxItem
-                      checked={note._tags && note._tags.map((tag) => tag._id).includes(tag._id)}
-                      onSelect={(e) => handleSelectTag(e, tag)}
-                      className="peer duration-200"
-                    >
-                      <Badge variant="tag" style={{ backgroundColor: tag.color + TAG_BACKGROUND_OPACITY_HEX_CODE }}>
-                        {tag.name}
-                      </Badge>
-                    </ContextMenuCheckboxItem>
-                    <div className="absolute right-1 top-[0.3rem] bg-background rounded-md opacity-0 hover:opacity-100 peer-hover:opacity-100 duration-300 h-[24px]">
-                      <Button
-                        variant="ghost"
-                        size="xs-icon"
-                        onClick={() => handleDeleteTag(tag._id)}
-                        disabled={isDeletingTag}
-                      >
-                        <X />
-                      </Button>
-                    </div>
+                    )}
                   </div>
-                ))}
-                <ContextMenuSeparator />
-                <ContextMenuItem asChild onSelect={(e) => e.preventDefault()}>
-                  <PopoverTrigger className="w-full">
+                </NavLink>
+              </Button>
+            </div>
+            <div className="right-2 top-[0.4rem] absolute items-center opacity-0 hover:opacity-100 peer-hover:opacity-100 duration-300 gap-2 bg-background rounded-md">
+              <ToggleFavoriteButton note={note} minimal />
+            </div>
+          </div>
+        </ContextMenuTrigger>
+        {/* Context menu Content */}
+        <ContextMenuContent className="w-32">
+          <ContextMenuSub>
+            <ContextMenuSubTrigger>
+              <TagIcon className="mr-2" />
+              Tags
+            </ContextMenuSubTrigger>
+            <ContextMenuSubContent
+              className="w-56"
+              onInteractOutside={(e) => e.preventDefault()}
+              onPointerDownOutside={(e) => e.preventDefault()}
+              onFocusOutside={(e) => e.preventDefault()}
+            >
+              {user?.allTags.map((tag) => (
+                <div className="relative" key={tag._id}>
+                  <ContextMenuCheckboxItem
+                    checked={note._tags && note._tags.map((tag) => tag._id).includes(tag._id)}
+                    onSelect={(e) => handleSelectTag(e, tag)}
+                    className="peer duration-200"
+                  >
+                    <Badge variant="tag" style={{ backgroundColor: tag.color + TAG_BACKGROUND_OPACITY_HEX_CODE }}>
+                      {tag.name}
+                    </Badge>
+                  </ContextMenuCheckboxItem>
+                  <div className="absolute right-1 top-[0.3rem] bg-background rounded-md opacity-0 hover:opacity-100 peer-hover:opacity-100 duration-300 h-[24px]">
+                    <Popover modal={true}>
+                      <PopoverTrigger asChild>
+                        <Button variant="ghost" size="xs-icon">
+                          <PencilLine />
+                        </Button>
+                      </PopoverTrigger>
+                      <CreateTagPopoverContent isUpdate tagToUpdate={tag} />
+                    </Popover>
+                    <Button
+                      variant="ghost"
+                      size="xs-icon"
+                      onClick={() => handleDeleteTag(tag._id)}
+                      disabled={isDeletingTag}
+                    >
+                      <X />
+                    </Button>
+                  </div>
+                </div>
+              ))}
+              <ContextMenuSeparator />
+              <Popover modal={true}>
+                <PopoverTrigger className="w-full">
+                  <ContextMenuItem onSelect={(e) => e.preventDefault()}>
                     <CirclePlus className="mr-2" />
                     Create new tag
-                  </PopoverTrigger>
-                </ContextMenuItem>
-              </ContextMenuSubContent>
-            </ContextMenuSub>
-            <ContextMenuItem asChild>
-              <AlertDialogTrigger className="w-full" onClick={() => setCurrentDialog(Dialogs.deleteNote)}>
-                <Trash2 className="mr-2" />
-                Delete
-              </AlertDialogTrigger>
-            </ContextMenuItem>
-          </ContextMenuContent>
-          {/* Dialog Content */}
-          {currentDialog === Dialogs.deleteNote && <DeleteNoteDialogContent note={note} />}
-          {/* Popover Content */}
-          <CreateTagPopoverContent />
-        </Popover>
+                  </ContextMenuItem>
+                </PopoverTrigger>
+                <CreateTagPopoverContent />
+              </Popover>
+            </ContextMenuSubContent>
+          </ContextMenuSub>
+          <ContextMenuItem asChild>
+            <AlertDialogTrigger className="w-full" onClick={() => setCurrentDialog(Dialogs.deleteNote)}>
+              <Trash2 className="mr-2" />
+              Delete
+            </AlertDialogTrigger>
+          </ContextMenuItem>
+        </ContextMenuContent>
+        {/* Dialog Content */}
+        {currentDialog === Dialogs.deleteNote && <DeleteNoteDialogContent note={note} />}
       </AlertDialog>
     </ContextMenu>
   );

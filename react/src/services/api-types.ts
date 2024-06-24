@@ -30,3 +30,5 @@ export interface CreateDirectoryData {
 }
 
 export interface UpdateDirectoryData extends Partial<CreateDirectoryData> {}
+
+export interface UpdateTagData extends Partial<CreateTagData> {}

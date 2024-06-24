@@ -10,6 +10,7 @@ import {
   RegisterData,
   UpdateDirectoryData,
   UpdateNoteData,
+  UpdateTagData,
 } from './api-types';
 
 export const mainApi = createApi({
@@ -87,6 +88,14 @@ export const mainApi = createApi({
       }),
       invalidatesTags: ['User'],
     }),
+    updateTag: builder.mutation<Tag, { id: string; tag: UpdateTagData }>({
+      query: ({ id, tag }) => ({
+        url: `/tags/${id}`,
+        method: 'PATCH',
+        body: tag,
+      }),
+      invalidatesTags: ['User'],
+    }),
     deleteTag: builder.mutation<Tag, { id: string }>({
       query: ({ id }) => ({
         url: `/tags/${id}`,
@@ -138,5 +147,6 @@ export const {
   useUpdateDirectoryMutation,
   useDeleteDirectoryMutation,
   useAddTagMutation,
-  useDeleteTagMutation
+  useDeleteTagMutation,
+  useUpdateTagMutation,
 } = mainApi;

@@ -26,7 +26,7 @@ import { useEffect } from 'react';
 import { toast } from 'sonner';
 import ColorSelector from './color-selector';
 import CreateNewNoteButton from './create-new-note-button';
-import NoteButton from './note-button';
+import NoteButton from './note-button/note-button';
 
 function DeleteAlertDialogContent(props: { directory: Directory }) {
   const { directory } = props;
