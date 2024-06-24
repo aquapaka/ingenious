@@ -34,7 +34,7 @@ jobs:
           git fetch --prune --unshallow
 
           # Bump the version, create a new commit and tag
-          npm version patch -m "Bump version to %s"
+          npm version patch -m "chore: bump version to %s [skip ci]"
 
           # Push the commit and the new tag to the repository
           git push origin --follow-tags
