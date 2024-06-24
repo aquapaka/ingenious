@@ -11,7 +11,7 @@ const initialState: InitialState = {
   searchText: '',
   filterTagIds: [],
   isFilterOn: false,
-  isFilterFavoriteOn: false
+  isFilterFavoriteOn: false,
 };
 
 const searchAndFilterSlice = createSlice({
@@ -27,17 +27,17 @@ const searchAndFilterSlice = createSlice({
     setSearchText: (state, action: PayloadAction<string>) => {
       state.searchText = action.payload;
     },
-    addFilterTagId: (state, action: PayloadAction<string>) => {
-      if (state.filterTagIds.includes(action.payload)) return;
-      state.filterTagIds.push(action.payload);
+    toggleFilterTagId: (state, action: PayloadAction<string>) => {
+      if (state.filterTagIds.includes(action.payload))
+        state.filterTagIds = state.filterTagIds.filter((id) => id !== action.payload);
+      else state.filterTagIds.push(action.payload);
     },
-    removeFilterTagId: (state, action: PayloadAction<string>) => {
-      if (!state.filterTagIds.includes(action.payload)) return;
-      state.filterTagIds = state.filterTagIds.filter((id) => id !== action.payload);
+    clearFilterTagIds: (state) => {
+      state.filterTagIds = [];
     },
   },
 });
 
-export const { toggleFilter, setSearchText, addFilterTagId, removeFilterTagId, toggleFilterFavorite } = searchAndFilterSlice.actions;
+export const { toggleFilter, setSearchText, toggleFilterTagId, toggleFilterFavorite, clearFilterTagIds } = searchAndFilterSlice.actions;
 
 export default searchAndFilterSlice.reducer;

@@ -1,16 +1,28 @@
 import { Accordion } from '@/components/ui/accordion';
 import { Input } from '@/components/ui/input';
 import { useGetUserDataQuery } from '@/services/main-service';
-import { DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu';
 import { Bug, Filter, Ghost, Loader2, Sparkle, Sparkles, TagIcon, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setSearchText, toggleFilter, toggleFilterFavorite } from '../../../../../app/slices/searchAndFilterSlice';
+import {
+  clearFilterTagIds,
+  setSearchText,
+  toggleFilter,
+  toggleFilterFavorite,
+  toggleFilterTagId,
+} from '../../../../../app/slices/searchAndFilterSlice';
 import { RootState } from '../../../../../app/store';
 import { FAVORITE_COLOR } from '../../../../../const/const';
 import { User } from '../../../../../lib/types';
+import { Badge } from '../../../../ui/badge';
 import { Button } from '../../../../ui/button';
-import { DropdownMenu, DropdownMenuContent } from '../../../../ui/dropdown-menu';
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '../../../../ui/dropdown-menu';
 import CreateNewDirectoryButton from './components/create-new-directory-button';
 import CreateNewNoteButton from './components/create-new-note-button';
 import DirectoryAccordion from './components/directory-accodion';
@@ -22,7 +34,9 @@ export default function DirectoriesPanel() {
   const { data, isLoading, isError, isSuccess } = useGetUserDataQuery();
   const [userData, setUserData] = useState<User | null>(null);
   const { allDirectories, allNotes, inTrashNotes } = userData || {};
-  const { searchText, isFilterOn, filterTagIds, isFilterFavoriteOn } = useSelector((state: RootState) => state.searchAndFilter);
+  const { searchText, isFilterOn, filterTagIds, isFilterFavoriteOn } = useSelector(
+    (state: RootState) => state.searchAndFilter,
+  );
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -30,6 +44,15 @@ export default function DirectoriesPanel() {
       setUserData(data);
     }
   }, [allDirectories, data, isSuccess]);
+
+  function handleToggleFilterTag(e: Event, tagId: string) {
+    e.preventDefault();
+    dispatch(toggleFilterTagId(tagId));
+  }
+
+  function handleClearFilterTagIds() {
+    dispatch(clearFilterTagIds());
+  }
 
   return (
     <div className="h-screen overflow-auto flex flex-col w-full justify-between p-4 pt-2">
@@ -50,7 +73,9 @@ export default function DirectoriesPanel() {
               placeholder="search note by title..."
               onChange={(e) => dispatch(setSearchText(e.target.value))}
             />
-            <div className={`absolute right-[0.3rem] top-[0.36rem] ${searchText.trim().length ? 'scale-100' : 'scale-0'} duration-300`}>
+            <div
+              className={`absolute right-[0.3rem] top-[0.36rem] ${searchText.trim().length ? 'scale-100' : 'scale-0'} duration-300`}
+            >
               <Button variant="outline" size="xs-icon" onClick={() => dispatch(setSearchText(''))}>
                 <X />
               </Button>
@@ -77,10 +102,29 @@ export default function DirectoriesPanel() {
             <DropdownMenuTrigger asChild>
               <Button variant={filterTagIds.length ? 'default' : 'outline'} size="xs">
                 <TagIcon className="lucide-xs mr-1" />
-                Tags <div className="bg-secondary rounded-full w-4 h-4 aspect-square ml-1">{filterTagIds.length}</div>
+                Tags{' '}
+                <div className="bg-secondary rounded-full w-4 h-4 aspect-square ml-1 text-foreground">
+                  {filterTagIds.length}
+                </div>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="start">yo</DropdownMenuContent>
+            <DropdownMenuContent align="start">
+              <DropdownMenuItem onClick={() => handleClearFilterTagIds()}>
+                <X className='mr-2'/>
+                Clear
+              </DropdownMenuItem>
+              {userData?.allTags.map((tag) => (
+                <DropdownMenuCheckboxItem
+                  key={tag._id}
+                  checked={filterTagIds.includes(tag._id)}
+                  onSelect={(e) => handleToggleFilterTag(e, tag._id)}
+                >
+                  <Badge variant="tag" style={{ backgroundColor: tag.color }}>
+                    {tag.name}
+                  </Badge>
+                </DropdownMenuCheckboxItem>
+              ))}
+            </DropdownMenuContent>
           </DropdownMenu>
         </div>
       </div>
@@ -99,7 +143,7 @@ export default function DirectoriesPanel() {
               <div className="grow flex justify-center items-center italic text-secondary-foreground">
                 <Ghost className="inline mr-2" size={16} /> It's empty here
               </div>
-            ) : searchText.length || isFilterOn && ( filterTagIds.length || isFilterFavoriteOn) ? (
+            ) : searchText.length || (isFilterOn && (filterTagIds.length || isFilterFavoriteOn)) ? (
               <div>
                 {allNotes &&
                   allNotes
