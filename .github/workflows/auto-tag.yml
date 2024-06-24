@@ -18,7 +18,9 @@ jobs:
           node-version: '14'
 
       - name: Install Dependencies
-        run: npm install
+        run: |
+          npm install -g pnpm
+          pnpm install
 
       - name: Bump version and push tag
         env:
