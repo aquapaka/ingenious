@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
-import { COLORS } from '../../../../../../const/const';
+import { COLORS, TAG_BACKGROUND_OPACITY_HEX_CODE } from '../../../../../../const/const';
 import { useAddTagMutation, useGetUserDataQuery } from '../../../../../../services/main-service';
 import { Badge } from '../../../../../ui/badge';
 import { Button } from '../../../../../ui/button';
@@ -60,7 +60,7 @@ export default function CreateTagPopoverContent() {
       <div className="grid gap-2">
         <div className="flex justify-between">
           <h4 className="font-medium leading-none">Create new tag</h4>
-          <Badge variant="tag" style={{ backgroundColor: formValues.tagColor }}>
+          <Badge variant="tag" style={{ backgroundColor: formValues.tagColor + TAG_BACKGROUND_OPACITY_HEX_CODE }}>
             {formValues.tagName?.length ? formValues.tagName : 'cool tag'}
           </Badge>
           <div></div>

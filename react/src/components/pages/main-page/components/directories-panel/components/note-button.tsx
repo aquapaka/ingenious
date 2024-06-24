@@ -27,7 +27,7 @@ import { CirclePlus, Sparkles, StickyNote, TagIcon, Trash2 } from 'lucide-react'
 import { useEffect, useState } from 'react';
 import { NavLink, useParams } from 'react-router-dom';
 import { toast } from 'sonner';
-import { FAVORITE_COLOR } from '../../../../../../const/const';
+import { FAVORITE_COLOR, TAG_BACKGROUND_OPACITY_HEX_CODE } from '../../../../../../const/const';
 import { Badge } from '../../../../../ui/badge';
 import { Popover, PopoverTrigger } from '../../../../../ui/popover';
 import ToggleFavoriteButton from '../../toggle-favorite-button';
@@ -178,7 +178,7 @@ export default function NoteButton({ note }: { note: Note }) {
                     checked={note._tags && note._tags.map((tag) => tag._id).includes(tag._id)}
                     onSelect={(e) => handleSelectTag(e, tag)}
                   >
-                    <Badge variant="tag" style={{ backgroundColor: tag.color }}>
+                    <Badge variant="tag" style={{ backgroundColor: tag.color + TAG_BACKGROUND_OPACITY_HEX_CODE }}>
                       {tag.name}
                     </Badge>
                   </ContextMenuCheckboxItem>

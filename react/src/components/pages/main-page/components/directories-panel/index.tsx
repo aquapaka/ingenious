@@ -2,7 +2,7 @@ import { Accordion } from '@/components/ui/accordion';
 import { Input } from '@/components/ui/input';
 import { useGetUserDataQuery } from '@/services/main-service';
 import { Bug, Filter, Ghost, Loader2, Sparkle, Sparkles, TagIcon, X } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   clearFilterTagIds,
@@ -12,7 +12,7 @@ import {
   toggleFilterTagId,
 } from '../../../../../app/slices/searchAndFilterSlice';
 import { RootState } from '../../../../../app/store';
-import { FAVORITE_COLOR } from '../../../../../const/const';
+import { FAVORITE_COLOR, TAG_BACKGROUND_OPACITY_HEX_CODE } from '../../../../../const/const';
 import { User } from '../../../../../lib/types';
 import { Badge } from '../../../../ui/badge';
 import { Button } from '../../../../ui/button';
@@ -38,6 +38,22 @@ export default function DirectoriesPanel() {
     (state: RootState) => state.searchAndFilter,
   );
   const dispatch = useDispatch();
+  const filteredNotes = useMemo(
+    () =>
+      allNotes
+        ? allNotes.filter((note) => {
+            if (isFilterFavoriteOn && !note.isFavorite) return false;
+            if (
+              filterTagIds.length &&
+              filterTagIds.every((filterTagId) => !note._tags.map((tag) => tag._id).includes(filterTagId))
+            )
+              return false;
+            return !note.isInTrash && note.title.toLocaleLowerCase().includes(searchText.toLocaleLowerCase());
+          })
+        : [],
+    [allNotes, filterTagIds, isFilterFavoriteOn, searchText],
+  );
+  const isFiltering = searchText.length || (isFilterOn && (filterTagIds.length || isFilterFavoriteOn));
 
   useEffect(() => {
     if (isSuccess) {
@@ -85,7 +101,10 @@ export default function DirectoriesPanel() {
             <Filter />
           </Button>
         </div>
-        <div className="flex duration-300 overflow-hidden gap-1" style={{ height: isFilterOn ? '32px' : 0 }}>
+        <div
+          className="flex justify-start duration-300 overflow-hidden gap-1"
+          style={{ height: isFilterOn ? '32px' : 0 }}
+        >
           <Button
             variant={isFilterFavoriteOn ? 'default' : 'outline'}
             size="xs"
@@ -108,9 +127,9 @@ export default function DirectoriesPanel() {
                 </div>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="start">
+            <DropdownMenuContent align="start" side="right">
               <DropdownMenuItem onClick={() => handleClearFilterTagIds()}>
-                <X className='mr-2'/>
+                <X className="mr-2" />
                 Clear
               </DropdownMenuItem>
               {userData?.allTags.map((tag) => (
@@ -119,7 +138,7 @@ export default function DirectoriesPanel() {
                   checked={filterTagIds.includes(tag._id)}
                   onSelect={(e) => handleToggleFilterTag(e, tag._id)}
                 >
-                  <Badge variant="tag" style={{ backgroundColor: tag.color }}>
+                  <Badge variant="tag" style={{ backgroundColor: tag.color + TAG_BACKGROUND_OPACITY_HEX_CODE }}>
                     {tag.name}
                   </Badge>
                 </DropdownMenuCheckboxItem>
@@ -130,7 +149,7 @@ export default function DirectoriesPanel() {
       </div>
       {isLoading ? (
         <div className="flex justify-center items-center grow">
-          <Loader2 className="inline animate-spin mr-2" size={16} /> Loading...
+          <Loader2 className="inline animate-spin mr-2" size={16} /> Loading notes...
         </div>
       ) : isError ? (
         <div className="flex justify-center items-center grow">
@@ -143,19 +162,19 @@ export default function DirectoriesPanel() {
               <div className="grow flex justify-center items-center italic text-secondary-foreground">
                 <Ghost className="inline mr-2" size={16} /> It's empty here
               </div>
-            ) : searchText.length || (isFilterOn && (filterTagIds.length || isFilterFavoriteOn)) ? (
+            ) : isFiltering ? (
               <div>
-                {allNotes &&
-                  allNotes
-                    .filter((note) => {
-                      if (isFilterFavoriteOn && !note.isFavorite) return false;
-                      return !note.isInTrash && note.title.toLocaleLowerCase().includes(searchText.toLocaleLowerCase());
-                    })
-                    .map((note) => (
-                      <div key={note._id}>
-                        <NoteButton note={note} />
-                      </div>
-                    ))}
+                {filteredNotes.length ? (
+                  filteredNotes.map((note) => (
+                    <div key={note._id}>
+                      <NoteButton note={note} />
+                    </div>
+                  ))
+                ) : (
+                  <div className="flex items-center justify-center pt-4 text-muted-foreground italic text-sm">
+                    <Ghost className="inline mr-2" /> Can't find any note with this filter
+                  </div>
+                )}
               </div>
             ) : (
               <div className="space-y-1">
@@ -179,7 +198,6 @@ export default function DirectoriesPanel() {
                 </div>
               </div>
             )}
-
             {inTrashNotes && <TrashBin inTrashNodes={inTrashNotes} />}
           </Accordion>
         )

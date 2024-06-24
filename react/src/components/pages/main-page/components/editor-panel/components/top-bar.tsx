@@ -15,6 +15,7 @@ import { Directory } from '../../../../../../lib/types';
 import ToggleFavoriteButton from '../../toggle-favorite-button';
 import EditableNoteTitle from './editable-note-title';
 import { Badge } from '../../../../../ui/badge';
+import { TAG_BACKGROUND_OPACITY_HEX_CODE } from '../../../../../../const/const';
 
 export default function TopBar() {
   const { id } = useParams();
@@ -61,9 +62,9 @@ export default function TopBar() {
         </BreadcrumbList>
       </Breadcrumb>
       <ToggleFavoriteButton note={note} />
-      <div className='flex gap-1'>
+      <div className="flex gap-1">
         {note._tags?.map((tag) => (
-          <Badge key={tag._id} variant="tag" style={{ backgroundColor: tag.color }}>
+          <Badge key={tag._id} variant="tag" style={{ backgroundColor: tag.color + TAG_BACKGROUND_OPACITY_HEX_CODE }}>
             {tag.name}
           </Badge>
         ))}
