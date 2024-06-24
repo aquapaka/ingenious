@@ -57,7 +57,7 @@ jobs:
       - name: Generate Release Notes
         id: generate_notes
         run: |
-          npm install -g release-notes-generator
+          npm install -g @semantic-release/release-notes-generator
           release-notes-generator > release_notes.md
 
       - name: Create GitHub Release
