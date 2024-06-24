@@ -46,6 +46,14 @@ export class UsersService {
                   },
                 },
               },
+              {
+                $lookup: {
+                  from: 'tags',
+                  localField: '_tags',
+                  foreignField: '_id',
+                  as: '_tags',
+                },
+              },
             ],
             as: 'allNotes',
           },
@@ -70,6 +78,14 @@ export class UsersService {
                             $eq: true,
                           },
                         },
+                      },
+                    },
+                    {
+                      $lookup: {
+                        from: 'tags',
+                        localField: '_tags',
+                        foreignField: '_id',
+                        as: '_tags',
                       },
                     },
                   ],
@@ -99,6 +115,14 @@ export class UsersService {
                   isInTrash: {
                     $eq: true,
                   },
+                },
+              },
+              {
+                $lookup: {
+                  from: 'tags',
+                  localField: '_tags',
+                  foreignField: '_id',
+                  as: '_tags',
                 },
               },
             ],

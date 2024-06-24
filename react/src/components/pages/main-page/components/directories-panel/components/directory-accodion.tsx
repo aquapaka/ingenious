@@ -26,7 +26,7 @@ import { useEffect } from 'react';
 import { toast } from 'sonner';
 import ColorSelector from './color-selector';
 import CreateNewNoteButton from './create-new-note-button';
-import NoteButton from './note-button';
+import NoteButton from './note-button/note-button';
 
 function DeleteAlertDialogContent(props: { directory: Directory }) {
   const { directory } = props;
@@ -78,12 +78,7 @@ function ButtonContextMenuContent(props: { directory: Directory }) {
   }, [isSuccess]);
 
   return (
-    <ContextMenuContent className="w-64">
-      <ContextMenuItem asChild>
-        <AlertDialogTrigger className="w-full">
-          <Trash2 className="mr-2" /> Delete
-        </AlertDialogTrigger>
-      </ContextMenuItem>
+    <ContextMenuContent className="w-48">
       <ContextMenuSub>
         <ContextMenuSubTrigger>
           <Palette className="mr-2" />
@@ -93,6 +88,11 @@ function ButtonContextMenuContent(props: { directory: Directory }) {
           <ColorSelector onColorSelect={handleSelectColor} disabled={isLoading} />
         </ContextMenuSubContent>
       </ContextMenuSub>
+      <ContextMenuItem asChild>
+        <AlertDialogTrigger className="w-full">
+          <Trash2 className="mr-2" /> Delete
+        </AlertDialogTrigger>
+      </ContextMenuItem>
     </ContextMenuContent>
   );
 }
@@ -106,7 +106,7 @@ function DirectoryAccordionTriggerButton(props: { directory: Directory }) {
         <ContextMenuTrigger>
           <AccordionTrigger className={`hover:bg-secondary rounded-md group inline-flex`}>
             <div className="flex gap-2 items-center [&>div]:grow [&>div]:flex [&>div]:justify-between [&>div]:items-center">
-              <Folder size={16} fill={directory.color} />
+              <Folder className="lucide-filled" fill={directory.color} />
               <span>{directory.title}</span>
             </div>
           </AccordionTrigger>

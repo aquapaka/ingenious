@@ -1,14 +1,16 @@
 import { API_BASE_URL } from '@/const/const';
-import { Directory, Note, User } from '@/lib/types';
+import { Directory, Note, Tag, User } from '@/lib/types';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { RootState } from '../app/store';
 import {
   CreateDirectoryData,
   CreateNoteData,
+  CreateTagData,
   LoginData,
   RegisterData,
   UpdateDirectoryData,
   UpdateNoteData,
+  UpdateTagData,
 } from './api-types';
 
 export const mainApi = createApi({
@@ -77,6 +79,31 @@ export const mainApi = createApi({
       invalidatesTags: ['User'],
     }),
     // ---------------------------------------------------------------------------------------
+    // Tags
+    addTag: builder.mutation<Tag, CreateTagData>({
+      query: ({ ...body }) => ({
+        url: '/tags',
+        method: 'POST',
+        body,
+      }),
+      invalidatesTags: ['User'],
+    }),
+    updateTag: builder.mutation<Tag, { id: string; tag: UpdateTagData }>({
+      query: ({ id, tag }) => ({
+        url: `/tags/${id}`,
+        method: 'PATCH',
+        body: tag,
+      }),
+      invalidatesTags: ['User'],
+    }),
+    deleteTag: builder.mutation<Tag, { id: string }>({
+      query: ({ id }) => ({
+        url: `/tags/${id}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['User'],
+    }),
+    // ---------------------------------------------------------------------------------------
     // Notes
     getNote: builder.query<Note, string>({
       query: (id) => `/notes/${id}`,
@@ -119,4 +146,7 @@ export const {
   useAddDirectoryMutation,
   useUpdateDirectoryMutation,
   useDeleteDirectoryMutation,
+  useAddTagMutation,
+  useDeleteTagMutation,
+  useUpdateTagMutation,
 } = mainApi;

@@ -1,0 +1,52 @@
+name: Release Workflow
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'  # This triggers the workflow for version tags like v1.0.0
+
+jobs:
+  create_release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Generate Release Notes
+        id: generate_notes
+        run: |
+          npm install -g release-notes-generator
+          release-notes-generator > release_notes.md
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: release_notes.md
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  tag_version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Bump version and push tag
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config --global user.name 'github-actions'
+          git config --global user.email 'github-actions@github.com'
+          git fetch --prune --unshallow
+          git checkout ${{ github.ref }}
+          npm version patch -m "Bump version to %s"
+          git push origin --follow-tags

@@ -10,7 +10,10 @@ export class NotesService {
   constructor(@InjectModel(Note.name) private noteModel: Model<Note>) {}
 
   findOneNoteById(id: string): Promise<Note> {
-    return this.noteModel.findById(id).exec();
+    return this.noteModel
+      .findById(id)
+      .populate('_tags', undefined, 'Tag')
+      .exec();
   }
 
   async createNote(
@@ -34,7 +37,16 @@ export class NotesService {
   }
 
   updateNote(id: string, updateNoteDto: UpdateNoteDto): Promise<Note> {
-    return this.noteModel.findByIdAndUpdate(id, updateNoteDto).exec();
+    return this.noteModel
+      .findByIdAndUpdate(id, {
+        ...updateNoteDto,
+        ...(updateNoteDto.tagIds && {
+          _tags: updateNoteDto.tagIds.map(
+            (tagId) => new mongoose.Types.ObjectId(tagId),
+          ),
+        }),
+      })
+      .exec();
   }
 
   deleteNote(id: string): Promise<Note> {

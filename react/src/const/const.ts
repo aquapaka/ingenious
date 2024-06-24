@@ -8,7 +8,7 @@ export const USER_TOKEN_NAME = 'userToken' as const;
 
 // Color selector colors
 export const COLORS = [
-  '#f4f4f5',
+  '#e5e7eb',
   '#f43f5e',
   '#fb923c',
   '#facc15',
@@ -21,3 +21,5 @@ export const COLORS = [
 ] as const;
 
 export const FAVORITE_COLOR = '#facc15';
+
+export const TAG_BACKGROUND_OPACITY_HEX_CODE = '99' // 'CC' = 80% - '99' = 60%
