@@ -160,7 +160,7 @@ function RenamePopoverContent(props: { directory: Directory }) {
                     <FormDescription>Enter new title</FormDescription>
                     <FormMessage />
                     <FormControl>
-                      <Input defaultValue={directory.title} type="text" {...field} />
+                      <Input type="text" {...field} />
                     </FormControl>
                   </FormItem>
                 )}
