@@ -8,13 +8,14 @@ import { NavLink, useParams } from 'react-router-dom';
 import { Dialogs } from '../../../../../../../app/slices/uiSlice';
 import { FAVORITE_COLOR, TAG_BACKGROUND_OPACITY_HEX_CODE } from '../../../../../../../const/const';
 import { Badge } from '../../../../../../ui/badge';
-import { Popover } from '../../../../../../ui/popover';
+import { Popover, PopoverAnchor } from '../../../../../../ui/popover';
 import ToggleFavoriteButton from '../../../toggle-favorite-button';
 import DeleteNoteDialogContent from './components/delete-note-dialog-content';
 import NoteButtonContextMenuContent from './components/note-button-context-menu-content';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../../../app/store';
 import { AlertDialog } from '../../../../../../ui/alert-dialog';
+import RenameNotePopoverContent from './components/rename-note-popover-content';
 
 export default function NoteButton({ note, showMoreInfo }: { note: Note; showMoreInfo?: boolean }) {
   const { id } = useParams();
@@ -71,6 +72,7 @@ export default function NoteButton({ note, showMoreInfo }: { note: Note; showMor
                         ))}
                       </div>
                     )}
+                    <PopoverAnchor />
                   </NavLink>
                 </Button>
               </div>
@@ -81,6 +83,7 @@ export default function NoteButton({ note, showMoreInfo }: { note: Note; showMor
           </ContextMenuTrigger>
           {/* Context menu Content */}
           <NoteButtonContextMenuContent note={note} />
+          <RenameNotePopoverContent note={note} />
           {/* Dialog Content */}
           {currentDialog === Dialogs.deleteNote && <DeleteNoteDialogContent note={note} />}
         </ContextMenu>
