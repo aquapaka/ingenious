@@ -5,10 +5,10 @@ import { store } from './app/store';
 import LoginRegisterPage from './components/pages/login-register-page';
 import MainPage from './components/pages/main-page';
 import EditorPanel from './components/pages/main-page/components/editor-panel';
-import { ThemeProvider } from './components/theme-provider';
-import { LOGIN_PATHNAME, REGISTER_PATHNAME } from './const/const';
 import ProtectedRoute from './components/protected-route';
+import { ThemeProvider } from './components/theme-provider';
 import { Toaster } from './components/ui/sonner';
+import { LOGIN_PATHNAME, REGISTER_PATHNAME } from './const/const';
 
 const router = createBrowserRouter(
   createRoutesFromElements(

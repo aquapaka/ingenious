@@ -1,6 +1,6 @@
 import { AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Trash2 } from 'lucide-react';
-import NoteButton from './note-button/note-button';
+import NoteButton from './note-button';
 import { Note } from '../../../../../../lib/types';
 
 export default function TrashBin(props: { inTrashNodes: Note[] }) {

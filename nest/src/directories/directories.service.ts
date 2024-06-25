@@ -15,6 +15,14 @@ export class DirectoriesService {
     return this.directoryModel.findById(id).exec();
   }
 
+  getUserDirectories(userId: string) {
+    return this.directoryModel
+      .find({
+        _owner: new mongoose.Types.ObjectId(userId),
+      })
+      .exec();
+  }
+
   async createDirectory(
     createDirectoryDto: CreateDirectoryDto,
     ownerId: string,

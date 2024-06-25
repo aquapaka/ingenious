@@ -21,12 +21,21 @@ import {
 } from '@/components/ui/context-menu';
 import { Directory } from '@/lib/types';
 import { useDeleteDirectoryMutation, useUpdateDirectoryMutation } from '@/services/main-service';
-import { Folder, Ghost, Palette, Trash2 } from 'lucide-react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { PopoverClose } from '@radix-ui/react-popover';
+import { Folder, Ghost, Palette, PencilLine, Trash2 } from 'lucide-react';
 import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
-import ColorSelector from './color-selector';
-import CreateNewNoteButton from './create-new-note-button';
-import NoteButton from './note-button/note-button';
+import { z } from 'zod';
+import { renameDirectoryFormSchema } from '../../../../../../../const/form-schemas';
+import { Button } from '../../../../../../ui/button';
+import { Form, FormControl, FormDescription, FormField, FormItem, FormMessage } from '../../../../../../ui/form';
+import { Input } from '../../../../../../ui/input';
+import { Popover, PopoverAnchor, PopoverContent, PopoverTrigger } from '../../../../../../ui/popover';
+import ColorSelector from '../color-selector';
+import CreateNewNoteButton from '../create-new-note-button';
+import NoteButton from '../note-button';
 
 function DeleteAlertDialogContent(props: { directory: Directory }) {
   const { directory } = props;
@@ -80,6 +89,12 @@ function ButtonContextMenuContent(props: { directory: Directory }) {
   return (
     <ContextMenuContent className="w-48">
       <ContextMenuSub>
+        <PopoverTrigger asChild>
+          <ContextMenuItem>
+            <PencilLine className="mr-2" />
+            Rename
+          </ContextMenuItem>
+        </PopoverTrigger>
         <ContextMenuSubTrigger>
           <Palette className="mr-2" />
           Change color
@@ -97,25 +112,97 @@ function ButtonContextMenuContent(props: { directory: Directory }) {
   );
 }
 
+function RenamePopoverContent(props: { directory: Directory }) {
+  const { directory } = props;
+  const [updateDirectory, { isLoading: isUpdating }] = useUpdateDirectoryMutation();
+
+  const form = useForm<z.infer<typeof renameDirectoryFormSchema>>({
+    resolver: zodResolver(renameDirectoryFormSchema),
+    defaultValues: {
+      title: directory.title,
+    },
+  });
+
+  function onSubmit(values: z.infer<typeof renameDirectoryFormSchema>) {
+    if (isUpdating) return;
+
+    updateDirectory({
+      id: directory._id,
+      directory: {
+        title: values.title,
+      },
+    })
+      .then(() => {
+        toast.success('Update directory title successfully');
+      })
+      .catch(() => {
+        toast.error('Uh oh! Something when wrong 😳', {
+          description: "Directory title hasn't been updated yet",
+        });
+      });
+  }
+
+  return (
+    <PopoverContent align="start" sideOffset={8}>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
+          <div className="grid grid-col-12 gap-2 items-end">
+            <div className="col-span-12 flex items-center">
+              <PencilLine className="mr-2" />
+              <p className="font-medium">Rename directory</p>
+            </div>
+            <div className="col-span-9">
+              <FormField
+                control={form.control}
+                name="title"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormDescription>Enter new title</FormDescription>
+                    <FormMessage />
+                    <FormControl>
+                      <Input type="text" {...field} />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="col-span-3">
+              <PopoverClose asChild>
+                <Button type="submit" disabled={isUpdating}>
+                  Confirm
+                </Button>
+              </PopoverClose>
+            </div>
+          </div>
+        </form>
+      </Form>
+    </PopoverContent>
+  );
+}
+
 function DirectoryAccordionTriggerButton(props: { directory: Directory }) {
   const { directory } = props;
 
   return (
-    <ContextMenu>
-      <AlertDialog>
-        <ContextMenuTrigger>
-          <AccordionTrigger className={`hover:bg-secondary rounded-md group inline-flex`}>
-            <div className="flex gap-2 items-center [&>div]:grow [&>div]:flex [&>div]:justify-between [&>div]:items-center">
-              <Folder className="lucide-filled" fill={directory.color} />
-              <span>{directory.title}</span>
-            </div>
-          </AccordionTrigger>
-        </ContextMenuTrigger>
-        {/* Contents */}
-        <ButtonContextMenuContent directory={directory} />
-        <DeleteAlertDialogContent directory={directory} />
-      </AlertDialog>
-    </ContextMenu>
+    <Popover modal>
+      <ContextMenu>
+        <AlertDialog>
+          <ContextMenuTrigger>
+            <AccordionTrigger className={`hover:bg-secondary rounded-md group inline-flex overflow-hidden`}>
+              <PopoverAnchor />
+              <div className="flex gap-2 items-center text-nowrap">
+                <Folder className="lucide-filled" fill={directory.color} />
+                <span>{directory.title}</span>
+              </div>
+            </AccordionTrigger>
+          </ContextMenuTrigger>
+          {/* Contents */}
+          <DeleteAlertDialogContent directory={directory} />
+          <ButtonContextMenuContent directory={directory} />
+          <RenamePopoverContent directory={directory} />
+        </AlertDialog>
+      </ContextMenu>
+    </Popover>
   );
 }
 
