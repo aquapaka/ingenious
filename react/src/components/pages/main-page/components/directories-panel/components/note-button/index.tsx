@@ -26,9 +26,10 @@ import {
   useDeleteNoteMutation,
   useDeleteTagMutation,
   useGetUserDataQuery,
+  useGetUserDirectoriesQuery,
   useUpdateNoteMutation,
 } from '@/services/main-service';
-import { CirclePlus, PencilLine, Sparkles, StickyNote, TagIcon, Trash2, X } from 'lucide-react';
+import { CirclePlus, Folder, PencilLine, Sparkles, StickyNote, TagIcon, Trash2, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { NavLink, useParams } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -37,6 +38,7 @@ import { Badge } from '../../../../../../ui/badge';
 import { Popover, PopoverTrigger } from '../../../../../../ui/popover';
 import ToggleFavoriteButton from '../../../toggle-favorite-button';
 import CreateTagPopoverContent from './components/create-tag-popover-content';
+import { Directory } from '@/lib/types';
 
 enum Dialogs {
   deleteNote = 'deleteNote',
@@ -114,12 +116,14 @@ function DeleteNoteDialogContent(props: { note: Note }) {
   );
 }
 
-export default function NoteButton({ note }: { note: Note }) {
+export default function NoteButton({ note, showMoreInfo }: { note: Note; showMoreInfo?: boolean }) {
   const { id } = useParams();
   const [currentDialog, setCurrentDialog] = useState<Dialogs>();
   const { data: user } = useGetUserDataQuery();
   const [updateNote] = useUpdateNoteMutation();
   const [deleteTag, { isLoading: isDeletingTag }] = useDeleteTagMutation();
+  const { data: directories } = useGetUserDirectoriesQuery();
+  const [directory, setDirectory] = useState<Directory | undefined>(undefined);
 
   function handleSelectTag(e: Event, selectedTag: Tag) {
     e.preventDefault();
@@ -136,6 +140,12 @@ export default function NoteButton({ note }: { note: Note }) {
       },
     });
   }
+
+  useEffect(() => {
+    if (directories) {
+      setDirectory(directories.find((directory) => directory?._id === note._directory));
+    }
+  }, [directories, note._directory]);
 
   function handleDeleteTag(tagId: string) {
     if (isDeletingTag) return;
@@ -156,10 +166,20 @@ export default function NoteButton({ note }: { note: Note }) {
         <ContextMenuTrigger asChild>
           <div className="relative overflow-hidden">
             <div className="peer">
-              <Button asChild variant={id === note._id ? 'default' : 'ghost'} className="w-full justify-start">
+              <Button
+                asChild
+                variant={id === note._id ? 'default' : 'ghost'}
+                className="w-full h-auto flex flex-col items-start gap-1"
+              >
                 <NavLink to={`/notes/${note._id}`}>
+                  {showMoreInfo && directory && (
+                    <div className="flex gap-1 items-center text-nowrap text-xs italic opacity-80">
+                      <Folder className="lucide-filled lucide-xs" fill={directory.color} />
+                      <span>{directory.title}</span>
+                    </div>
+                  )}
                   <div className={`flex justify-start items-center gap-2`}>
-                    <span className="pl-4">
+                    <span className={showMoreInfo ? '' : 'pl-4'}>
                       <StickyNote size={16} />
                     </span>
                     <span>{note.title}</span>
@@ -169,6 +189,19 @@ export default function NoteButton({ note }: { note: Note }) {
                       </span>
                     )}
                   </div>
+                  {showMoreInfo && (
+                    <div className="flex gap-1 flex-wrap">
+                      {note._tags?.map((tag) => (
+                        <Badge
+                          key={tag._id}
+                          variant="tag"
+                          style={{ backgroundColor: tag.color + TAG_BACKGROUND_OPACITY_HEX_CODE }}
+                        >
+                          {tag.name}
+                        </Badge>
+                      ))}
+                    </div>
+                  )}
                 </NavLink>
               </Button>
             </div>

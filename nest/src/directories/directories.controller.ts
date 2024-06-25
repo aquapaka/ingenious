@@ -30,10 +30,11 @@ export class DirectoriesController {
     private readonly cls: ClsService,
   ) {}
 
-  @Get(':id')
+  @Get('self')
   @UseGuards(JwtAuthGuard)
-  getDirectory(@Param() params: FindOneParams) {
-    return this.directoriesService.findOneDirectoryById(params.id);
+  getUserDirectories() {
+    const user = this.cls.get('user');
+    return this.directoriesService.getUserDirectories(user._id);
   }
 
   @Post()

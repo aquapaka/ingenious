@@ -55,6 +55,10 @@ export const mainApi = createApi({
     }),
     // -------------------------------------------------------------------------------------
     // Directories
+    getUserDirectories: builder.query<Directory[], void>({
+      query: () => '/directories/self',
+      providesTags: ['Directory'],
+    }),
     addDirectory: builder.mutation<Directory, CreateDirectoryData>({
       query: ({ ...body }) => ({
         url: '/directories',
@@ -69,14 +73,14 @@ export const mainApi = createApi({
         method: 'PATCH',
         body: directory,
       }),
-      invalidatesTags: ['User'],
+      invalidatesTags: ['User', 'Directory'],
     }),
     deleteDirectory: builder.mutation<Directory, string>({
       query: (id) => ({
         url: `directories/${id}`,
         method: 'DELETE',
       }),
-      invalidatesTags: ['User'],
+      invalidatesTags: ['User', 'Directory'],
     }),
     // ---------------------------------------------------------------------------------------
     // Tags
@@ -94,14 +98,14 @@ export const mainApi = createApi({
         method: 'PATCH',
         body: tag,
       }),
-      invalidatesTags: ['User'],
+      invalidatesTags: ['User', 'Note'],
     }),
     deleteTag: builder.mutation<Tag, { id: string }>({
       query: ({ id }) => ({
         url: `/tags/${id}`,
         method: 'DELETE',
       }),
-      invalidatesTags: ['User'],
+      invalidatesTags: ['User', 'Note'],
     }),
     // ---------------------------------------------------------------------------------------
     // Notes
@@ -130,7 +134,7 @@ export const mainApi = createApi({
         url: `notes/${id}`,
         method: 'DELETE',
       }),
-      invalidatesTags: ['User'],
+      invalidatesTags: ['User', 'Note'],
     }),
   }),
 });
@@ -149,4 +153,5 @@ export const {
   useAddTagMutation,
   useDeleteTagMutation,
   useUpdateTagMutation,
+  useGetUserDirectoriesQuery,
 } = mainApi;

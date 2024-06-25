@@ -190,7 +190,7 @@ function DirectoryAccordionTriggerButton(props: { directory: Directory }) {
           <ContextMenuTrigger>
             <AccordionTrigger className={`hover:bg-secondary rounded-md group inline-flex overflow-hidden`}>
               <PopoverAnchor />
-              <div className="flex gap-2 items-center [&>div]:grow [&>div]:flex [&>div]:justify-between [&>div]:items-center text-nowrap">
+              <div className="flex gap-2 items-center text-nowrap">
                 <Folder className="lucide-filled" fill={directory.color} />
                 <span>{directory.title}</span>
               </div>

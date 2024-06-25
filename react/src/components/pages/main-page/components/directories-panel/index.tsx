@@ -167,7 +167,7 @@ export default function DirectoriesPanel() {
                 {filteredNotes.length ? (
                   filteredNotes.map((note) => (
                     <div key={note._id}>
-                      <NoteButton note={note} />
+                      <NoteButton note={note} showMoreInfo />
                     </div>
                   ))
                 ) : (
