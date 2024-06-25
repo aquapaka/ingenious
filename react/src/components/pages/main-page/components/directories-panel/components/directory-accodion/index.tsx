@@ -35,7 +35,7 @@ import { Input } from '../../../../../../ui/input';
 import { Popover, PopoverAnchor, PopoverContent, PopoverTrigger } from '../../../../../../ui/popover';
 import ColorSelector from '../color-selector';
 import CreateNewNoteButton from '../create-new-note-button';
-import NoteButton from '../note-button/note-button';
+import NoteButton from '../note-button';
 
 function DeleteAlertDialogContent(props: { directory: Directory }) {
   const { directory } = props;
@@ -188,9 +188,9 @@ function DirectoryAccordionTriggerButton(props: { directory: Directory }) {
       <ContextMenu>
         <AlertDialog>
           <ContextMenuTrigger>
-            <AccordionTrigger className={`hover:bg-secondary rounded-md group inline-flex`}>
+            <AccordionTrigger className={`hover:bg-secondary rounded-md group inline-flex overflow-hidden`}>
               <PopoverAnchor />
-              <div className="flex gap-2 items-center [&>div]:grow [&>div]:flex [&>div]:justify-between [&>div]:items-center">
+              <div className="flex gap-2 items-center [&>div]:grow [&>div]:flex [&>div]:justify-between [&>div]:items-center text-nowrap">
                 <Folder className="lucide-filled" fill={directory.color} />
                 <span>{directory.title}</span>
               </div>

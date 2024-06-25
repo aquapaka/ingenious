@@ -154,7 +154,7 @@ export default function NoteButton({ note }: { note: Note }) {
     <ContextMenu>
       <AlertDialog>
         <ContextMenuTrigger asChild>
-          <div className="relative">
+          <div className="relative overflow-hidden">
             <div className="peer">
               <Button asChild variant={id === note._id ? 'default' : 'ghost'} className="w-full justify-start">
                 <NavLink to={`/notes/${note._id}`}>

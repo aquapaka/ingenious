@@ -26,7 +26,7 @@ import {
 import CreateNewDirectoryButton from './components/create-new-directory-button';
 import CreateNewNoteButton from './components/create-new-note-button';
 import DirectoryAccordion from './components/directory-accodion';
-import NoteButton from './components/note-button/note-button';
+import NoteButton from './components/note-button';
 import TrashBin from './components/trash-bin';
 import { UserDropdownMenu } from './components/user-dropdown-menu';
 
