@@ -1,51 +1,40 @@
-name: Release, Tag and Bump Version Workflow
+name: Release
 
 on:
   push:
     branches:
-      - main  # This triggers the workflow for version tags like v1.0.0
+      - main
 
+permissions: {}
 jobs:
-  bump_version:
+  release:
+    # prevents this action from running on forks
+    if: github.repository == 'aquapaka/ingenious'
     permissions:
-      contents: write
+        contents: write # to create release (changesets/action)
+        pull-requests: write # to create pull request (changesets/action)
+    name: Release
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
+        uses: actions/checkout@v3
         with:
-          node-version: '20'
+          # This makes Actions fetch all Git history so that Changesets can generate changelogs with the correct commits
+          fetch-depth: 0
 
-      - name: Install Dependencies
-        run: |
-          npm install -g pnpm
-          pnpm install
+      - uses: pnpm/action-setup@v4
 
-      - name: Bump version and push tag
+      - name: Setup Node.js
+          uses: actions/setup-node@v4
+          with:
+            node-version: 20.x
+            cache: pnpm
+
+      - name: Install
+          run: pnpm install --frozen-lockfile
+
+      - name: Create Release Pull Request
+        id: changesets
+        uses: changesets/action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          # Set up Git user details for the commit
-          git config --global user.name 'github-actions'
-          git config --global user.email 'github-actions@github.com'
-
-          # Fetch all tags and branches
-          git fetch --prune --unshallow
-
-          # Bump the version, create a new commit and tag
-          npm version patch -m "chore: bump version to %s"
-
-          # Push the commit and the new tag to the repository
-          git push origin --follow-tags
-
-  create_release:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
