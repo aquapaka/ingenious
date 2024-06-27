@@ -31,7 +31,7 @@ export default function TopBar() {
   if (!note) return;
 
   return (
-    <div className="flex justify-between items-center p-2">
+    <div className="flex justify-between items-center p-2 border-b">
       <Breadcrumb className="pl-3">
         <BreadcrumbList>
           <BreadcrumbItem>
@@ -44,7 +44,7 @@ export default function TopBar() {
               <BreadcrumbSeparator />
               <BreadcrumbItem>
                 <BreadcrumbPage className="flex items-center">
-                  <Folder fill={currentDirectory.color} className="inline-block mr-2" />
+                  <Folder fill={currentDirectory.color} className="inline-block mr-2 lucide-filled" />
                   <span>{currentDirectory.title}</span>
                 </BreadcrumbPage>
               </BreadcrumbItem>

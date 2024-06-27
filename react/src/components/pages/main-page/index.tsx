@@ -18,7 +18,7 @@ export default function MainPage() {
     <ResizablePanelGroup className="h-full" direction="horizontal">
       {isTablet ? (
         <>
-          <ResizablePanel defaultSize={16} className="min-w-[200px]">
+          <ResizablePanel defaultSize={25} className="min-w-[280px]">
             <DirectoriesPanel />
           </ResizablePanel>
           <ResizableHandle withHandle />
@@ -37,7 +37,7 @@ export default function MainPage() {
           </SheetTrigger>
           <SheetContent
             side="left"
-            className="p-0 w-[240px]"
+            className="p-0 w-[280px]"
             onInteractOutside={() => dispatch(setDirectorySheetOpen(false))}
           >
             <DirectoriesPanel />
