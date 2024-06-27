@@ -57,7 +57,7 @@ function Editor(props: { note: Note }) {
         // Important: this key is needed for react to create new editor instance for each difference note
         key={note._id}
         ref={ref}
-        className="grow flex flex-col overflow-auto"
+        className="grow flex flex-col overflow-auto dark-theme"
         contentEditableClassName="prose dark:prose-invert prose-sm lg:prose-base prose-ingenious max-w-none mx-auto"
         onChange={handleOnChange}
         markdown={note.content}

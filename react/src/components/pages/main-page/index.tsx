@@ -18,7 +18,7 @@ export default function MainPage() {
     <ResizablePanelGroup className="h-full" direction="horizontal">
       {isTablet ? (
         <>
-          <ResizablePanel defaultSize={25} className="min-w-[280px]">
+          <ResizablePanel defaultSize={20} className="min-w-[280px]">
             <DirectoriesPanel />
           </ResizablePanel>
           <ResizableHandle withHandle />

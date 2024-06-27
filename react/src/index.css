@@ -136,7 +136,7 @@
 
 /* Disabled button */
 .mdxeditor-toolbar button:disabled > span > svg {
-  @apply text-muted-foreground;
+  @apply text-muted;
 }
 
 /* Buttons */
@@ -163,4 +163,13 @@ body > span {
 /* Each invidual item inside combobox select dropdown */
 .mdxeditor-select-content > div div {
   @apply bg-card hover:bg-accent duration-200 text-card-foreground;
+}
+
+/* Source editor */
+.mdxeditor-source-editor div {
+  @apply bg-card text-foreground
+}
+/* Gutter */
+.cm-gutterElement.cm-activeLineGutter {
+  @apply bg-accent
 }
