@@ -73,8 +73,8 @@ function Editor(props: { note: Note }) {
           diffSourcePlugin(),
           imagePlugin(),
           tablePlugin(),
-          // Additional
           markdownShortcutPlugin(),
+          // Additional
           // frontmatterPlugin(),
           toolbarPlugin({
             toolbarContents: () => (
