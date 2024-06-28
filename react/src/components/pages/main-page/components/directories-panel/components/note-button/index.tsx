@@ -16,8 +16,18 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../../../app/store';
 import { AlertDialog } from '../../../../../../ui/alert-dialog';
 import RenameNotePopoverContent from './components/rename-note-popover-content';
+import HighlightText from './components/highlight-text';
+import { RangeTuple } from 'fuse.js';
 
-export default function NoteButton({ note, showMoreInfo }: { note: Note; showMoreInfo?: boolean }) {
+export default function NoteButton({
+  note,
+  showMoreInfo,
+  highlightIndices,
+}: {
+  note: Note;
+  showMoreInfo?: boolean;
+  highlightIndices?: readonly RangeTuple[];
+}) {
   const { id } = useParams();
   const { data: directories } = useGetUserDirectoriesQuery();
   const [directory, setDirectory] = useState<Directory | undefined>(undefined);
@@ -52,7 +62,13 @@ export default function NoteButton({ note, showMoreInfo }: { note: Note; showMor
                       <span className={showMoreInfo ? '' : 'pl-4'}>
                         <StickyNote size={16} />
                       </span>
-                      <span>{note.title}</span>
+                      <span>
+                        {highlightIndices ? (
+                          <HighlightText text={note.title} highlightIndices={highlightIndices} />
+                        ) : (
+                          note.title
+                        )}
+                      </span>
                       {note.isFavorite && (
                         <span className="pl-1">
                           <Sparkles fill={FAVORITE_COLOR} className="lucide-xs lucide-filled" />

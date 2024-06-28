@@ -187,3 +187,6 @@ li[role=checkbox]:before {
 li[role=checkbox]:after {
   top: 8px;
 }
+mark {
+  @apply bg-amber-500 rounded-sm text-inherit
+}
