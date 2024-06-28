@@ -1,6 +1,7 @@
 import { Accordion } from '@/components/ui/accordion';
 import { Input } from '@/components/ui/input';
 import { useGetUserDataQuery } from '@/services/main-service';
+import Fuse from 'fuse.js';
 import { Bug, Filter, Ghost, Loader2, Sparkle, Sparkles, TagIcon, X } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,6 +13,7 @@ import {
   toggleFilterTagId,
 } from '../../../../../app/slices/searchAndFilterSlice';
 import { RootState } from '../../../../../app/store';
+import { noteSearchFuseOptions } from '../../../../../const/config';
 import { FAVORITE_COLOR, TAG_BACKGROUND_OPACITY_HEX_CODE } from '../../../../../const/const';
 import { User } from '../../../../../lib/types';
 import { Badge } from '../../../../ui/badge';
@@ -38,21 +40,28 @@ export default function DirectoriesPanel() {
     (state: RootState) => state.searchAndFilter,
   );
   const dispatch = useDispatch();
-  const filteredNotes = useMemo(
-    () =>
-      allNotes
-        ? allNotes.filter((note) => {
-            if (isFilterFavoriteOn && !note.isFavorite) return false;
-            if (
-              filterTagIds.length &&
-              filterTagIds.every((filterTagId) => !note._tags.map((tag) => tag._id).includes(filterTagId))
-            )
-              return false;
-            return !note.isInTrash && note.title.toLocaleLowerCase().includes(searchText.toLocaleLowerCase());
-          })
-        : [],
-    [allNotes, filterTagIds, isFilterFavoriteOn, searchText],
-  );
+  const filteredResults = useMemo(() => {
+    if (!allNotes) return [];
+
+    // filter by tags, favorite and not in trash
+    const filterdNotes = allNotes.filter((note) => {
+      if (isFilterFavoriteOn && !note.isFavorite) return false;
+      if (
+        filterTagIds.length &&
+        filterTagIds.every((filterTagId) => !note._tags.map((tag) => tag._id).includes(filterTagId))
+      )
+        return false;
+      if (note.isInTrash) return false;
+
+      return true;
+    });
+
+    const fuse = new Fuse(filterdNotes, noteSearchFuseOptions);
+
+    const fuseResults = fuse.search(searchText);
+
+    return fuseResults;
+  }, [allNotes, filterTagIds, isFilterFavoriteOn, searchText]);
   const isFiltering = searchText.length || (isFilterOn && (filterTagIds.length || isFilterFavoriteOn));
 
   useEffect(() => {
@@ -164,15 +173,19 @@ export default function DirectoriesPanel() {
               </div>
             ) : isFiltering ? (
               <div className="grid gap-1">
-                {filteredNotes.length ? (
-                  filteredNotes.map((note) => (
-                    <div key={note._id}>
-                      <NoteButton note={note} showMoreInfo />
+                {filteredResults.length ? (
+                  filteredResults.map((fuseResult) => (
+                    <div key={fuseResult.item._id}>
+                      <NoteButton
+                        note={fuseResult.item}
+                        showMoreInfo
+                        highlightIndices={fuseResult.matches![0].indices}
+                      />
                     </div>
                   ))
                 ) : (
                   <div className="flex items-center justify-center pt-4 text-muted-foreground italic text-sm">
-                    <Ghost className="inline mr-2" /> Can't find any note with this filter
+                    <Ghost className="inline mr-2" /> Can't find any note
                   </div>
                 )}
               </div>
