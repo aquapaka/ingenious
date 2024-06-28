@@ -22,4 +22,4 @@ export const COLORS = [
 
 export const FAVORITE_COLOR = '#facc15';
 
-export const TAG_BACKGROUND_OPACITY_HEX_CODE = '99' // 'CC' = 80% - '99' = 60%
+export const TAG_BACKGROUND_OPACITY_HEX_CODE = 'CC' // 'CC' = 80% - '99' = 60%
