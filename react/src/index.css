@@ -173,6 +173,17 @@ body > span {
 .cm-gutterElement.cm-activeLineGutter {
   @apply bg-accent
 }
+/* Fix code block style */
 code span {
   @apply !bg-accent rounded-sm border
+}
+/* Content checkbox style */
+li[role=checkbox] {
+  padding-inline-start: 1.5rem;
+}
+li[role=checkbox]:before {
+  top: 6px;
+}
+li[role=checkbox]:after {
+  top: 8px;
 }
