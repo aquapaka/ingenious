@@ -47,6 +47,7 @@
     --ring: 341 77% 40%;
     --radius: 0.5rem;
   }
+
   * {
     @apply border-border;
   }
@@ -77,33 +78,6 @@
   color: hsl(341 5% 5%);
 }
 
-/* Style react-md-editor */
-.md-editor {
-  zoom: 110%;
-  @apply bg-transparent;
-}
-
-.md-editor-toolbar-warp * {
-  @apply text-foreground;
-}
-
-.md-editor-content-editor * {
-  @apply bg-transparent;
-}
-
-.md-editor-preview {
-  @apply min-h-full h-fit;
-}
-
-.md-editor-preview,
-.md-editor-preview * {
-  @apply bg-card;
-}
-
-.cm-gutters * {
-  @apply bg-background;
-}
-
 /* Style tags input */
 .react-tagsinput {
   @apply rounded-md bg-background border border-border px-2 grow;
@@ -131,4 +105,85 @@
   border: 0;
   outline: none;
   @apply text-primary-foreground placeholder:text-muted-foreground text-xs p-2 w-[100px] placeholder:italic;
+}
+
+/* Make editor content full height */
+.mdxeditor-diff-source-wrapper {
+  flex-grow: 1;
+}
+
+.mdxeditor-rich-text-editor {
+  @apply bg-card p-4;
+}
+
+.mdxeditor-rich-text-editor,
+.mdxeditor-source-editor,
+.mdxeditor-rich-text-editor div {
+  height: 100%;
+}
+
+/* Style editor toolbar */
+.mdxeditor-toolbar {
+  overflow: visible;
+  @apply bg-background rounded-none;
+}
+
+/* All button icon color */
+.mdxeditor-toolbar svg,
+.mdxeditor-toolbar span {
+  @apply text-foreground;
+}
+
+/* Disabled button */
+.mdxeditor-toolbar button:disabled > span > svg {
+  @apply text-muted;
+}
+
+/* Buttons */
+.mdxeditor-toolbar button {
+  @apply hover:bg-secondary rounded-sm duration-200;
+}
+
+/* Button currently active */
+.mdxeditor-toolbar button[data-state='on'] {
+  @apply bg-primary;
+}
+
+/* Icon of currently active button */
+.mdxeditor-toolbar button[data-state='on'] svg,
+body > span {
+  @apply text-primary-foreground;
+}
+
+/* Combobox button */
+.mdxeditor-toolbar button[role='combobox'] {
+  @apply bg-card hover:bg-card/80 text-card-foreground;
+}
+
+/* Each invidual item inside combobox select dropdown */
+.mdxeditor-select-content > div div {
+  @apply bg-card hover:bg-accent duration-200 text-card-foreground;
+}
+
+/* Source editor */
+.mdxeditor-source-editor div {
+  @apply bg-card text-foreground
+}
+/* Gutter */
+.cm-gutterElement.cm-activeLineGutter {
+  @apply bg-accent
+}
+/* Fix code block style */
+code span {
+  @apply !bg-accent rounded-sm border
+}
+/* Content checkbox style */
+li[role=checkbox] {
+  padding-inline-start: 1.5rem;
+}
+li[role=checkbox]:before {
+  top: 6px;
+}
+li[role=checkbox]:after {
+  top: 8px;
 }

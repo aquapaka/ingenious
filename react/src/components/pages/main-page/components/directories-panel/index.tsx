@@ -163,7 +163,7 @@ export default function DirectoriesPanel() {
                 <Ghost className="inline mr-2" size={16} /> It's empty here
               </div>
             ) : isFiltering ? (
-              <div>
+              <div className="grid gap-1">
                 {filteredNotes.length ? (
                   filteredNotes.map((note) => (
                     <div key={note._id}>

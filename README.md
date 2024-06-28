@@ -42,6 +42,10 @@ A notion alternative multipurpose productive app
 
 - ☑️ Package management: [PNPM](https://pnpm.io/)
 - ☑️ [Validate commit message convention using Commitlint and Husky](https://dev.to/omarzi/how-to-validate-commit-message-convention-using-commitlint-and-husky-aaa) ([Use newer husky version](https://typicode.github.io/husky/migrate-from-v4.html))
+
+- Github action workflows
+  - Intergrate changeset: ➖
+
 - Testing:
   - Unit Test: [JestJS](https://jestjs.io/docs/getting-started) + [React Testing library](https://jestjs.io/docs/tutorial-react)
   - E2E Test: Playwright or Cypress
@@ -59,7 +63,7 @@ A notion alternative multipurpose productive app
 
 ## Libs
 
-- [React Markdown Editor](https://github.com/uiwjs/react-markdown-editor) (An implement of [React MD Editor](https://github.com/uiwjs/react-md-editor) using [CodeMirror](https://codemirror.net/)
+- [MDXEditor](https://mdxeditor.dev/editor/docs/getting-started)
 - [React Edit Text](https://www.npmjs.com/package/react-edit-text)
 - [React Tags Input](https://www.npmjs.com/package/react-tagsinput)
 

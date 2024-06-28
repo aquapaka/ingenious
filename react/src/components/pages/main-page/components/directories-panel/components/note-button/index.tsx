@@ -72,9 +72,9 @@ export default function NoteButton({ note, showMoreInfo }: { note: Note; showMor
                         ))}
                       </div>
                     )}
-                    <PopoverAnchor />
                   </NavLink>
                 </Button>
+                <PopoverAnchor />
               </div>
               <div className="right-2 top-[0.4rem] absolute items-center opacity-0 hover:opacity-100 peer-hover:opacity-100 duration-300 gap-2 bg-background rounded-md">
                 <ToggleFavoriteButton note={note} minimal />
