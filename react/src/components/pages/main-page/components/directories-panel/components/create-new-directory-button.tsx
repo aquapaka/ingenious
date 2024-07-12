@@ -5,7 +5,7 @@ import { CreateDirectoryData } from '../../../../../../services/api-types';
 import { useDispatch } from 'react-redux';
 import { setSearchText } from '@/app/slices/searchAndFilterSlice';
 
-export default function CreateNewDirectoryButton(props: { small?: boolean; parentDirectoryId?: string }) {
+export default function CreateNewDirectoryButton(props: { small?: boolean }) {
   const { small } = props;
   const [addNewDorectory, { isLoading: isAddingDirectory }] = useAddDirectoryMutation();
   const dispatch = useDispatch();
