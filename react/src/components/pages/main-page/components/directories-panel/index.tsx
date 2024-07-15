@@ -31,20 +31,19 @@ import DirectoryAccordion from './components/directory-accodion';
 import NoteButton from './components/note-button';
 import TrashBin from './components/trash-bin';
 import { UserDropdownMenu } from './components/user-dropdown-menu';
+import SearchAndFilter from './components/search-and-filter';
 
 export default function DirectoriesPanel() {
-  const { data, isLoading, isError, isSuccess } = useGetUserDataQuery();
-  const [userData, setUserData] = useState<User | null>(null);
+  const { data: userData, isLoading, isError } = useGetUserDataQuery();
   const { allDirectories, allNotes, inTrashNotes } = userData || {};
   const { searchText, isFilterOn, filterTagIds, isFilterFavoriteOn } = useSelector(
     (state: RootState) => state.searchAndFilter,
   );
-  const dispatch = useDispatch();
   const filteredResults = useMemo(() => {
     if (!allNotes) return [];
 
     // filter by tags, favorite and not in trash
-    const filterdNotes = allNotes.filter((note) => {
+    const filteredNotes = allNotes.filter((note) => {
       if (isFilterFavoriteOn && !note.isFavorite) return false;
       if (
         filterTagIds.length &&
@@ -56,7 +55,7 @@ export default function DirectoriesPanel() {
       return true;
     });
 
-    const fuse = new Fuse(filterdNotes, noteSearchFuseOptions);
+    const fuse = new Fuse(filteredNotes, noteSearchFuseOptions);
 
     const fuseResults = fuse.search(searchText);
 
@@ -65,19 +64,8 @@ export default function DirectoriesPanel() {
   const isFiltering = searchText.length || (isFilterOn && (filterTagIds.length || isFilterFavoriteOn));
 
   useEffect(() => {
-    if (isSuccess) {
-      setUserData(data);
-    }
-  }, [allDirectories, data, isSuccess]);
-
-  function handleToggleFilterTag(e: Event, tagId: string) {
-    e.preventDefault();
-    dispatch(toggleFilterTagId(tagId));
-  }
-
-  function handleClearFilterTagIds() {
-    dispatch(clearFilterTagIds());
-  }
+    console.log(filteredResults);
+  }, [filteredResults]);
 
   return (
     <div className="h-screen overflow-auto flex flex-col w-full justify-between p-4 pt-2">
@@ -88,74 +76,9 @@ export default function DirectoriesPanel() {
           <CreateNewDirectoryButton />
         </div>
       </div>
-      <div className="mb-0">
-        <div className="flex gap-1">
-          <div className="grow relative">
-            <Input
-              value={searchText}
-              className="mb-2 placeholder:italic text-xs"
-              type="text"
-              placeholder="search note by title..."
-              onChange={(e) => dispatch(setSearchText(e.target.value))}
-            />
-            <div
-              className={`absolute right-[0.3rem] top-[0.36rem] ${searchText.trim().length ? 'scale-100' : 'scale-0'} duration-300`}
-            >
-              <Button variant="outline" size="xs-icon" onClick={() => dispatch(setSearchText(''))}>
-                <X />
-              </Button>
-            </div>
-          </div>
-          <Button size="icon" variant={isFilterOn ? 'default' : 'outline'} onClick={() => dispatch(toggleFilter())}>
-            <Filter />
-          </Button>
-        </div>
-        <div
-          className="flex justify-start duration-300 overflow-hidden gap-1"
-          style={{ height: isFilterOn ? '32px' : 0 }}
-        >
-          <Button
-            variant={isFilterFavoriteOn ? 'default' : 'outline'}
-            size="xs"
-            onClick={() => dispatch(toggleFilterFavorite())}
-          >
-            {isFilterFavoriteOn ? (
-              <Sparkles className="lucide-xs mr-1" fill={FAVORITE_COLOR} />
-            ) : (
-              <Sparkle className="lucide-xs mr-1" />
-            )}
-            Favorite
-          </Button>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant={filterTagIds.length ? 'default' : 'outline'} size="xs">
-                <TagIcon className="lucide-xs mr-1" />
-                Tags{' '}
-                <div className="bg-secondary rounded-full w-4 h-4 aspect-square ml-1 text-foreground">
-                  {filterTagIds.length}
-                </div>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" side="right">
-              <DropdownMenuItem onClick={() => handleClearFilterTagIds()}>
-                <X className="mr-2" />
-                Clear
-              </DropdownMenuItem>
-              {userData?.allTags.map((tag) => (
-                <DropdownMenuCheckboxItem
-                  key={tag._id}
-                  checked={filterTagIds.includes(tag._id)}
-                  onSelect={(e) => handleToggleFilterTag(e, tag._id)}
-                >
-                  <Badge variant="tag" style={{ backgroundColor: tag.color + TAG_BACKGROUND_OPACITY_HEX_CODE }}>
-                    {tag.name}
-                  </Badge>
-                </DropdownMenuCheckboxItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      </div>
+
+      <SearchAndFilter />
+
       {isLoading ? (
         <div className="flex justify-center items-center grow">
           <Loader2 className="inline animate-spin mr-2" size={16} /> Loading notes...
