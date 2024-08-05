@@ -1,37 +1,18 @@
 import { Accordion } from '@/components/ui/accordion';
-import { Input } from '@/components/ui/input';
 import { useGetUserDataQuery } from '@/services/main-service';
 import Fuse from 'fuse.js';
-import { Bug, Filter, Ghost, Loader2, Sparkle, Sparkles, TagIcon, X } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  clearFilterTagIds,
-  setSearchText,
-  toggleFilter,
-  toggleFilterFavorite,
-  toggleFilterTagId,
-} from '../../../../../app/slices/searchAndFilterSlice';
+import { Bug, Ghost, Loader2 } from 'lucide-react';
+import { useEffect, useMemo } from 'react';
+import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../app/store';
 import { noteSearchFuseOptions } from '../../../../../const/config';
-import { FAVORITE_COLOR, TAG_BACKGROUND_OPACITY_HEX_CODE } from '../../../../../const/const';
-import { User } from '../../../../../lib/types';
-import { Badge } from '../../../../ui/badge';
-import { Button } from '../../../../ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '../../../../ui/dropdown-menu';
 import CreateNewDirectoryButton from './components/create-new-directory-button';
 import CreateNewNoteButton from './components/create-new-note-button';
 import DirectoryAccordion from './components/directory-accodion';
 import NoteButton from './components/note-button';
+import SearchAndFilter from './components/search-and-filter';
 import TrashBin from './components/trash-bin';
 import { UserDropdownMenu } from './components/user-dropdown-menu';
-import SearchAndFilter from './components/search-and-filter';
 
 export default function DirectoriesPanel() {
   const { data: userData, isLoading, isError } = useGetUserDataQuery();
