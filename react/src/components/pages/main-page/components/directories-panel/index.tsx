@@ -2,7 +2,7 @@ import { Accordion } from '@/components/ui/accordion';
 import { useGetUserDataQuery } from '@/services/main-service';
 import Fuse from 'fuse.js';
 import { Bug, Ghost, Loader2 } from 'lucide-react';
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../app/store';
 import { noteSearchFuseOptions } from '../../../../../const/config';
@@ -38,15 +38,24 @@ export default function DirectoriesPanel() {
 
     const fuse = new Fuse(filteredNotes, noteSearchFuseOptions);
 
-    const fuseResults = fuse.search(searchText);
+    let fuseResults;
+
+    fuseResults = fuse.search(searchText);
+
+    if (!fuseResults.length) {
+      fuseResults = filteredNotes.map((note) => ({
+        item: note,
+        matches: [
+          {
+            indices: [],
+          },
+        ],
+      }));
+    }
 
     return fuseResults;
   }, [allNotes, filterTagIds, isFilterFavoriteOn, searchText]);
   const isFiltering = searchText.length || (isFilterOn && (filterTagIds.length || isFilterFavoriteOn));
-
-  useEffect(() => {
-    console.log(filteredResults);
-  }, [filteredResults]);
 
   return (
     <div className="h-screen overflow-auto flex flex-col w-full justify-between p-4 pt-2">
