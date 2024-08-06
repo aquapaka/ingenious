@@ -1,5 +1,12 @@
 # ingenious
 
+## 0.3.1
+
+### Patch Changes
+
+- 7d0a2d3: feat: add start mongodb script for development
+- 1ba3745: feat: clear search when create new note or directory
+
 ## 0.3.0
 
 ### Minor Changes
