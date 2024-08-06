@@ -56,6 +56,11 @@ export default function SearchAndFilter() {
             ref={inputRef}
           />
           <div
+            className={`absolute right-[0.6rem] top-[0.20rem] ${searchText.trim().length ? 'scale-0' : 'scale-100'} duration-200`}
+          >
+            <Badge variant="secondary">Ctrl + K</Badge>
+          </div>
+          <div
             className={`absolute right-[0.3rem] top-[0.36rem] ${searchText.trim().length ? 'scale-100' : 'scale-0'} duration-300`}
           >
             <Button variant="outline" size="xs-icon" onClick={() => dispatch(setSearchText(''))}>
