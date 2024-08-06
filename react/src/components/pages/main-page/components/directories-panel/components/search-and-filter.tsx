@@ -17,9 +17,11 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import { FAVORITE_COLOR, TAG_BACKGROUND_OPACITY_HEX_CODE } from '@/const/const';
+import useKeyCombination from '@/hooks/useKeyCombination';
 import { Tag } from '@/lib/types';
 import { useGetUserDataQuery } from '@/services/main-service';
 import { Filter, Sparkle, Sparkles, TagIcon, X } from 'lucide-react';
+import { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 export default function SearchAndFilter() {
@@ -27,8 +29,8 @@ export default function SearchAndFilter() {
     (state: RootState) => state.searchAndFilter,
   );
   const { data: userData } = useGetUserDataQuery();
-
   const dispatch = useDispatch();
+  const inputRef = useRef<HTMLInputElement>(null);
 
   function handleToggleFilterTag(e: Event, tagId: string) {
     e.preventDefault();
@@ -38,6 +40,8 @@ export default function SearchAndFilter() {
   function handleClearFilterTagIds() {
     dispatch(clearFilterTagIds());
   }
+
+  useKeyCombination(() => inputRef.current && inputRef.current.focus(), true, false, false, 'KeyK');
 
   return (
     <div className="mb-0">
@@ -49,6 +53,7 @@ export default function SearchAndFilter() {
             type="text"
             placeholder="search note by title..."
             onChange={(e) => dispatch(setSearchText(e.target.value))}
+            ref={inputRef}
           />
           <div
             className={`absolute right-[0.3rem] top-[0.36rem] ${searchText.trim().length ? 'scale-100' : 'scale-0'} duration-300`}
