@@ -35,7 +35,7 @@ const registerFormSchema = z
       ),
     confirmPassword: z.string(),
     isAcceptTermsAndConditions: z.literal(true, {
-      message: 'You must accept our terms and conditions',
+      errorMap: () => ({ message: 'You must accept our terms and conditions' }),
     }),
   })
   .refine((data) => data.password === data.confirmPassword, {

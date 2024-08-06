@@ -17,7 +17,6 @@ import {
   diffSourcePlugin,
   headingsPlugin,
   imagePlugin,
-  linkDialogPlugin,
   linkPlugin,
   listsPlugin,
   markdownShortcutPlugin,
@@ -28,7 +27,7 @@ import {
 } from '@mdxeditor/editor';
 import '@mdxeditor/editor/style.css';
 import { CheckCheck, Loader2, TextCursorInput } from 'lucide-react';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 
 function Editor(props: { note: Note }) {
@@ -51,6 +50,11 @@ function Editor(props: { note: Note }) {
     return 'Uploaded image url';
   }
 
+  // Re-focus editor when note id change
+  useEffect(() => {
+    ref.current?.focus();
+  }, [note._id, note.isFavorite, note.title]);
+
   return (
     <>
       <MDXEditor
@@ -68,7 +72,6 @@ function Editor(props: { note: Note }) {
           quotePlugin(),
           thematicBreakPlugin(),
           linkPlugin(),
-          linkDialogPlugin(),
           imagePlugin({ imageUploadHandler }),
           diffSourcePlugin(),
           imagePlugin(),
