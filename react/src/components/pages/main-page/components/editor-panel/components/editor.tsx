@@ -53,7 +53,7 @@ function Editor(props: { note: Note }) {
   // Re-focus editor when note id change
   useEffect(() => {
     ref.current?.focus();
-  }, [note._id]);
+  }, [note._id, note.isFavorite, note.title]);
 
   return (
     <>
